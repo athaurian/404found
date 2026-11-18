@@ -20,12 +20,23 @@ This page records the team structure, work split, and checkpoint schedule for 40
 | Persistence         | Prisma schema, migrations, Cloudinary storage | Photo display for reports                       |
 | Deployment          | API hosting and CORS for the frontend origin  | Frontend hosting and API base URL configuration |
 
+## Frontend Split
+
+| Member               | Checkpoint 2 work                                                                                   |
+| :------------------- | :-------------------------------------------------------------------------------------------------- |
+| Salva Faddil Rinaldi | Shared header, the View Report page with its grid and pagination, and the Report Details page.      |
+| Ilham Ligar Samudra  | Search and filter controls inside the View Report page, the Submit Report form, and the About page. |
+
+## Wireframes
+
+The wireframes are in the [404 Found Figma file](https://www.figma.com/design/zJtyxERzIECVuc2AT1XaKy/404-Found---Lost---Found-Wireframes).
+
 ## Checkpoint Schedule
 
 | Checkpoint                         | Deadline         | Status      |
 | :--------------------------------- | :--------------- | :---------- |
 | 1. Project preparation             | 16 November 2026 | Complete    |
-| 2. Main UI and working API         | 19 November 2026 | Not started |
+| 2. Main UI and working API         | 20 November 2026 | In progress |
 | 3. Full integration and deployment | 22 November 2026 | Not started |
 
 (Checkpoint 2 and 3 deliverables follow the assignment brief.)
