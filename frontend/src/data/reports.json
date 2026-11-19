@@ -1,0 +1,138 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "title": "Charger Laptop Type-C 65W",
+    "description": "Found plugged into the wall socket near the sofa in Sekre BEM.",
+    "type": "FOUND",
+    "category": "ELECTRONICS",
+    "location": "Sekre BEM",
+    "date": "2026-11-15T00:00:00.000Z",
+    "imageUrl": "https://placehold.co/600x400?text=Charger+Laptop",
+    "reporterName": "Siti Rahmawati",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081234567890"
+    },
+    "createdAt": "2026-11-15T11:20:00.000Z",
+    "updatedAt": "2026-11-15T11:20:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "title": "Black Corkcicle Tumbler",
+    "description": "Left it in Room A206 after SDA class. Has a RISTEK sticker on the bottom.",
+    "type": "LOST",
+    "category": "TUMBLER",
+    "location": "Classroom (A2.06)",
+    "date": "2026-11-15T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Budi Santoso",
+    "contact": {
+      "type": "LINE",
+      "value": "budisantoso26"
+    },
+    "createdAt": "2026-11-15T08:30:00.000Z",
+    "updatedAt": "2026-11-15T08:30:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "title": "KTM UI Angkatan 2025",
+    "description": "Found near the entrance of Kantin Masoem. Currently kept at Pos Satpam Gedung A.",
+    "type": "FOUND",
+    "category": "ID_CARD",
+    "location": "Pos Satpam",
+    "date": "2026-11-14T00:00:00.000Z",
+    "imageUrl": "https://placehold.co/600x400?text=KTM+UI",
+    "reporterName": "Andi Pratama",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@andipratama"
+    },
+    "createdAt": "2026-11-14T14:00:00.000Z",
+    "updatedAt": "2026-11-14T14:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "title": "Sony Wireless Earbuds Case",
+    "description": "Lost my black Sony WF-1000XM4 charging case (no earbuds inside) around Student Lounge Floor 1.",
+    "type": "LOST",
+    "category": "ELECTRONICS",
+    "location": "Student Lounge (Floor 1)",
+    "date": "2026-11-14T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Kevin Wijaya",
+    "contact": {
+      "type": "DISCORD",
+      "value": "kevinwijaya_cs25"
+    },
+    "createdAt": "2026-11-14T09:45:00.000Z",
+    "updatedAt": "2026-11-14T09:45:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "title": "KTM UI Angkatan 2024",
+    "description": "Dropped it somewhere between Kantin Masoem and the bus stop. The card has a blue lanyard attached.",
+    "type": "LOST",
+    "category": "ID_CARD",
+    "location": "Kantin Masoem",
+    "date": "2026-11-13T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Rina Kartika",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081398765432"
+    },
+    "createdAt": "2026-11-13T16:10:00.000Z",
+    "updatedAt": "2026-11-13T16:10:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "title": "Casio Analog Wristwatch",
+    "description": "Found on the table near the power outlet. The strap is black leather with a small scratch on the buckle.",
+    "type": "FOUND",
+    "category": "ACCESSORIES",
+    "location": "Student Lounge (Floor 5)",
+    "date": "2026-11-13T00:00:00.000Z",
+    "imageUrl": "https://placehold.co/600x400?text=Casio+Watch",
+    "reporterName": "Fajar Saputra",
+    "contact": {
+      "type": "EMAIL",
+      "value": "fajar.saputra@ui.ac.id"
+    },
+    "createdAt": "2026-11-13T10:05:00.000Z",
+    "updatedAt": "2026-11-13T10:05:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440007",
+    "title": "Blue Notebook with Calculus Notes",
+    "description": "Left it on the second floor of Gedung Baru after a Calculus tutorial. The cover has a NADIA sticker.",
+    "type": "LOST",
+    "category": "MISCELLANEOUS",
+    "location": "Gedung Baru",
+    "date": "2026-11-12T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Nadia Putri",
+    "contact": {
+      "type": "DISCORD",
+      "value": "nadiaputri_cs24"
+    },
+    "createdAt": "2026-11-12T15:40:00.000Z",
+    "updatedAt": "2026-11-12T15:40:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "title": "AirPods Pro Charging Case",
+    "description": "Found an empty charging case on the desk closest to the whiteboard. Kept at the front desk.",
+    "type": "FOUND",
+    "category": "ELECTRONICS",
+    "location": "Classroom (A2.51)",
+    "date": "2026-11-12T00:00:00.000Z",
+    "imageUrl": "https://placehold.co/600x400?text=AirPods+Case",
+    "reporterName": "Yoga Prasetyo",
+    "contact": {
+      "type": "LINE",
+      "value": "yogaprasetyo"
+    },
+    "createdAt": "2026-11-12T09:15:00.000Z",
+    "updatedAt": "2026-11-12T09:15:00.000Z"
+  }
+]
