@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: 404found-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/reports
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: FRONTEND_URL
+        value: https://athaurian.github.io,http://localhost:5173
