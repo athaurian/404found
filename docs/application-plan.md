@@ -22,7 +22,7 @@ Every page uses the same header:
 
 The homepage shows reports in a grid. Each card has a short summary and a link to the full report.
 
-Search and filters are optional. When used, they cover:
+Search and filters cover:
 
 - Item name
 - Type
@@ -65,7 +65,7 @@ The form collects the fields listed in the [API contract](api-contract.md). Fiel
 | Photo                | JPG, PNG, or WebP under 5 MB                   |
 | Contact\*            | Method dropdown and value input                |
 
-The form shows a validation message when a required field is empty, and ends with Submit and Cancel buttons.
+The form shows a validation message when a required field is empty. It ends with Submit and Cancel buttons.
 
 ## About
 

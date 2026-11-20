@@ -2,4 +2,4 @@
 
 The dataset is in [`mock-data/reports.json`](../mock-data/reports.json).
 
-(Backend import and seed script: TBD in Checkpoints 2 and 3.)
+The backend loads this file into memory at startup and uses its records as the API's starting data. (Database seed script: TBD in Checkpoint 3.)

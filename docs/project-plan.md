@@ -1,6 +1,6 @@
 # Project Plan
 
-This page records the team structure, work split, and checkpoint schedule for 404Found. The technical design is documented in the [database design](database-design.md) and [API contract](api-contract.md) pages.
+This page records the team structure, work split, and checkpoint schedule for 404Found. The [database design](database-design.md) and [API contract](api-contract.md) pages describe the technical design.
 
 ## Team and Responsibilities
 
@@ -15,7 +15,7 @@ This page records the team structure, work split, and checkpoint schedule for 40
 | Area                | Backend                                       | Frontend                                        |
 | :------------------ | :-------------------------------------------- | :---------------------------------------------- |
 | Documentation       | Database design, API contract, mock data      | Page layouts and interaction design             |
-| Listing and details | `GET /reports` and `GET /reports/:id`         | Report grid, optional filters, and detail page  |
+| Listing and details | `GET /reports` and `GET /reports/:id`         | Report grid, filters, and detail page           |
 | Submission          | `POST /reports`, validation, image handling   | Submission form, loading and error states       |
 | Persistence         | Prisma schema, migrations, Cloudinary storage | Photo display for reports                       |
 | Deployment          | API hosting and CORS for the frontend origin  | Frontend hosting and API base URL configuration |
@@ -40,10 +40,6 @@ The wireframes are in the [404 Found Figma file](https://www.figma.com/design/zJ
 | 3. Full integration and deployment | 22 November 2026 | Not started |
 
 (Checkpoint 2 and 3 deliverables follow the assignment brief.)
-
-## Optional Scope
-
-Search and filtering are optional and follow the required endpoints. Image placeholders and contact privacy are out of scope. The required report endpoints and pagination take priority.
 
 ## Stretch Scope
 

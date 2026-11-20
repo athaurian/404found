@@ -6,11 +6,13 @@
 
 ## Requirements Coverage
 
-| Requirement                       | Status   | Planned behavior                                                                                            |
+| Requirement                       | Status   | Behavior                                                                                                    |
 | :-------------------------------- | :------- | :---------------------------------------------------------------------------------------------------------- |
 | Public report listing and details | Required | `GET /reports` returns every report, and `GET /reports/:id` returns one.                                    |
-| Search and filtering              | Optional | Query parameters match item name, report type, category, location, and the date the item was lost or found. |
+| Search and filtering              | Required | Query parameters match item name, report type, category, location, and the date the item was lost or found. |
 | Report submission                 | Required | `POST /reports` accepts a text report with an optional photo.                                               |
+| Image placeholders                | Required | The listing and detail pages show a default placeholder when a report has no photo.                         |
+| Contact privacy                   | Required | The API returns only the contact method chosen by the reporter, and only on the detail response.            |
 
 ## Documentation
 
@@ -25,11 +27,12 @@
 
 ## Repository Layout
 
-| Path         | Contents                              |
-| :----------- | :------------------------------------ |
-| `backend/`   | Express API scaffold for Checkpoint 2 |
-| `docs/`      | Checkpoint 1 documentation            |
-| `mock-data/` | Shared report dataset                 |
+| Path         | Contents                     |
+| :----------- | :--------------------------- |
+| `backend/`   | Express API for Checkpoint 2 |
+| `frontend/`  | React and Vite application   |
+| `docs/`      | Project documentation        |
+| `mock-data/` | Shared report dataset        |
 
 ## Tech Stack
 
@@ -60,4 +63,9 @@
 
 ## Local Development
 
-Prerequisites and environment variables are documented in [`docs/development-setup.md`](docs/development-setup.md).
+| Item                          | Detail                                                                                 |
+| :---------------------------- | :------------------------------------------------------------------------------------- |
+| Prerequisites and environment | [`docs/development-setup.md`](docs/development-setup.md)                               |
+| API base URL                  | `http://localhost:3000/api`                                                            |
+| Endpoints and response shapes | [`docs/api-contract.md`](docs/api-contract.md)                                         |
+| Report storage                | In memory, reloaded from [`mock-data/reports.json`](mock-data/reports.json) at startup |

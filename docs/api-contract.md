@@ -24,11 +24,11 @@ The backend exposes a REST API at `http://localhost:3000/api`. Requests and resp
 
 ## List Reports
 
-`GET /reports` returns reports with pagination metadata, sorted by `createdAt` newest first unless `sort=oldest` is set.
+`GET /reports` returns six reports per page with pagination metadata. It sorts by `createdAt` newest first. `sort=oldest` reverses the order.
 
 ### Search and Filter Parameters
 
-Search and filtering are optional. The core listing supports `sort` and `page` without search or filters.
+Search and filtering narrow the listing. `sort` and `page` work without either.
 
 | Parameter  | Description                                                       | Allowed values                                                      | Default   |
 | :--------- | :---------------------------------------------------------------- | :------------------------------------------------------------------ | :-------- |
@@ -80,10 +80,6 @@ Each page holds six reports. The API does not accept a custom page size.
       "date": "2026-11-12T00:00:00.000Z",
       "imageUrl": "https://placehold.co/600x400?text=AirPods+Case",
       "reporterName": "Yoga Prasetyo",
-      "contact": {
-        "type": "LINE",
-        "value": "yogaprasetyo"
-      },
       "createdAt": "2026-11-12T09:15:00.000Z",
       "updatedAt": "2026-11-12T09:15:00.000Z"
     }
@@ -98,6 +94,8 @@ Each page holds six reports. The API does not accept a custom page size.
   }
 }
 ```
+
+The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen contact method.
 
 ### Invalid Page Response
 
@@ -171,6 +169,16 @@ Each page holds six reports. The API does not accept a custom page size.
 | `contactValue` | String | Yes      | Phone number, account username, or email address                    |
 | `imageUrl`     | String | No       | Image URL string supplied with the report                           |
 
+### Field Limits
+
+| Field          | Maximum length |
+| :------------- | :------------- |
+| `title`        | 120            |
+| `description`  | 1000           |
+| `reporterName` | 80             |
+| `contactValue` | 120            |
+| `imageUrl`     | 2048           |
+
 ### Image Upload
 
 (Image upload: TBD in Checkpoint 3.)
@@ -242,6 +250,9 @@ Each page holds six reports. The API does not accept a custom page size.
 | `201` | Report created                                                     |
 | `400` | Invalid query parameter, invalid field value, or failed validation |
 | `404` | No report matches the requested `id`                               |
+| `429` | More than 20 submissions from one client in a minute               |
 | `500` | Unhandled server error                                             |
 
-(CORS configuration: TBD in Checkpoint 2.)
+## CORS
+
+`FRONTEND_URL` lists the origins that receive CORS headers, and it defaults to `http://localhost:5173`. Separate origins with commas.
