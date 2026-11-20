@@ -58,7 +58,7 @@
 | Checkpoint                         | Deadline         | Status                 |
 | :--------------------------------- | :--------------- | :--------------------- |
 | 1. Project preparation             | 16 November 2026 | Documentation complete |
-| 2. Main UI and working API         | 20 November 2026 | In progress            |
+| 2. Main UI and working API         | 20 November 2026 | Complete               |
 | 3. Full integration and deployment | 22 November 2026 | Not started            |
 
 ## Local Development
