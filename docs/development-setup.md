@@ -56,6 +56,8 @@ docker compose down
 | Container port | `3000`                         |
 | Dataset        | `mock-data/` mounted read-only |
 
+`optiplex` runs the container on port `3100`. Tailscale Funnel publishes that port at `https://optiplex.tail1e8f95.ts.net`.
+
 ## Environment Variables
 
 | Variable                | Default                 | Used by                             |
