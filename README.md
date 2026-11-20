@@ -69,3 +69,13 @@
 | API base URL                  | `http://localhost:3000/api`                                                            |
 | Endpoints and response shapes | [`docs/api-contract.md`](docs/api-contract.md)                                         |
 | Report storage                | In memory, reloaded from [`mock-data/reports.json`](mock-data/reports.json) at startup |
+
+## Public Deployment
+
+`docker compose up -d --build` builds [`backend/Dockerfile`](backend/Dockerfile) and serves the API on port `3100`. Tailscale Funnel publishes that port at the public URL below.
+
+| Access  | Base URL                                 |
+| :------ | :--------------------------------------- |
+| Public  | `https://optiplex.tail1e8f95.ts.net/api` |
+| Tailnet | `http://optiplex:3100/api`               |
+| Local   | `http://localhost:3000/api`              |

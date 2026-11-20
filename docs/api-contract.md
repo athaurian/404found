@@ -1,6 +1,12 @@
 # API Contract
 
-The backend exposes a REST API at `http://localhost:3000/api`. Requests and responses use JSON.
+The backend exposes a REST API. Requests and responses use JSON.
+
+| Access  | Base URL                                 |
+| :------ | :--------------------------------------- |
+| Public  | `https://optiplex.tail1e8f95.ts.net/api` |
+| Tailnet | `http://optiplex:3100/api`               |
+| Local   | `http://localhost:3000/api`              |
 
 ## Response Format
 
@@ -255,4 +261,4 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 
 ## CORS
 
-`FRONTEND_URL` lists the origins that receive CORS headers, and it defaults to `http://localhost:5173`. Separate origins with commas.
+`FRONTEND_URL` lists the origins that receive CORS headers, and it defaults to `http://localhost:5173`. Separate origins with commas. The public deployment adds `https://athaurian.github.io`.
