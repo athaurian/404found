@@ -72,6 +72,18 @@
 
 ## Public Deployment
 
+### Frontend
+
+| Item       | Value                                                                       |
+| :--------- | :-------------------------------------------------------------------------- |
+| Workflow   | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)               |
+| Trigger    | Push to `main`, or manual `workflow_dispatch`                                |
+| Site       | `https://athaurian.github.io/404found/`                                     |
+| Build env  | `VITE_API_BASE_URL=https://optiplex.tail1e8f95.ts.net/api`<br>`VITE_USE_MOCK_API=false` |
+| Router     | `HashRouter`: Pages cannot rewrite deep links to `index.html`                |
+
+### Backend
+
 `docker compose up -d --build` builds [`backend/Dockerfile`](backend/Dockerfile) and serves the API on port `3100`. Tailscale Funnel publishes that port at the public URL below.
 
 | Access  | Base URL                                 |
