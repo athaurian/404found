@@ -6,6 +6,7 @@ import reportRoutes from "./routes/reportRoutes.js";
 const app = express();
 
 app.disable("x-powered-by");
+app.set("trust proxy", 1);
 
 const allowedOrigins = (process.env.FRONTEND_URL ?? "http://localhost:5173")
   .split(",")
