@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import SafeImage from "../components/SafeImage";
 import {
   CATEGORY_LABELS,
   CONTACT_TYPE_LABELS,
@@ -12,12 +13,34 @@ function formatFullDate(isoDate) {
   const parsed = new Date(isoDate);
   if (Number.isNaN(parsed.getTime())) return isoDate;
   return parsed.toLocaleDateString("en-GB", {
+    timeZone: "UTC",
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 }
+
+const imagePlaceholder = (
+  <div className="detail-placeholder">
+    <svg
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <polyline points="21 15 16 10 5 21" />
+    </svg>
+    <span>No image</span>
+  </div>
+);
 
 export default function ReportDetails() {
   const { id } = useParams();
@@ -92,32 +115,13 @@ export default function ReportDetails() {
 
       <div className="detail-layout">
         <div className="detail-media">
-          {report.imageUrl ? (
-            <img
-              src={report.imageUrl}
-              alt={report.title}
-              className="detail-image"
-            />
-          ) : (
-            <div className="detail-placeholder">
-              <svg
-                width="36"
-                height="36"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-              <span>No image</span>
-            </div>
-          )}
+          <SafeImage
+            key={report.id}
+            src={report.imageUrl}
+            alt={report.title}
+            className="detail-image"
+            fallback={imagePlaceholder}
+          />
         </div>
 
         <div className="detail-info">
@@ -147,10 +151,6 @@ export default function ReportDetails() {
             <div className="detail-meta-row">
               <dt>{isFound ? "Date Found" : "Date Lost"}</dt>
               <dd>{formatFullDate(report.date)}</dd>
-            </div>
-            <div className="detail-meta-row">
-              <dt>Reported By</dt>
-              <dd>{report.reporterName}</dd>
             </div>
           </dl>
 

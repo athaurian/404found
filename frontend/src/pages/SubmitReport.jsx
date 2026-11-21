@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   CATEGORIES,
   CONTACT_TYPES,
   LOCATIONS,
-  PHOTO_CONSTRAINTS,
   REPORT_TYPES,
 } from "../constants/reportOptions";
 import { createReport } from "../services/reportsApi";
@@ -17,6 +16,7 @@ const INITIAL_FORM = {
   location: "",
   date: "",
   description: "",
+  imageUrl: "",
   reporterName: "",
   contactType: "WHATSAPP",
   contactValue: "",
@@ -32,27 +32,21 @@ function getTodayDateString() {
 
 export default function SubmitReport() {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
 
   const [form, setForm] = useState(INITIAL_FORM);
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  useEffect(() => {
-    return () => {
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview);
-      }
-    };
-  }, [imagePreview]);
-
   const activeContact =
     CONTACT_TYPES.find((c) => c.value === form.contactType) || CONTACT_TYPES[0];
+
+  const dateLabel =
+    form.type === "FOUND"
+      ? "Date found"
+      : form.type === "LOST"
+      ? "Date lost"
+      : "Date lost/found";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,87 +59,26 @@ export default function SubmitReport() {
     }
   };
 
-  const handleFileSelect = (file) => {
-    if (!file) return;
-
-    if (!PHOTO_CONSTRAINTS.allowedMimeTypes.includes(file.type)) {
-      setErrors((prev) => ({
-        ...prev,
-        image: "Only JPG, PNG, or WebP images are allowed.",
-      }));
-      return;
-    }
-
-    if (file.size > PHOTO_CONSTRAINTS.maxSizeBytes) {
-      setErrors((prev) => ({
-        ...prev,
-        image: "File size must be under 5 MB.",
-      }));
-      return;
-    }
-
-    if (imagePreview) {
-      URL.revokeObjectURL(imagePreview);
-    }
-
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-    setErrors((prev) => ({ ...prev, image: "" }));
-  };
-
-  const handleRemoveImage = (e) => {
-    e.stopPropagation();
-    if (imagePreview) {
-      URL.revokeObjectURL(imagePreview);
-    }
-    setImageFile(null);
-    setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const droppedFile = e.dataTransfer.files?.[0];
-    handleFileSelect(droppedFile);
-  };
-
   const validate = () => {
     const nextErrors = {};
 
-    if (!form.title.trim()) {
-      nextErrors.title = "Item name is required.";
-    }
-    if (!form.type) {
-      nextErrors.type = "Please select a report type.";
-    }
-    if (!form.category) {
-      nextErrors.category = "Please select a category.";
-    }
-    if (!form.location) {
-      nextErrors.location = "Please select a location.";
-    }
-    if (!form.date) {
-      nextErrors.date = "Please select the date lost or found.";
-    }
+    if (!form.title.trim()) nextErrors.title = "Item name is required.";
+    if (!form.type) nextErrors.type = "Please select a report type.";
+    if (!form.category) nextErrors.category = "Please select a category.";
+    if (!form.location) nextErrors.location = "Please select a location.";
+    if (!form.date) nextErrors.date = "Please select the date lost or found.";
     if (!form.description.trim()) {
       nextErrors.description = "Description is required.";
     }
     if (!form.reporterName.trim()) {
       nextErrors.reporterName = "Your name is required.";
     }
+
+    const photoUrl = form.imageUrl.trim();
+    if (photoUrl && (!/^https?:\/\/\S+$/i.test(photoUrl) || photoUrl.length > 2048)) {
+      nextErrors.imageUrl = "Enter a valid link starting with http:// or https://";
+    }
+
     if (!form.contactValue.trim()) {
       nextErrors.contactValue = "Contact value is required.";
     } else if (
@@ -163,40 +96,26 @@ export default function SubmitReport() {
     e.preventDefault();
     setSubmitStatus(null);
 
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     setIsSubmitting(true);
 
     try {
-      const response = await createReport(form, imageFile);
+      const response = await createReport(form);
       setSubmitStatus({
         type: "success",
         message: response.message || "Report submitted successfully.",
       });
-
       setForm(INITIAL_FORM);
       setErrors({});
-      setImageFile(null);
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview);
-      }
-      setImagePreview(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     } catch (err) {
       if (Array.isArray(err.fieldErrors) && err.fieldErrors.length > 0) {
         const mapped = {};
         err.fieldErrors.forEach(({ field, message }) => {
-          if (field && message) {
-            mapped[field] = message;
-          }
+          if (field && message) mapped[field] = message;
         });
         setErrors((prev) => ({ ...prev, ...mapped }));
       }
-
       setSubmitStatus({
         type: "error",
         message: err.message || "Failed to submit report. Please try again.",
@@ -204,10 +123,6 @@ export default function SubmitReport() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleCancel = () => {
-    navigate("/");
   };
 
   return (
@@ -238,7 +153,6 @@ export default function SubmitReport() {
       )}
 
       <form className="submit-form" onSubmit={handleSubmit} noValidate>
-        {/* Item Name */}
         <div className="form-group">
           <label htmlFor="title">
             Item Name <span className="required-mark">*</span>
@@ -247,6 +161,7 @@ export default function SubmitReport() {
             id="title"
             name="title"
             type="text"
+            maxLength={120}
             placeholder="e.g. Botol Minum"
             value={form.title}
             onChange={handleChange}
@@ -256,7 +171,6 @@ export default function SubmitReport() {
           {errors.title && <span className="field-error">{errors.title}</span>}
         </div>
 
-        {/* Type & Category */}
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="type">
@@ -305,7 +219,6 @@ export default function SubmitReport() {
           </div>
         </div>
 
-        {/* Location & Date */}
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="location">
@@ -333,8 +246,7 @@ export default function SubmitReport() {
 
           <div className="form-group">
             <label htmlFor="date">
-              {form.type === "FOUND" ? "Date found" : "Date lost"}{" "}
-              <span className="required-mark">*</span>
+              {dateLabel} <span className="required-mark">*</span>
             </label>
             <input
               id="date"
@@ -350,7 +262,6 @@ export default function SubmitReport() {
           </div>
         </div>
 
-        {/* Description */}
         <div className="form-group">
           <label htmlFor="description">
             Description <span className="required-mark">*</span>
@@ -359,6 +270,7 @@ export default function SubmitReport() {
             id="description"
             name="description"
             rows={4}
+            maxLength={1000}
             placeholder="Color, brand, distinguishing marks, or additional details..."
             value={form.description}
             onChange={handleChange}
@@ -370,88 +282,30 @@ export default function SubmitReport() {
           )}
         </div>
 
-        {/* Photo Upload (Optional) */}
         <div className="form-group">
-          <label htmlFor="photo-input">
-            Photo <span className="optional-text">(Optional)</span>
+          <label htmlFor="imageUrl">
+            Photo link <span className="optional-text">(Optional)</span>
           </label>
-          <div
-            className={`photo-dropzone${isDragging ? " is-dragging" : ""}${
-              errors.image ? " has-error" : ""
-            }`}
-            onClick={() => !isSubmitting && fileInputRef.current?.click()}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            role="button"
-            tabIndex={0}
-            aria-label="Upload item photo"
-            onKeyDown={(e) => {
-              if (!isSubmitting && (e.key === "Enter" || e.key === " ")) {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <input
-              id="photo-input"
-              ref={fileInputRef}
-              type="file"
-              accept={PHOTO_CONSTRAINTS.acceptAttr}
-              className="sr-only"
-              disabled={isSubmitting}
-              onChange={(e) => handleFileSelect(e.target.files?.[0])}
-            />
-
-            {imagePreview ? (
-              <div className="photo-preview">
-                <img
-                  src={imagePreview}
-                  alt="Selected item preview"
-                  className="photo-preview-img"
-                />
-                <div className="photo-preview-info">
-                  <span className="photo-file-name">{imageFile?.name}</span>
-                  <button
-                    type="button"
-                    className="photo-remove-btn"
-                    onClick={handleRemoveImage}
-                    disabled={isSubmitting}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="photo-placeholder">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <polyline points="21 15 16 10 5 21" />
-                </svg>
-                <p className="photo-dropzone-title">
-                  Click to upload or drag and drop your file here
-                </p>
-                <p className="photo-dropzone-hint">
-                  JPG, PNG, or WebP up to 5MB (can be left empty)
-                </p>
-              </div>
-            )}
-          </div>
-          {errors.image && <span className="field-error">{errors.image}</span>}
+          <input
+            id="imageUrl"
+            name="imageUrl"
+            type="url"
+            inputMode="url"
+            maxLength={2048}
+            placeholder="https://example.com/photo.jpg"
+            value={form.imageUrl}
+            onChange={handleChange}
+            className={errors.imageUrl ? "has-error" : ""}
+            disabled={isSubmitting}
+          />
+          <p className="field-helper">
+            Paste a link to a photo of the item. File upload is coming later.
+          </p>
+          {errors.imageUrl && (
+            <span className="field-error">{errors.imageUrl}</span>
+          )}
         </div>
 
-        {/* Reporter Name (required by API contract) */}
         <div className="form-group">
           <label htmlFor="reporterName">
             Your Name <span className="required-mark">*</span>
@@ -460,6 +314,7 @@ export default function SubmitReport() {
             id="reporterName"
             name="reporterName"
             type="text"
+            maxLength={80}
             placeholder="e.g. Budi Santoso"
             value={form.reporterName}
             onChange={handleChange}
@@ -471,7 +326,6 @@ export default function SubmitReport() {
           )}
         </div>
 
-        {/* Contact */}
         <div className="form-group">
           <label htmlFor="contactValue">
             Contact <span className="required-mark">*</span>
@@ -500,6 +354,7 @@ export default function SubmitReport() {
               id="contactValue"
               name="contactValue"
               type="text"
+              maxLength={120}
               placeholder={activeContact.placeholder}
               value={form.contactValue}
               onChange={handleChange}
@@ -512,12 +367,11 @@ export default function SubmitReport() {
           )}
         </div>
 
-        {/* Submit & Cancel Actions */}
         <div className="form-actions">
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={handleCancel}
+            onClick={() => navigate("/")}
             disabled={isSubmitting}
           >
             Cancel
