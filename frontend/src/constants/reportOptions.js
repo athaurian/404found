@@ -68,9 +68,3 @@ export const SORT_OPTIONS = [
   { value: "newest", label: "Newest First" },
   { value: "oldest", label: "Oldest First" },
 ];
-
-export const PHOTO_CONSTRAINTS = {
-  maxSizeBytes: 5 * 1024 * 1024, // 5 MB
-  allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
-  acceptAttr: "image/jpeg,image/png,image/webp",
-};
