@@ -1,15 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import SafeImage from "../components/SafeImage";
 import SearchFilterBar from "../components/SearchFilterBar";
 import { CATEGORY_LABELS, SORT_OPTIONS } from "../constants/reportOptions";
 import { getReports } from "../services/reportsApi";
 import "./ViewReport.css";
 
+const cardImagePlaceholder = (
+  <div className="report-card-placeholder">
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <polyline points="21 15 16 10 5 21" />
+    </svg>
+    <span>No image</span>
+  </div>
+);
+
+// Report dates are stored as midnight UTC, so format them in UTC to avoid
+// showing the previous day to visitors west of UTC.
 function formatCardDate(isoDate) {
   if (!isoDate) return "";
   const parsed = new Date(isoDate);
   if (Number.isNaN(parsed.getTime())) return isoDate;
   return parsed.toLocaleDateString("en-GB", {
+    timeZone: "UTC",
     weekday: "short",
     day: "2-digit",
     month: "short",
@@ -30,6 +55,8 @@ export default function ViewReport() {
 
   // Local state for instant typing while debouncing URL/API updates
   const [searchInput, setSearchInput] = useState(qParam);
+  // Remembers the last search text we pushed into the URL ourselves
+  const lastPushedQ = useRef(qParam);
 
   const [reports, setReports] = useState([]);
   const [pagination, setPagination] = useState({
@@ -42,10 +69,17 @@ export default function ViewReport() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [errorStatus, setErrorStatus] = useState(0);
+  // Bumped by the "Try again" button to re-run the fetch
+  const [reloadKey, setReloadKey] = useState(0);
 
-  // Keep input synced if URL changes via Reset or browser back/forward
+  // Copy the URL into the input only when it changed from outside
+  // (Reset button, browser back/forward), never for our own updates.
   useEffect(() => {
-    setSearchInput(qParam);
+    if (qParam !== lastPushedQ.current) {
+      lastPushedQ.current = qParam;
+      setSearchInput(qParam);
+    }
   }, [qParam]);
 
   // Debounce search text -> update URL ?q=... and reset page to 1
@@ -54,6 +88,7 @@ export default function ViewReport() {
     if (trimmed === qParam) return;
 
     const timer = setTimeout(() => {
+      lastPushedQ.current = trimmed;
       setSearchParams(
         (prev) => {
           const next = new URLSearchParams(prev);
@@ -77,6 +112,7 @@ export default function ViewReport() {
     let ignore = false;
     setLoading(true);
     setError("");
+    setErrorStatus(0);
 
     getReports({
       q: qParam,
@@ -106,6 +142,7 @@ export default function ViewReport() {
           hasPrevPage: false,
         });
         setError(err.message || "Failed to load reports.");
+        setErrorStatus(err.status || 0);
       })
       .finally(() => {
         if (!ignore) setLoading(false);
@@ -114,7 +151,16 @@ export default function ViewReport() {
     return () => {
       ignore = true;
     };
-  }, [qParam, typeParam, categoryParam, locationParam, dateParam, sortParam, pageParam]);
+  }, [
+    qParam,
+    typeParam,
+    categoryParam,
+    locationParam,
+    dateParam,
+    sortParam,
+    pageParam,
+    reloadKey,
+  ]);
 
   const handleFilterChange = (key, value) => {
     setSearchParams((prev) => {
@@ -180,14 +226,8 @@ export default function ViewReport() {
   return (
     <main className="view-page">
       <section className="view-hero">
-        <h1>Find What You Lost, Return What You Found</h1>
-        <p>
-          Browse reports from students at FASILKOM UI, or{" "}
-          <Link to="/submit" className="view-hero-link">
-            post your own
-          </Link>
-          .
-        </p>
+        <h1>Browse Reports</h1>
+        <p>Lost or found something on campus? Browse reports made by others.</p>
       </section>
 
       <SearchFilterBar
@@ -232,13 +272,24 @@ export default function ViewReport() {
       {error && (
         <div className="view-state-box view-state-error" role="alert">
           <p>{error}</p>
-          <button
-            type="button"
-            className="view-state-btn"
-            onClick={() => handlePageChange(1)}
-          >
-            Back to Page 1
-          </button>
+          {errorStatus === 400 ? (
+            // 400 means the URL parameters are invalid, so clear them
+            <button
+              type="button"
+              className="view-state-btn"
+              onClick={handleReset}
+            >
+              Reset filters
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="view-state-btn"
+              onClick={() => setReloadKey((k) => k + 1)}
+            >
+              Try again
+            </button>
+          )}
         </div>
       )}
 
@@ -290,33 +341,13 @@ export default function ViewReport() {
                   className="report-card"
                 >
                   <div className="report-card-media">
-                    {report.imageUrl ? (
-                      <img
-                        src={report.imageUrl}
-                        alt={report.title}
-                        className="report-card-img"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="report-card-placeholder">
-                        <svg
-                          width="28"
-                          height="28"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                          <circle cx="8.5" cy="8.5" r="1.5" />
-                          <polyline points="21 15 16 10 5 21" />
-                        </svg>
-                        <span>No image</span>
-                      </div>
-                    )}
+                    <SafeImage
+                      key={report.id}
+                      src={report.imageUrl}
+                      alt={report.title}
+                      className="report-card-img"
+                      fallback={cardImagePlaceholder}
+                    />
                   </div>
 
                   <div className="report-card-body">

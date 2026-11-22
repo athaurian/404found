@@ -41,7 +41,7 @@ npm install
 npm run dev
 ```
 
-The Vite server runs on `http://localhost:5173`. It reads `frontend/.env`, which defaults to mock data. Copy `frontend/.env.example` before changing values.
+The Vite server runs on `http://localhost:5173`. Without `frontend/.env`, the frontend uses the live API at `https://optiplex.tail1e8f95.ts.net/api`, so local submissions reach the shared report store. Copy `frontend/.env.example` and keep `VITE_USE_MOCK_API=true` for local mock data.
 
 ## Docker
 

@@ -10,7 +10,7 @@
 | :-------------------------------- | :------- | :---------------------------------------------------------------------------------------------------------- |
 | Public report listing and details | Required | `GET /reports` returns every report, and `GET /reports/:id` returns one.                                    |
 | Search and filtering              | Required | Query parameters match item name, report type, category, location, and the date the item was lost or found. |
-| Report submission                 | Required | `POST /reports` accepts a text report with an optional photo.                                               |
+| Report submission                 | Required | `POST /reports` accepts a text report with an optional `imageUrl`.                                          |
 | Image placeholders                | Required | The listing and detail pages show a default placeholder when a report has no photo.                         |
 | Contact privacy                   | Required | The API returns only the contact method chosen by the reporter, and only on the detail response.            |
 
@@ -21,7 +21,7 @@
 | [`docs/project-plan.md`](docs/project-plan.md)           | Team responsibilities, work split, and checkpoint schedule       |
 | [`docs/application-plan.md`](docs/application-plan.md)   | Pages, shared layout, and form behavior                          |
 | [`docs/database-design.md`](docs/database-design.md)     | Report entity, enums, and API-to-Prisma mapping                  |
-| [`docs/api-contract.md`](docs/api-contract.md)           | Endpoints, query parameters, pagination, and image upload format |
+| [`docs/api-contract.md`](docs/api-contract.md)           | Endpoints, query parameters, pagination, and image URL format   |
 | [`docs/mock-data.md`](docs/mock-data.md)                 | Mock dataset location and invariants                             |
 | [`docs/development-setup.md`](docs/development-setup.md) | Prerequisites and environment variables                          |
 
