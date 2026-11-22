@@ -1,9 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import SafeImage from "../components/SafeImage";
 import SearchFilterBar from "../components/SearchFilterBar";
 import { CATEGORY_LABELS, SORT_OPTIONS } from "../constants/reportOptions";
 import { getReports } from "../services/reportsApi";
 import "./ViewReport.css";
+
+const cardImagePlaceholder = (
+  <div className="report-card-placeholder">
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <polyline points="21 15 16 10 5 21" />
+    </svg>
+    <span>No image</span>
+  </div>
+);
 
 // Report dates are stored as midnight UTC, so format them in UTC to avoid
 // showing the previous day to visitors west of UTC.
@@ -319,33 +341,13 @@ export default function ViewReport() {
                   className="report-card"
                 >
                   <div className="report-card-media">
-                    {report.imageUrl ? (
-                      <img
-                        src={report.imageUrl}
-                        alt={report.title}
-                        className="report-card-img"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="report-card-placeholder">
-                        <svg
-                          width="28"
-                          height="28"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                          <circle cx="8.5" cy="8.5" r="1.5" />
-                          <polyline points="21 15 16 10 5 21" />
-                        </svg>
-                        <span>No image</span>
-                      </div>
-                    )}
+                    <SafeImage
+                      key={report.id}
+                      src={report.imageUrl}
+                      alt={report.title}
+                      className="report-card-img"
+                      fallback={cardImagePlaceholder}
+                    />
                   </div>
 
                   <div className="report-card-body">
