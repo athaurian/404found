@@ -35,6 +35,7 @@ export default function Navbar() {
                 key={to}
                 to={to}
                 end={end}
+                onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
                   `navbar-link${isActive ? " active" : ""}`
                 }
