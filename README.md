@@ -24,6 +24,7 @@
 | [`docs/api-contract.md`](docs/api-contract.md)           | Endpoints, query parameters, pagination, and image URL format   |
 | [`docs/mock-data.md`](docs/mock-data.md)                 | Mock dataset location and invariants                             |
 | [`docs/development-setup.md`](docs/development-setup.md) | Prerequisites and environment variables                          |
+| [`docs/contributors.md`](docs/contributors.md)           | GitHub commit attribution and team accounts                      |
 
 ## Repository Layout
 
@@ -79,7 +80,7 @@
 | Workflow   | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)               |
 | Trigger    | Push to `main`, or manual `workflow_dispatch`                                |
 | Site       | `https://athaurian.github.io/404found/`                                     |
-| Build env  | `VITE_API_BASE_URL=https://optiplex.tail1e8f95.ts.net/api`<br>`VITE_USE_MOCK_API=false` |
+| Build environment | `VITE_API_BASE_URL=https://optiplex.tail1e8f95.ts.net/api`<br>`VITE_USE_MOCK_API=false` |
 | Router     | `HashRouter`: Pages cannot rewrite deep links to `index.html`                |
 
 ### Backend
