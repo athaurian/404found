@@ -1,13 +1,13 @@
 [
   {
-    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000001",
     "title": "Charger Laptop Type-C 65W",
     "description": "Found plugged into the wall socket near the sofa in Sekre BEM.",
     "type": "FOUND",
     "category": "ELECTRONICS",
     "location": "Sekre BEM",
     "date": "2026-11-15T00:00:00.000Z",
-    "imageUrl": "https://placehold.co/600x400?text=Charger+Laptop",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421623/404found/mock/mock-01.webp",
     "reporterName": "Siti Rahmawati",
     "contact": {
       "type": "WHATSAPP",
@@ -17,14 +17,14 @@
     "updatedAt": "2026-11-15T11:20:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000002",
     "title": "Black Corkcicle Tumbler",
-    "description": "Left it in Room A206 after SDA class. Has a RISTEK sticker on the bottom.",
+    "description": "Left on the table in Room A206 after the SDA class. Has a RISTEK sticker on the bottom.",
     "type": "LOST",
     "category": "TUMBLER",
     "location": "Classroom (A2.06)",
     "date": "2026-11-15T00:00:00.000Z",
-    "imageUrl": null,
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421624/404found/mock/mock-02.webp",
     "reporterName": "Budi Santoso",
     "contact": {
       "type": "LINE",
@@ -34,14 +34,14 @@
     "updatedAt": "2026-11-15T08:30:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000003",
     "title": "KTM UI Angkatan 2025",
     "description": "Found near the entrance of Kantin Masoem. Currently kept at Pos Satpam Gedung A.",
     "type": "FOUND",
     "category": "ID_CARD",
     "location": "Pos Satpam",
     "date": "2026-11-14T00:00:00.000Z",
-    "imageUrl": "https://placehold.co/600x400?text=KTM+UI",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421625/404found/mock/mock-03.webp",
     "reporterName": "Andi Pratama",
     "contact": {
       "type": "INSTAGRAM",
@@ -51,14 +51,14 @@
     "updatedAt": "2026-11-14T14:00:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000004",
     "title": "Sony Wireless Earbuds Case",
-    "description": "Lost my black Sony WF-1000XM4 charging case (no earbuds inside) around Student Lounge Floor 1.",
+    "description": "Lost my black WF-1000XM4 charging case near the Student Lounge sofa. The earbuds are not inside.",
     "type": "LOST",
     "category": "ELECTRONICS",
     "location": "Student Lounge (Floor 1)",
     "date": "2026-11-14T00:00:00.000Z",
-    "imageUrl": null,
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421627/404found/mock/mock-04.webp",
     "reporterName": "Kevin Wijaya",
     "contact": {
       "type": "DISCORD",
@@ -68,9 +68,9 @@
     "updatedAt": "2026-11-14T09:45:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000005",
     "title": "KTM UI Angkatan 2024",
-    "description": "Dropped it somewhere between Kantin Masoem and the bus stop. The card has a blue lanyard attached.",
+    "description": "Dropped somewhere between Kantin Masoem and the bus stop. The card has a blue lanyard.",
     "type": "LOST",
     "category": "ID_CARD",
     "location": "Kantin Masoem",
@@ -85,14 +85,14 @@
     "updatedAt": "2026-11-13T16:10:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000006",
     "title": "Casio Analog Wristwatch",
-    "description": "Found on the table near the power outlet. The strap is black leather with a small scratch on the buckle.",
+    "description": "Found on the table near the power outlet. Black leather strap with a scratch on the buckle.",
     "type": "FOUND",
     "category": "ACCESSORIES",
     "location": "Student Lounge (Floor 5)",
     "date": "2026-11-13T00:00:00.000Z",
-    "imageUrl": "https://placehold.co/600x400?text=Casio+Watch",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421628/404found/mock/mock-05.webp",
     "reporterName": "Fajar Saputra",
     "contact": {
       "type": "EMAIL",
@@ -102,14 +102,14 @@
     "updatedAt": "2026-11-13T10:05:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440007",
-    "title": "Blue Notebook with Calculus Notes",
-    "description": "Left it on the second floor of Gedung Baru after a Calculus tutorial. The cover has a NADIA sticker.",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000007",
+    "title": "Open Notebook with Lined Pages",
+    "description": "Left my notebook on the second floor after a Calculus tutorial. The pages are lined and the cover is dark brown.",
     "type": "LOST",
     "category": "MISCELLANEOUS",
     "location": "Gedung Baru",
     "date": "2026-11-12T00:00:00.000Z",
-    "imageUrl": null,
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421629/404found/mock/mock-notebook.webp",
     "reporterName": "Nadia Putri",
     "contact": {
       "type": "DISCORD",
@@ -119,14 +119,14 @@
     "updatedAt": "2026-11-12T15:40:00.000Z"
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000008",
     "title": "AirPods Pro Charging Case",
     "description": "Found an empty charging case on the desk closest to the whiteboard. Kept at the front desk.",
     "type": "FOUND",
     "category": "ELECTRONICS",
     "location": "Classroom (A2.51)",
     "date": "2026-11-12T00:00:00.000Z",
-    "imageUrl": "https://placehold.co/600x400?text=AirPods+Case",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421630/404found/mock/mock-07.webp",
     "reporterName": "Yoga Prasetyo",
     "contact": {
       "type": "LINE",
@@ -134,5 +134,481 @@
     },
     "createdAt": "2026-11-12T09:15:00.000Z",
     "updatedAt": "2026-11-12T09:15:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000009",
+    "title": "Navy Backpack with Laptop Sleeve",
+    "description": "Forgot my backpack after the committee meeting. It has a small keychain attached to the zipper.",
+    "type": "LOST",
+    "category": "ACCESSORIES",
+    "location": "Gedung A",
+    "date": "2026-11-11T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421631/404found/mock/mock-08.webp",
+    "reporterName": "Raka Mahendra",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081211122233"
+    },
+    "createdAt": "2026-11-11T17:20:00.000Z",
+    "updatedAt": "2026-11-11T17:20:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000000a",
+    "title": "Wayfarer Sunglasses",
+    "description": "Found a pair of dark sunglasses on the seat next to the tea stall. Kept at the information desk.",
+    "type": "FOUND",
+    "category": "ACCESSORIES",
+    "location": "Kantin Masoem",
+    "date": "2026-11-11T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421633/404found/mock/mock-09.webp",
+    "reporterName": "Dinda Ayu Lestari",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@dindaa"
+    },
+    "createdAt": "2026-11-11T12:05:00.000Z",
+    "updatedAt": "2026-11-11T12:05:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000000b",
+    "title": "Car Keys with Blue Ribbon",
+    "description": "Handed in a set of keys with a blue ribbon at the security post this morning.",
+    "type": "FOUND",
+    "category": "MISCELLANEOUS",
+    "location": "Pos Satpam",
+    "date": "2026-11-10T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421634/404found/mock/mock-10.webp",
+    "reporterName": "Bagas Prakoso",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081377788899"
+    },
+    "createdAt": "2026-11-10T08:40:00.000Z",
+    "updatedAt": "2026-11-10T08:40:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000000c",
+    "title": "Portable Bluetooth Speaker",
+    "description": "Left a small black speaker on the window ledge after studying. It still has half a battery.",
+    "type": "LOST",
+    "category": "ELECTRONICS",
+    "location": "Student Lounge (Floor 5)",
+    "date": "2026-11-10T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421635/404found/mock/mock-11.webp",
+    "reporterName": "Gita Maharani",
+    "contact": {
+      "type": "EMAIL",
+      "value": "gita.maharani@ui.ac.id"
+    },
+    "createdAt": "2026-11-10T19:30:00.000Z",
+    "updatedAt": "2026-11-10T19:30:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000000d",
+    "title": "Mirrorless Camera with Strap",
+    "description": "Found a compact camera on the bench outside the new building. Kept safely in the office.",
+    "type": "FOUND",
+    "category": "ELECTRONICS",
+    "location": "Gedung Baru",
+    "date": "2026-11-09T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421637/404found/mock/mock-12.webp",
+    "reporterName": "Ferdian Rizky",
+    "contact": {
+      "type": "LINE",
+      "value": "ferdianrizky"
+    },
+    "createdAt": "2026-11-09T14:15:00.000Z",
+    "updatedAt": "2026-11-09T14:15:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000000e",
+    "title": "Silver Chain Bracelet",
+    "description": "Lost a thin silver bracelet near the staircase. It has a small heart charm on the clasp.",
+    "type": "LOST",
+    "category": "ACCESSORIES",
+    "location": "Student Lounge (Floor 1)",
+    "date": "2026-11-09T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421638/404found/mock/mock-13.webp",
+    "reporterName": "Putri Amelia",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@putriamelia"
+    },
+    "createdAt": "2026-11-09T11:00:00.000Z",
+    "updatedAt": "2026-11-09T11:00:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000000f",
+    "title": "Grey Running Shoes Size 42",
+    "description": "Misplaced my grey running shoes after the sports practical class. The laces are bright yellow.",
+    "type": "LOST",
+    "category": "MISCELLANEOUS",
+    "location": "Gedung A",
+    "date": "2026-11-08T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421639/404found/mock/mock-shoes.webp",
+    "reporterName": "Alif Ramadhan",
+    "contact": {
+      "type": "DISCORD",
+      "value": "aliframadhan"
+    },
+    "createdAt": "2026-11-08T16:45:00.000Z",
+    "updatedAt": "2026-11-08T16:45:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000010",
+    "title": "Stainless Steel Water Bottle",
+    "description": "Found a stainless steel water bottle beside the drinks vending machine. No name label on it.",
+    "type": "FOUND",
+    "category": "TUMBLER",
+    "location": "Kantin Masoem",
+    "date": "2026-11-08T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421641/404found/mock/mock-bottle.webp",
+    "reporterName": "Maya Anggraini",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081255566677"
+    },
+    "createdAt": "2026-11-08T13:10:00.000Z",
+    "updatedAt": "2026-11-08T13:10:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000011",
+    "title": "Silver Laptop",
+    "description": "Left my silver laptop on the study desk after the group meeting. The charger was not with it.",
+    "type": "LOST",
+    "category": "ELECTRONICS",
+    "location": "Student Lounge (Floor 5)",
+    "date": "2026-11-07T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421642/404found/mock/mock-laptop.webp",
+    "reporterName": "Rangga Putra",
+    "contact": {
+      "type": "EMAIL",
+      "value": "rangga.putra@ui.ac.id"
+    },
+    "createdAt": "2026-11-07T18:25:00.000Z",
+    "updatedAt": "2026-11-07T18:25:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000012",
+    "title": "Library Borrowing Card",
+    "description": "Found a library card tucked inside a textbook. The name on the card has faded.",
+    "type": "FOUND",
+    "category": "ID_CARD",
+    "location": "Gedung Baru",
+    "date": "2026-11-07T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Salsabila Rahma",
+    "contact": {
+      "type": "LINE",
+      "value": "salsabilarahma"
+    },
+    "createdAt": "2026-11-07T10:50:00.000Z",
+    "updatedAt": "2026-11-07T10:50:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000013",
+    "title": "Over-Ear Headphones",
+    "description": "Found black over-ear headphones hanging on the chair back. Kept at the front desk.",
+    "type": "FOUND",
+    "category": "ELECTRONICS",
+    "location": "Classroom (A2.06)",
+    "date": "2026-11-06T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421643/404found/mock/mock-17.webp",
+    "reporterName": "Devan Kurnia",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@devankurnia"
+    },
+    "createdAt": "2026-11-06T15:30:00.000Z",
+    "updatedAt": "2026-11-06T15:30:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000014",
+    "title": "Leather Analog Watch",
+    "description": "Lost my brown leather watch after the workshop. The dial is small and round.",
+    "type": "LOST",
+    "category": "ACCESSORIES",
+    "location": "Gedung A",
+    "date": "2026-11-06T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421644/404found/mock/mock-18.webp",
+    "reporterName": "Alya Nurfadhilah",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081288899900"
+    },
+    "createdAt": "2026-11-06T09:20:00.000Z",
+    "updatedAt": "2026-11-06T09:20:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000015",
+    "title": "Smartwatch with Black Band",
+    "description": "Found a smartwatch on the charging table. The screen shows a low battery warning.",
+    "type": "FOUND",
+    "category": "ELECTRONICS",
+    "location": "Sekre BEM",
+    "date": "2026-11-05T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421645/404found/mock/mock-19.webp",
+    "reporterName": "Ilham Maulana",
+    "contact": {
+      "type": "DISCORD",
+      "value": "ilhammaulana"
+    },
+    "createdAt": "2026-11-05T17:05:00.000Z",
+    "updatedAt": "2026-11-05T17:05:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000016",
+    "title": "Wired Earbuds in White Case",
+    "description": "Misplaced my white wired earbuds near the printer. The case has a small crack.",
+    "type": "LOST",
+    "category": "ELECTRONICS",
+    "location": "Classroom (A2.51)",
+    "date": "2026-11-05T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421646/404found/mock/mock-20.webp",
+    "reporterName": "Citra Dewi",
+    "contact": {
+      "type": "EMAIL",
+      "value": "citra.dewi@ui.ac.id"
+    },
+    "createdAt": "2026-11-05T11:40:00.000Z",
+    "updatedAt": "2026-11-05T11:40:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000017",
+    "title": "Polarized Sunglasses",
+    "description": "Found sunglasses left on the bench near the building entrance. The frame is matte black.",
+    "type": "FOUND",
+    "category": "ACCESSORIES",
+    "location": "Gedung A",
+    "date": "2026-11-04T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421647/404found/mock/mock-21.webp",
+    "reporterName": "Bima Sakti",
+    "contact": {
+      "type": "LINE",
+      "value": "bimasakti"
+    },
+    "createdAt": "2026-11-04T14:55:00.000Z",
+    "updatedAt": "2026-11-04T14:55:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000018",
+    "title": "Canvas Tote Bag",
+    "description": "Lost a cream tote bag with a faculty logo. It contained a few sheets of paper.",
+    "type": "LOST",
+    "category": "MISCELLANEOUS",
+    "location": "Kantin Masoem",
+    "date": "2026-11-04T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421648/404found/mock/mock-22.webp",
+    "reporterName": "Nabila Zahra",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@nabilazahra"
+    },
+    "createdAt": "2026-11-04T09:10:00.000Z",
+    "updatedAt": "2026-11-04T09:10:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000019",
+    "title": "Crossbody Sling Bag",
+    "description": "Found a small sling bag under the table in the student lounge. Kept at the information desk.",
+    "type": "FOUND",
+    "category": "ACCESSORIES",
+    "location": "Student Lounge (Floor 1)",
+    "date": "2026-11-03T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421650/404found/mock/mock-23.webp",
+    "reporterName": "Gilang Pratama",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081299900011"
+    },
+    "createdAt": "2026-11-03T18:00:00.000Z",
+    "updatedAt": "2026-11-03T18:00:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000001a",
+    "title": "Student ID Card",
+    "description": "Handed in a student ID card at the security post. The back of the card is visible.",
+    "type": "FOUND",
+    "category": "ID_CARD",
+    "location": "Pos Satpam",
+    "date": "2026-11-03T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421651/404found/mock/mock-idcard.webp",
+    "reporterName": "Hana Puspita",
+    "contact": {
+      "type": "EMAIL",
+      "value": "hana.puspita@ui.ac.id"
+    },
+    "createdAt": "2026-11-03T08:15:00.000Z",
+    "updatedAt": "2026-11-03T08:15:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000001b",
+    "title": "Insulated Steel Tumbler",
+    "description": "Lost my blue and silver tumbler after the morning lecture. It has a screw cap and a small handle.",
+    "type": "LOST",
+    "category": "TUMBLER",
+    "location": "Classroom (A2.06)",
+    "date": "2026-11-02T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421652/404found/mock/mock-tumbler.webp",
+    "reporterName": "Faiz Hidayat",
+    "contact": {
+      "type": "DISCORD",
+      "value": "faizhidayat"
+    },
+    "createdAt": "2026-11-02T12:35:00.000Z",
+    "updatedAt": "2026-11-02T12:35:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000001c",
+    "title": "Glass Water Bottle",
+    "description": "Found a clear glass water bottle with a metal cap near the study area. No markings on it.",
+    "type": "FOUND",
+    "category": "TUMBLER",
+    "location": "Student Lounge (Floor 5)",
+    "date": "2026-11-02T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421653/404found/mock/mock-glassbottle.webp",
+    "reporterName": "Laras Ayu",
+    "contact": {
+      "type": "LINE",
+      "value": "larasayu"
+    },
+    "createdAt": "2026-11-02T10:20:00.000Z",
+    "updatedAt": "2026-11-02T10:20:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000001d",
+    "title": "Printed Lecture Notes",
+    "description": "Left a stack of printed notes in the lecture hall. The first page is titled Calculus 2.",
+    "type": "LOST",
+    "category": "MISCELLANEOUS",
+    "location": "Classroom (A2.51)",
+    "date": "2026-11-01T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Rizky Ananda",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081233344455"
+    },
+    "createdAt": "2026-11-01T16:05:00.000Z",
+    "updatedAt": "2026-11-01T16:05:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000001e",
+    "title": "Compact Digital Camera",
+    "description": "Found a black Canon camera on the table by the window. Kept at the BEM office.",
+    "type": "FOUND",
+    "category": "ELECTRONICS",
+    "location": "Sekre BEM",
+    "date": "2026-11-01T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421655/404found/mock/mock-camera.webp",
+    "reporterName": "Dewi Sartika",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@dewisartika"
+    },
+    "createdAt": "2026-11-01T13:45:00.000Z",
+    "updatedAt": "2026-11-01T13:45:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-00000000001f",
+    "title": "Wireless Mouse",
+    "description": "Lost a black wireless mouse after using the computer lab. It has a small USB receiver.",
+    "type": "LOST",
+    "category": "ELECTRONICS",
+    "location": "Gedung Baru",
+    "date": "2026-10-31T00:00:00.000Z",
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421656/404found/mock/mock-28.webp",
+    "reporterName": "Yudha Prasetyo",
+    "contact": {
+      "type": "EMAIL",
+      "value": "yudha.prasetyo@ui.ac.id"
+    },
+    "createdAt": "2026-10-31T15:25:00.000Z",
+    "updatedAt": "2026-10-31T15:25:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000020",
+    "title": "Orange Beanie",
+    "description": "Found a knitted orange beanie on the bench outside the canteen.",
+    "type": "FOUND",
+    "category": "MISCELLANEOUS",
+    "location": "Kantin Masoem",
+    "date": "2026-10-31T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Tania Kusuma",
+    "contact": {
+      "type": "LINE",
+      "value": "taniakusuma"
+    },
+    "createdAt": "2026-10-31T09:50:00.000Z",
+    "updatedAt": "2026-10-31T09:50:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000021",
+    "title": "Umbrella with Wooden Handle",
+    "description": "Lost a black umbrella after the afternoon rain. The handle is made of wood.",
+    "type": "LOST",
+    "category": "MISCELLANEOUS",
+    "location": "Gedung A",
+    "date": "2026-10-30T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Rafi Alfarizi",
+    "contact": {
+      "type": "WHATSAPP",
+      "value": "081244455566"
+    },
+    "createdAt": "2026-10-30T17:40:00.000Z",
+    "updatedAt": "2026-10-30T17:40:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000022",
+    "title": "Blue Ballpoint Pen Set",
+    "description": "Found three blue pens in a small pouch near the registration desk.",
+    "type": "FOUND",
+    "category": "MISCELLANEOUS",
+    "location": "Pos Satpam",
+    "date": "2026-10-30T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Intan Permata",
+    "contact": {
+      "type": "DISCORD",
+      "value": "intanpermata"
+    },
+    "createdAt": "2026-10-30T11:15:00.000Z",
+    "updatedAt": "2026-10-30T11:15:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000023",
+    "title": "Foldable Study Lamp",
+    "description": "Left a small foldable lamp in the study area. It charges with a USB cable.",
+    "type": "LOST",
+    "category": "ELECTRONICS",
+    "location": "Student Lounge (Floor 1)",
+    "date": "2026-10-29T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Aldi Firmansyah",
+    "contact": {
+      "type": "INSTAGRAM",
+      "value": "@aldifirmansyah"
+    },
+    "createdAt": "2026-10-29T20:05:00.000Z",
+    "updatedAt": "2026-10-29T20:05:00.000Z"
+  },
+  {
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000024",
+    "title": "Black Leather Wallet",
+    "description": "Found a wallet containing only campus receipts. Kept at the security post.",
+    "type": "FOUND",
+    "category": "ACCESSORIES",
+    "location": "Pos Satpam",
+    "date": "2026-10-29T00:00:00.000Z",
+    "imageUrl": null,
+    "reporterName": "Vina Octaviani",
+    "contact": {
+      "type": "EMAIL",
+      "value": "vina.octaviani@ui.ac.id"
+    },
+    "createdAt": "2026-10-29T08:30:00.000Z",
+    "updatedAt": "2026-10-29T08:30:00.000Z"
   }
 ]
