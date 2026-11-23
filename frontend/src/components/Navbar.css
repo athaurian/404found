@@ -18,12 +18,20 @@
 }
 
 .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary);
   text-decoration: none;
   letter-spacing: -0.02em;
   white-space: nowrap;
+}
+
+.navbar-brand-icon {
+  flex-shrink: 0;
+  color: #065f46;
 }
 
 .navbar-nav {
