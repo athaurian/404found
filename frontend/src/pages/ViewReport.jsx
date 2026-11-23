@@ -4,6 +4,7 @@ import SafeImage from "../components/SafeImage";
 import SearchFilterBar from "../components/SearchFilterBar";
 import { CATEGORY_LABELS, SORT_OPTIONS } from "../constants/reportOptions";
 import { getReports } from "../services/reportsApi";
+import { CARD_IMAGE_SIZES, getCardImageSources } from "../utils/cloudinary";
 import "./ViewReport.css";
 
 const cardImagePlaceholder = (
@@ -333,6 +334,7 @@ export default function ViewReport() {
               const isFound = report.type === "FOUND";
               const categoryLabel =
                 CATEGORY_LABELS[report.category] || report.category;
+              const cardImage = getCardImageSources(report.imageUrl);
 
               return (
                 <Link
@@ -343,7 +345,9 @@ export default function ViewReport() {
                   <div className="report-card-media">
                     <SafeImage
                       key={report.id}
-                      src={report.imageUrl}
+                      src={cardImage.src}
+                      srcSet={cardImage.srcSet}
+                      sizes={CARD_IMAGE_SIZES}
                       alt={report.title}
                       className="report-card-img"
                       fallback={cardImagePlaceholder}
