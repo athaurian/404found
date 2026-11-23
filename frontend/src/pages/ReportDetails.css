@@ -156,3 +156,13 @@
     gap: 24px;
   }
 }
+
+.detail-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-breadcrumb-icon {
+  flex-shrink: 0;
+}
