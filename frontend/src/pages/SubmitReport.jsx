@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   CATEGORIES,
@@ -6,7 +6,7 @@ import {
   LOCATIONS,
   REPORT_TYPES,
 } from "../constants/reportOptions";
-import { createReport } from "../services/reportsApi";
+import { createReport, uploadReportImage } from "../services/reportsApi";
 import "./SubmitReport.css";
 
 const INITIAL_FORM = {
@@ -16,11 +16,13 @@ const INITIAL_FORM = {
   location: "",
   date: "",
   description: "",
-  imageUrl: "",
   reporterName: "",
   contactType: "WHATSAPP",
   contactValue: "",
 };
+
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function getTodayDateString() {
   const now = new Date();
@@ -36,7 +38,19 @@ export default function SubmitReport() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   const activeContact =
     CONTACT_TYPES.find((c) => c.value === form.contactType) || CONTACT_TYPES[0];
@@ -45,8 +59,8 @@ export default function SubmitReport() {
     form.type === "FOUND"
       ? "Date found"
       : form.type === "LOST"
-      ? "Date lost"
-      : "Date lost/found";
+        ? "Date lost"
+        : "Date lost/found";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +70,45 @@ export default function SubmitReport() {
     }
     if (submitStatus?.type === "error") {
       setSubmitStatus(null);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setErrors((prev) => ({
+        ...prev,
+        imageUrl: "Only JPG, PNG, or WebP images are allowed.",
+      }));
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_BYTES) {
+      setErrors((prev) => ({
+        ...prev,
+        imageUrl: "Image must be 5 MB or smaller.",
+      }));
+      e.target.value = "";
+      return;
+    }
+
+    setErrors((prev) => ({ ...prev, imageUrl: "" }));
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    if (submitStatus?.type === "error") {
+      setSubmitStatus(null);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview("");
+    setErrors((prev) => ({ ...prev, imageUrl: "" }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -72,11 +125,6 @@ export default function SubmitReport() {
     }
     if (!form.reporterName.trim()) {
       nextErrors.reporterName = "Your name is required.";
-    }
-
-    const photoUrl = form.imageUrl.trim();
-    if (photoUrl && (!/^https?:\/\/\S+$/i.test(photoUrl) || photoUrl.length > 2048)) {
-      nextErrors.imageUrl = "Enter a valid link starting with http:// or https://";
     }
 
     if (!form.contactValue.trim()) {
@@ -101,13 +149,26 @@ export default function SubmitReport() {
     setIsSubmitting(true);
 
     try {
-      const response = await createReport(form);
+      let imageUrl = "";
+      if (imageFile) {
+        setIsUploading(true);
+        const uploaded = await uploadReportImage(imageFile);
+        imageUrl = uploaded.imageUrl;
+        setIsUploading(false);
+      }
+
+      const response = await createReport({ ...form, imageUrl });
       setSubmitStatus({
         type: "success",
         message: response.message || "Report submitted successfully.",
       });
       setForm(INITIAL_FORM);
       setErrors({});
+      setImageFile(null);
+      setImagePreview("");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (err) {
       if (Array.isArray(err.fieldErrors) && err.fieldErrors.length > 0) {
         const mapped = {};
@@ -121,6 +182,7 @@ export default function SubmitReport() {
         message: err.message || "Failed to submit report. Please try again.",
       });
     } finally {
+      setIsUploading(false);
       setIsSubmitting(false);
     }
   };
@@ -130,7 +192,8 @@ export default function SubmitReport() {
       <div className="submit-header">
         <h1>Report an Item</h1>
         <p>
-          Fill out the details below to post a lost or found item at FASILKOM UI.
+          Fill out the details below to post a lost or found item at FASILKOM
+          UI.
         </p>
       </div>
 
@@ -283,26 +346,35 @@ export default function SubmitReport() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="imageUrl">
-            Photo link <span className="optional-text">(Optional)</span>
+          <label htmlFor="image">
+            Photo <span className="optional-text">(Optional)</span>
           </label>
           <input
-            id="imageUrl"
-            name="imageUrl"
-            type="url"
-            inputMode="url"
-            maxLength={2048}
-            placeholder="https://example.com/photo.jpg"
-            value={form.imageUrl}
-            onChange={handleChange}
-            className={errors.imageUrl ? "has-error" : ""}
+            ref={fileInputRef}
+            id="image"
+            name="image"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleImageChange}
+            className="image-input"
             disabled={isSubmitting}
           />
-          <p className="field-helper">
-            Paste a link to a photo of the item. File upload is coming later.
-          </p>
+          <p className="field-helper">JPG, PNG, or WebP, up to 5 MB.</p>
           {errors.imageUrl && (
             <span className="field-error">{errors.imageUrl}</span>
+          )}
+          {imagePreview && (
+            <div className="image-preview">
+              <img src={imagePreview} alt="Selected photo preview" />
+              <button
+                type="button"
+                className="image-remove"
+                onClick={handleRemoveImage}
+                disabled={isSubmitting}
+              >
+                Remove photo
+              </button>
+            </div>
           )}
         </div>
 
@@ -381,7 +453,11 @@ export default function SubmitReport() {
             className="btn btn-primary"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Submitting..." : "Submit Report"}
+            {isUploading
+              ? "Uploading photo..."
+              : isSubmitting
+                ? "Submitting..."
+                : "Submit Report"}
           </button>
         </div>
       </form>
