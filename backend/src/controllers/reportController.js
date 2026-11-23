@@ -39,7 +39,7 @@ function readPage(value) {
   return Number(value);
 }
 
-export function listReports(req, res, next) {
+export async function listReports(req, res, next) {
   try {
     const q = readQuery(req.query.q, "q");
     const rawType = readQuery(req.query.type, "type");
@@ -80,7 +80,14 @@ export function listReports(req, res, next) {
       date = parsed.slice(0, 10);
     }
 
-    const reports = queryReports({ q, type, category, location, date, sort });
+    const reports = await queryReports({
+      q,
+      type,
+      category,
+      location,
+      date,
+      sort,
+    });
     const totalItems = reports.length;
     const totalPages = Math.ceil(totalItems / PER_PAGE);
     const currentPage =
@@ -107,9 +114,9 @@ export function listReports(req, res, next) {
   }
 }
 
-export function getReport(req, res, next) {
+export async function getReport(req, res, next) {
   try {
-    const report = findReportById(req.params.id);
+    const report = await findReportById(req.params.id);
     if (!report) {
       throw new HttpError(
         404,
@@ -122,33 +129,37 @@ export function getReport(req, res, next) {
   }
 }
 
-export function createReport(req, res) {
-  const input = req.validatedReport;
-  const now = new Date().toISOString();
-  const report = {
-    id: randomUUID(),
-    title: input.title,
-    description: input.description,
-    type: input.type,
-    category: input.category,
-    location: input.location,
-    date: input.date,
-    imageUrl: input.imageUrl,
-    reporterName: input.reporterName,
-    contact: {
-      type: input.contactType,
-      value: input.contactValue,
-    },
-    createdAt: now,
-    updatedAt: now,
-  };
+export async function createReport(req, res, next) {
+  try {
+    const input = req.validatedReport;
+    const now = new Date().toISOString();
+    const report = {
+      id: randomUUID(),
+      title: input.title,
+      description: input.description,
+      type: input.type,
+      category: input.category,
+      location: input.location,
+      date: input.date,
+      imageUrl: input.imageUrl,
+      reporterName: input.reporterName,
+      contact: {
+        type: input.contactType,
+        value: input.contactValue,
+      },
+      createdAt: now,
+      updatedAt: now,
+    };
 
-  insertReport(report);
-  console.log(`Report created: ${report.id} (${report.title})`);
+    const stored = await insertReport(report);
+    console.log(`Report created: ${stored.id} (${stored.title})`);
 
-  res.status(201).json({
-    status: "success",
-    message: "Report submitted successfully",
-    data: report,
-  });
+    res.status(201).json({
+      status: "success",
+      message: "Report submitted successfully",
+      data: stored,
+    });
+  } catch (err) {
+    next(err);
+  }
 }

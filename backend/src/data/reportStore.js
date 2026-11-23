@@ -1,58 +1,93 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { prisma } from "../config/prisma.js";
 
-const seedFile = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../../../mock-data/reports.json"
-);
+function toReport(row) {
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description,
+    type: row.type,
+    category: row.category,
+    location: row.location,
+    date: row.date.toISOString(),
+    imageUrl: row.imageUrl,
+    reporterName: row.reporterName,
+    contact: {
+      type: row.contactType,
+      value: row.contactValue,
+    },
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
 
-const reports = JSON.parse(readFileSync(seedFile, "utf8")).map((report) => ({
-  ...report,
-  contact: { ...report.contact },
-}));
-
-/** Filters and sorts reports without paginating them. */
-export function queryReports({ q, type, category, location, date, sort }) {
-  let result = reports;
+function buildWhere({ q, type, category, location, date }) {
+  const where = {};
 
   if (q) {
-    const needle = q.toLowerCase();
-    result = result.filter((report) =>
-      report.title.toLowerCase().includes(needle)
-    );
+    where.title = { contains: q, mode: "insensitive" };
   }
 
   if (type) {
-    result = result.filter(
-      (report) => report.type.toLowerCase() === type.toLowerCase()
-    );
+    where.type = type.toUpperCase();
   }
 
   if (category) {
-    result = result.filter((report) => report.category === category);
+    where.category = category.toUpperCase();
   }
 
   if (location) {
-    result = result.filter((report) => report.location === location);
+    where.location = location;
   }
 
   if (date) {
-    result = result.filter((report) => report.date.slice(0, 10) === date);
+    const start = new Date(`${date}T00:00:00.000Z`);
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 1);
+    where.date = { gte: start, lt: end };
   }
 
-  const direction = sort === "oldest" ? 1 : -1;
-  return [...result].sort(
-    (a, b) =>
-      direction * (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-  );
+  return where;
 }
 
-export function findReportById(id) {
-  return reports.find((report) => report.id === id) ?? null;
+/** Filters and sorts reports without paginating them. */
+export async function queryReports({ q, type, category, location, date, sort }) {
+  const rows = await prisma.report.findMany({
+    where: buildWhere({ q, type, category, location, date }),
+    orderBy: { createdAt: sort === "oldest" ? "asc" : "desc" },
+  });
+
+  return rows.map(toReport);
 }
 
-export function insertReport(report) {
-  reports.unshift(report);
-  return report;
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export async function findReportById(id) {
+  if (typeof id !== "string" || !UUID_PATTERN.test(id)) {
+    return null;
+  }
+  const row = await prisma.report.findUnique({ where: { id } });
+  return row ? toReport(row) : null;
+}
+
+export async function insertReport(report) {
+  const row = await prisma.report.create({
+    data: {
+      id: report.id,
+      title: report.title,
+      description: report.description,
+      type: report.type,
+      category: report.category,
+      location: report.location,
+      date: new Date(report.date),
+      imageUrl: report.imageUrl,
+      reporterName: report.reporterName,
+      contactType: report.contact.type,
+      contactValue: report.contact.value,
+      createdAt: new Date(report.createdAt),
+      updatedAt: new Date(report.updatedAt),
+    },
+  });
+
+  return toReport(row);
 }
