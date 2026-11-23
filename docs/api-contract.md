@@ -78,14 +78,14 @@ Each page holds six reports. The API does not accept a custom page size.
   "message": "Reports retrieved successfully",
   "data": [
     {
-      "id": "550e8400-e29b-41d4-a716-446655440008",
+      "id": "9c4b7e2a-1d63-4f08-9a5e-000000000008",
       "title": "AirPods Pro Charging Case",
       "description": "Found an empty charging case on the desk closest to the whiteboard. Kept at the front desk.",
       "type": "FOUND",
       "category": "ELECTRONICS",
       "location": "Classroom (A2.51)",
       "date": "2026-11-12T00:00:00.000Z",
-      "imageUrl": "https://placehold.co/600x400?text=AirPods+Case",
+      "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421630/404found/mock/mock-07.webp",
       "reporterName": "Yoga Prasetyo",
       "createdAt": "2026-11-12T09:15:00.000Z",
       "updatedAt": "2026-11-12T09:15:00.000Z"
@@ -127,14 +127,14 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 {
   "status": "success",
   "data": {
-    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000002",
     "title": "Black Corkcicle Tumbler",
-    "description": "Left it in Room A206 after SDA class. Has a RISTEK sticker on the bottom.",
+    "description": "Left on the table in Room A206 after the SDA class. Has a RISTEK sticker on the bottom.",
     "type": "LOST",
     "category": "TUMBLER",
     "location": "Classroom (A2.06)",
     "date": "2026-11-15T00:00:00.000Z",
-    "imageUrl": null,
+    "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421624/404found/mock/mock-02.webp",
     "reporterName": "Budi Santoso",
     "contact": {
       "type": "LINE",
@@ -242,7 +242,7 @@ Error responses:
   "status": "success",
   "message": "Report submitted successfully",
   "data": {
-    "id": "550e8400-e29b-41d4-a716-446655440009",
+    "id": "9c4b7e2a-1d63-4f08-9a5e-000000000037",
     "title": "Charger Laptop Type-C 65W",
     "description": "Found plugged into the wall socket near the sofa in Sekre BEM.",
     "type": "FOUND",
