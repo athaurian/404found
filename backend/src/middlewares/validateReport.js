@@ -1,3 +1,4 @@
+import { getCloudinaryCloudName } from "../config/cloudinary.js";
 import { parseReportDate } from "../config/date.js";
 import {
   CATEGORIES,
@@ -102,6 +103,23 @@ export function validateReport(req, res, next) {
 
   if (imageUrl === undefined) {
     errors.push({ field: "imageUrl", message: "Image URL must be a string" });
+  }
+
+  if (typeof imageUrl === "string" && imageUrl.length > 0) {
+    const cloudName = getCloudinaryCloudName();
+    if (!cloudName) {
+      errors.push({
+        field: "imageUrl",
+        message: "Image upload is not configured",
+      });
+    } else if (
+      !imageUrl.startsWith(`https://res.cloudinary.com/${cloudName}/`)
+    ) {
+      errors.push({
+        field: "imageUrl",
+        message: "Image URL must come from the Cloudinary upload endpoint",
+      });
+    }
   }
 
   for (const [field, max] of Object.entries(MAX_LENGTHS)) {
