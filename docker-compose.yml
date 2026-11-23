@@ -1,13 +1,37 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: 404found-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: 404found
+      POSTGRES_USER: 404found
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-404found}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U 404found -d 404found"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   api:
     build: ./backend
     container_name: 404found-api
     restart: unless-stopped
     ports:
       - "3100:3000"
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       PORT: 3000
+      DATABASE_URL: postgresql://404found:${POSTGRES_PASSWORD:-404found}@db:5432/404found?schema=public
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173,https://athaurian.github.io}
+      CLOUDINARY_URL: ${CLOUDINARY_URL:-}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-}
     volumes:
       - ./mock-data:/app/mock-data:ro
     healthcheck:
@@ -21,3 +45,6 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+
+volumes:
+  db-data:
