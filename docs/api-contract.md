@@ -20,11 +20,12 @@ The backend exposes a REST API. Requests and responses use JSON.
 
 ## Endpoints
 
-| Method | Path           | Purpose                          | Success status |
-| :----- | :------------- | :------------------------------- | :------------- |
-| `GET`  | `/reports`     | List, sort, and paginate reports | `200`          |
-| `GET`  | `/reports/:id` | Retrieve one report              | `200`          |
-| `POST` | `/reports`     | Submit a report                  | `201`          |
+| Method | Path              | Purpose                          | Success status |
+| :----- | :---------------- | :------------------------------- | :------------- |
+| `GET`  | `/reports`        | List, sort, and paginate reports | `200`          |
+| `GET`  | `/reports/:id`    | Retrieve one report              | `200`          |
+| `POST` | `/reports`        | Submit a report                  | `201`          |
+| `POST` | `/reports/upload` | Upload one report image          | `201`          |
 
 (PATCH and DELETE: TBD in Checkpoint 3.)
 
@@ -173,7 +174,7 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 | `reporterName` | String | Yes      | Reporter display name                                               |
 | `contactType`  | String | Yes      | `WHATSAPP`, `LINE`, `INSTAGRAM`, `DISCORD`, `EMAIL`                 |
 | `contactValue` | String | Yes      | Phone number, account username, or email address                    |
-| `imageUrl`     | String | No       | Image URL string supplied with the report                           |
+| `imageUrl`     | String | No       | Cloudinary URL returned by `POST /reports/upload`                   |
 
 ### Field Limits
 
@@ -187,7 +188,34 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 
 ### Image Upload
 
-(Image upload: TBD in Checkpoint 3.)
+`POST /reports/upload` accepts one image as `multipart/form-data` and returns its Cloudinary URL. Send that URL as `imageUrl` when creating the report.
+
+| Field   | Type | Required | Description                           |
+| :------ | :--- | :------- | :------------------------------------ |
+| `image` | File | Yes      | JPG, PNG, or WebP image, at most 5 MB |
+
+- Allowed types are `image/jpeg`, `image/png`, and `image/webp`
+- The maximum size is 5 MB
+- The rate limit is shared with `POST /reports`
+
+Success response, `201 Created`:
+
+```json
+{
+  "status": "success",
+  "message": "Image uploaded successfully",
+  "data": {
+    "imageUrl": "https://res.cloudinary.com/demo/image/upload/404found/photo.jpg"
+  }
+}
+```
+
+Error responses:
+
+- `400` for a missing file, unsupported type, or file over 5 MB
+- `429` when the rate limit is exceeded
+- `502` when Cloudinary rejects the upload
+- `503` when Cloudinary credentials are not configured
 
 ### Example Request
 
@@ -253,11 +281,13 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 | Code  | Condition                                                          |
 | :---- | :----------------------------------------------------------------- |
 | `200` | Successful read                                                    |
-| `201` | Report created                                                     |
+| `201` | Report created or image uploaded                                   |
 | `400` | Invalid query parameter, invalid field value, or failed validation |
 | `404` | No report matches the requested `id`                               |
-| `429` | More than 20 submissions from one client in a minute               |
+| `429` | More than 20 submissions or uploads from one client in a minute    |
 | `500` | Unhandled server error                                             |
+| `502` | Cloudinary upload failed                                           |
+| `503` | Cloudinary credentials are not configured                          |
 
 ## CORS
 

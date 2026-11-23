@@ -4,7 +4,7 @@
 
 | Tool               | Version              |
 | :----------------- | :------------------- |
-| Node.js            | 18 or newer          |
+| Node.js            | 20.19 or newer       |
 | npm                | Bundled with Node.js |
 | PostgreSQL         | 14 or newer          |
 | Cloudinary account | Free plan            |
@@ -50,23 +50,30 @@ docker compose up -d --build
 docker compose down
 ```
 
-| Setting        | Value                          |
-| :------------- | :----------------------------- |
-| Host port      | `3100`                         |
-| Container port | `3000`                         |
-| Dataset        | `mock-data/` mounted read-only |
+| Setting        | Value                                  |
+| :------------- | :------------------------------------- |
+| Host port      | `3100`                                 |
+| Container port | `3000`                                 |
+| Database       | `postgres:16-alpine`, volume `db-data` |
+| Dataset        | `mock-data/` mounted read-only         |
 
-`optiplex` runs the container on port `3100`. Tailscale Funnel publishes that port at `https://optiplex.tail1e8f95.ts.net`.
+- Root `.env` file with `POSTGRES_PASSWORD` and Cloudinary credentials
+- `DATABASE_URL` assembled by Compose for the API container
+- Port `3100` published by Tailscale Funnel at `https://optiplex.tail1e8f95.ts.net`
 
 ## Environment Variables
 
-| Variable                | Default                 | Used by                             |
-| :---------------------- | :---------------------- | :---------------------------------- |
-| `PORT`                  | `3000`                  | Express server                      |
-| `FRONTEND_URL`          | `http://localhost:5173` | CORS origin list                    |
-| `DATABASE_URL`          | None                    | Prisma PostgreSQL connection string |
-| `CLOUDINARY_CLOUD_NAME` | None                    | Cloudinary SDK                      |
-| `CLOUDINARY_API_KEY`    | None                    | Cloudinary SDK                      |
-| `CLOUDINARY_API_SECRET` | None                    | Cloudinary SDK                      |
+| Variable                | Default                                             | Used by                             |
+| :---------------------- | :-------------------------------------------------- | :---------------------------------- |
+| `PORT`                  | `3000`                                              | Express server                      |
+| `FRONTEND_URL`          | `http://localhost:5173,https://athaurian.github.io` | CORS origin list                    |
+| `POSTGRES_PASSWORD`     | `404found`                                          | Compose database credentials        |
+| `DATABASE_URL`          | None                                                | Prisma PostgreSQL connection string |
+| `CLOUDINARY_URL`        | None                                                | Cloudinary SDK, takes precedence    |
+| `CLOUDINARY_CLOUD_NAME` | None                                                | Cloudinary SDK fallback             |
+| `CLOUDINARY_API_KEY`    | None                                                | Cloudinary SDK fallback             |
+| `CLOUDINARY_API_SECRET` | None                                                | Cloudinary SDK fallback             |
 
-(Database and Cloudinary configuration: TBD in Checkpoint 3.)
+- `prisma migrate deploy` and `prisma db seed` before the server starts
+- `skipDuplicates` during seed, so restarts keep existing reports
+- `POST /reports/upload` returns `503` when Cloudinary credentials are absent

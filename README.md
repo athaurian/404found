@@ -10,30 +10,30 @@
 | :-------------------------------- | :------- | :---------------------------------------------------------------------------------------------------------- |
 | Public report listing and details | Required | `GET /reports` returns every report, and `GET /reports/:id` returns one.                                    |
 | Search and filtering              | Required | Query parameters match item name, report type, category, location, and the date the item was lost or found. |
-| Report submission                 | Required | `POST /reports` accepts a text report with an optional `imageUrl`.                                          |
+| Report submission                 | Required | `POST /reports` accepts a text report, and `POST /reports/upload` stores an optional photo in Cloudinary.   |
 | Image placeholders                | Required | The listing and detail pages show a default placeholder when a report has no photo.                         |
 | Contact privacy                   | Required | The API returns only the contact method chosen by the reporter, and only on the detail response.            |
 
 ## Documentation
 
-| Document                                                 | Contents                                                         |
-| :------------------------------------------------------- | :--------------------------------------------------------------- |
-| [`docs/project-plan.md`](docs/project-plan.md)           | Team responsibilities, work split, and checkpoint schedule       |
-| [`docs/application-plan.md`](docs/application-plan.md)   | Pages, shared layout, and form behavior                          |
-| [`docs/database-design.md`](docs/database-design.md)     | Report entity, enums, and API-to-Prisma mapping                  |
-| [`docs/api-contract.md`](docs/api-contract.md)           | Endpoints, query parameters, pagination, and image URL format   |
-| [`docs/mock-data.md`](docs/mock-data.md)                 | Mock dataset location and invariants                             |
-| [`docs/development-setup.md`](docs/development-setup.md) | Prerequisites and environment variables                          |
-| [`docs/contributors.md`](docs/contributors.md)           | GitHub commit attribution and team accounts                      |
+| Document                                                 | Contents                                                   |
+| :------------------------------------------------------- | :--------------------------------------------------------- |
+| [`docs/project-plan.md`](docs/project-plan.md)           | Team responsibilities, work split, and checkpoint schedule |
+| [`docs/application-plan.md`](docs/application-plan.md)   | Pages, shared layout, and form behavior                    |
+| [`docs/database-design.md`](docs/database-design.md)     | Report entity, enums, and API-to-Prisma mapping            |
+| [`docs/api-contract.md`](docs/api-contract.md)           | Endpoints, query parameters, pagination, and image upload  |
+| [`docs/mock-data.md`](docs/mock-data.md)                 | Mock dataset location and invariants                       |
+| [`docs/development-setup.md`](docs/development-setup.md) | Prerequisites and environment variables                    |
+| [`docs/contributors.md`](docs/contributors.md)           | GitHub commit attribution and team accounts                |
 
 ## Repository Layout
 
-| Path         | Contents                     |
-| :----------- | :--------------------------- |
-| `backend/`   | Express API for Checkpoint 2 |
-| `frontend/`  | React and Vite application   |
-| `docs/`      | Project documentation        |
-| `mock-data/` | Shared report dataset        |
+| Path         | Contents                          |
+| :----------- | :-------------------------------- |
+| `backend/`   | Express API and Prisma data layer |
+| `frontend/`  | React and Vite application        |
+| `docs/`      | Project documentation             |
+| `mock-data/` | Shared report dataset             |
 
 ## Tech Stack
 
@@ -64,24 +64,24 @@
 
 ## Local Development
 
-| Item                          | Detail                                                                                 |
-| :---------------------------- | :------------------------------------------------------------------------------------- |
-| Prerequisites and environment | [`docs/development-setup.md`](docs/development-setup.md)                               |
-| API base URL                  | `http://localhost:3000/api`                                                            |
-| Endpoints and response shapes | [`docs/api-contract.md`](docs/api-contract.md)                                         |
-| Report storage                | In memory, reloaded from [`mock-data/reports.json`](mock-data/reports.json) at startup |
+| Item                          | Detail                                                                          |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| Prerequisites and environment | [`docs/development-setup.md`](docs/development-setup.md)                        |
+| API base URL                  | `http://localhost:3000/api`                                                     |
+| Endpoints and response shapes | [`docs/api-contract.md`](docs/api-contract.md)                                  |
+| Report storage                | PostgreSQL, seeded once from [`mock-data/reports.json`](mock-data/reports.json) |
 
 ## Public Deployment
 
 ### Frontend
 
-| Item       | Value                                                                       |
-| :--------- | :-------------------------------------------------------------------------- |
-| Workflow   | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)               |
-| Trigger    | Push to `main`, or manual `workflow_dispatch`                                |
-| Site       | `https://athaurian.github.io/404found/`                                     |
+| Item              | Value                                                                                   |
+| :---------------- | :-------------------------------------------------------------------------------------- |
+| Workflow          | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)                          |
+| Trigger           | Push to `main`, or manual `workflow_dispatch`                                           |
+| Site              | `https://athaurian.github.io/404found/`                                                 |
 | Build environment | `VITE_API_BASE_URL=https://optiplex.tail1e8f95.ts.net/api`<br>`VITE_USE_MOCK_API=false` |
-| Router     | `HashRouter`: Pages cannot rewrite deep links to `index.html`                |
+| Router            | `HashRouter`: Pages cannot rewrite deep links to `index.html`                           |
 
 ### Backend
 
