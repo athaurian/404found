@@ -43,6 +43,8 @@ export default function SubmitReport() {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const fileInputRef = useRef(null);
+  const uploadedImageRef = useRef({ file: null, url: "" });
+  const submitInFlightRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -96,6 +98,7 @@ export default function SubmitReport() {
     }
 
     setErrors((prev) => ({ ...prev, imageUrl: "" }));
+    uploadedImageRef.current = { file: null, url: "" };
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
     if (submitStatus?.type === "error") {
@@ -104,6 +107,7 @@ export default function SubmitReport() {
   };
 
   const handleRemoveImage = () => {
+    uploadedImageRef.current = { file: null, url: "" };
     setImageFile(null);
     setImagePreview("");
     setErrors((prev) => ({ ...prev, imageUrl: "" }));
@@ -144,17 +148,25 @@ export default function SubmitReport() {
     e.preventDefault();
     setSubmitStatus(null);
 
+    if (submitInFlightRef.current) return;
     if (!validate()) return;
 
+    submitInFlightRef.current = true;
     setIsSubmitting(true);
 
     try {
       let imageUrl = "";
       if (imageFile) {
-        setIsUploading(true);
-        const uploaded = await uploadReportImage(imageFile);
-        imageUrl = uploaded.imageUrl;
-        setIsUploading(false);
+        const cached = uploadedImageRef.current;
+        if (cached.file === imageFile && cached.url) {
+          imageUrl = cached.url;
+        } else {
+          setIsUploading(true);
+          const uploaded = await uploadReportImage(imageFile);
+          imageUrl = uploaded.imageUrl;
+          uploadedImageRef.current = { file: imageFile, url: imageUrl };
+          setIsUploading(false);
+        }
       }
 
       const response = await createReport({ ...form, imageUrl });
@@ -164,6 +176,7 @@ export default function SubmitReport() {
       });
       setForm(INITIAL_FORM);
       setErrors({});
+      uploadedImageRef.current = { file: null, url: "" };
       setImageFile(null);
       setImagePreview("");
       if (fileInputRef.current) {
@@ -184,6 +197,7 @@ export default function SubmitReport() {
     } finally {
       setIsUploading(false);
       setIsSubmitting(false);
+      submitInFlightRef.current = false;
     }
   };
 
