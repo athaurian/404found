@@ -46,8 +46,8 @@
 
 .view-sort-select {
   height: 36px;
-  padding: 0 12px;
-  font-size: 0.85rem;
+  padding: 0 10px;
+  font-size: 0.875rem;
   font-family: inherit;
   color: var(--text-primary);
   background-color: var(--bg-page);
@@ -64,7 +64,7 @@
 /* Report Grid */
 .report-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
