@@ -86,7 +86,6 @@ Each page holds six reports. The API does not accept a custom page size.
       "location": "Classroom (A2.51)",
       "date": "2026-11-12T00:00:00.000Z",
       "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421630/404found/mock/mock-07.webp",
-      "reporterName": "Yoga Prasetyo",
       "createdAt": "2026-11-12T09:15:00.000Z",
       "updatedAt": "2026-11-12T09:15:00.000Z"
     }
@@ -102,7 +101,7 @@ Each page holds six reports. The API does not accept a custom page size.
 }
 ```
 
-The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen contact method.
+The listing omits `contact` and `reporterName`. `GET /reports/:id` returns the reporter's chosen contact method but omits `reporterName`.
 
 ### Invalid Page Response
 
@@ -135,7 +134,6 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
     "location": "Classroom (A2.06)",
     "date": "2026-11-15T00:00:00.000Z",
     "imageUrl": "https://res.cloudinary.com/we26830c/image/upload/v1795421624/404found/mock/mock-02.webp",
-    "reporterName": "Budi Santoso",
     "contact": {
       "type": "LINE",
       "value": "budisantoso26"
@@ -171,10 +169,10 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 | `category`     | String | Yes      | `ELECTRONICS`, `TUMBLER`, `ID_CARD`, `ACCESSORIES`, `MISCELLANEOUS` |
 | `location`     | String | Yes      | A location from the shared list                                     |
 | `date`         | String | Yes      | `YYYY-MM-DD` or `dd/mm/yyyy`                                        |
-| `reporterName` | String | Yes      | Reporter display name                                               |
+| `reporterName` | String | Yes      | Private reporter name, stored but omitted from public read responses |
 | `contactType`  | String | Yes      | `WHATSAPP`, `LINE`, `INSTAGRAM`, `DISCORD`, `EMAIL`                 |
 | `contactValue` | String | Yes      | Phone number, account username, or email address                    |
-| `imageUrl`     | String | No       | Cloudinary URL returned by `POST /reports/upload`                   |
+| `imageUrl`     | String | No       | Cloudinary image URL (`https://res.cloudinary.com/...`)             |
 
 ### Field Limits
 
@@ -188,7 +186,7 @@ The listing omits `contact`. `GET /reports/:id` returns the reporter's chosen co
 
 ### Image Upload
 
-`POST /reports/upload` accepts one image as `multipart/form-data` and returns its Cloudinary URL. Send that URL as `imageUrl` when creating the report.
+`POST /reports/upload` accepts one image as `multipart/form-data` and returns its Cloudinary URL. Send that URL as `imageUrl` when creating the report. The Submit Report form accepts a Cloudinary URL directly, and this endpoint remains available for clients that need to store a new image.
 
 | Field   | Type | Required | Description                           |
 | :------ | :--- | :------- | :------------------------------------ |

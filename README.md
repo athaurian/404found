@@ -10,9 +10,9 @@
 | :-------------------------------- | :------- | :---------------------------------------------------------------------------------------------------------- |
 | Public report listing and details | Required | `GET /reports` returns every report, and `GET /reports/:id` returns one.                                    |
 | Search and filtering              | Required | Query parameters match item name, report type, category, location, and the date the item was lost or found. |
-| Report submission                 | Required | `POST /reports` accepts a text report, and `POST /reports/upload` stores an optional photo in Cloudinary.   |
+| Report submission                 | Required | `POST /reports` accepts a text report and an optional Cloudinary image URL. `POST /reports/upload` remains available for storing a new photo. |
 | Image placeholders                | Required | The listing and detail pages show a default placeholder when a report has no photo.                         |
-| Contact privacy                   | Required | The API returns only the contact method chosen by the reporter, and only on the detail response.            |
+| Contact and name privacy          | Required | The API returns contact only on the detail response and never returns `reporterName` from public read endpoints. |
 
 ## Documentation
 

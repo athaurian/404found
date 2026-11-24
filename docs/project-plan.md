@@ -43,7 +43,7 @@ The wireframes are in the [404 Found Figma file](https://www.figma.com/design/zJ
 
 ## Stretch Scope
 
-The MVP stores `reporterName` on each report and requires no account. Two features stay outside the MVP:
+The MVP stores `reporterName` privately on each report and requires no account. Public read responses omit it. Two features stay outside the MVP:
 
 - **SSO UI sign-in:** Universitas Indonesia single sign-on. The sign-in page and the `User` to `Report` relationship depend on SSO support.
 - **Report editing and deletion:** `PATCH /reports/:id` and `DELETE /reports/:id` require verified ownership of the report.

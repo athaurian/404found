@@ -14,7 +14,7 @@ A report describes one lost or found item. Each report stores the contact method
 | `location`     | String             | Yes      | Campus location, for example `Gedung A` or `Student Lounge (Floor 1)` |
 | `date`         | DateTime           | Yes      | Date when the item was lost or found                                  |
 | `imageUrl`     | String, nullable   | No       | Cloudinary image URL, `null` when the report has no photo             |
-| `reporterName` | String             | Yes      | Display name of the reporter                                          |
+| `reporterName` | String             | Yes      | Private reporter name, omitted from public read responses             |
 | `contactType`  | Enum `ContactType` | Yes      | Contact method chosen by the reporter                                 |
 | `contactValue` | String             | Yes      | Phone number, account username, or email address                      |
 | `createdAt`    | DateTime           | Yes      | Timestamp when the report was posted                                  |
@@ -30,8 +30,8 @@ A report describes one lost or found item. Each report stores the contact method
 
 ## Relationships
 
-- **Report:** Stands alone in the MVP. The row stores `reporterName`, so an account record is not required.
-- **User to Report:** SSO UI sign-in adds a `User` model, and one user can create a set of reports. The `authorId` field identifies the report owner for edit and delete checks.
+- **Report:** Stands alone in the MVP. The row stores `reporterName` privately, so an account record is not required
+- **User to Report:** SSO UI sign-in adds a `User` model, and one user can create a set of reports. The `authorId` field identifies the report owner for edit and delete checks
 
 ```mermaid
 flowchart LR

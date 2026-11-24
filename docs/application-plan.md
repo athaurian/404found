@@ -62,7 +62,7 @@ The form collects the fields listed in the [API contract](api-contract.md). Fiel
 | Location\*           | Dropdown                                       |
 | Date lost or found\* | Date picker (`dd/mm/yyyy`)                     |
 | Description\*        | Text area for colour, brand, and other details |
-| Photo                | JPG, PNG, or WebP under 5 MB                   |
+| Photo                | Cloudinary image URL (optional)                |
 | Contact\*            | Method dropdown and value input                |
 
 The form shows a validation message when a required field is empty. It ends with Submit and Cancel buttons.
