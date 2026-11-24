@@ -1,44 +1,304 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:opsz,wght@9..144,600..700&display=swap");
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* ------------------------------------------------------------------
+   Design tokens ("404 Found Retro Campus Board")
+   ------------------------------------------------------------------ */
 :root {
-  --bg-page: #ffffff;
-  --bg-subtle: #f9fafb;
-  --bg-muted: #f3f4f6;
-  --border-light: #e5e7eb;
-  --border-input: #d1d5db;
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-muted: #6b7280;
-  --text-placeholder: #9ca3af;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
-  --danger-border: #fecaca;
-  --success: #065f46;
-  --success-bg: #ecfdf5;
-  --success-border: #a7f3d0;
-  --radius-md: 8px;
-  --radius-lg: 10px;
+  --cream: #e5ddcc; /* page background */
+  --surface: #f1eadb; /* cards, header, inputs */
+  --papaya: #ddc8a8; /* title band, "Lost" badge, soft panels */
+  --beige: #e9edc9; /* soft panels, illustration backdrops */
+  --sage: #ccd5ae; /* "Found" badge, footer */
+  --bronze: #d4a373; /* primary buttons, squiggles, sticker */
+  --bronze-deep: #9a6234; /* focus ring, strong accents */
+  --ink: #3b3221; /* headings, body text */
+  --ink-soft: #6b5d45; /* secondary text */
+  --moss: #3f4b27; /* text on sage */
+  --terracotta: #8a3b1f; /* "Lost" text, errors */
+  --line: #d4c6aa; /* borders, dividers */
+  --field: #a38660; /* input borders */
+
+  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+
+  --radius-input: 14px;
+  --radius-card: 24px;
+  --radius-pill: 9999px;
+  --shadow-card: 0 4px 16px rgba(59, 50, 33, 0.05);
+
+  /* ---- Legacy names, kept so pages that are not redesigned yet still
+     pick up the new palette. Delete this block once every page uses the
+     tokens above. ---- */
+  --bg-page: var(--cream);
+  --bg-subtle: var(--surface);
+  --bg-muted: var(--papaya);
+  --border-light: var(--line);
+  --border-input: var(--field);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-soft);
+  --text-muted: var(--ink-soft);
+  --text-placeholder: var(--ink-soft);
+  --danger: var(--terracotta);
+  --danger-bg: rgba(138, 59, 31, 0.07);
+  --danger-border: rgba(138, 59, 31, 0.3);
+  --success: var(--moss);
+  --success-bg: rgba(204, 213, 174, 0.5);
+  --success-border: rgba(63, 75, 39, 0.3);
+  --radius-md: 14px;
+  --radius-lg: 24px;
 }
 
-html,
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
-  padding: 0;
-  background-color: var(--bg-page);
-  color: var(--text-primary);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  color: var(--ink);
 }
 
 a {
   color: inherit;
 }
 
-button {
+button,
+input,
+select,
+textarea {
   font-family: inherit;
+}
+
+::selection {
+  background: var(--papaya);
+  color: var(--ink);
+}
+
+/* One focus ring for every interactive element */
+:focus-visible {
+  outline: 3px solid var(--bronze-deep);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   App shell (header / page / footer)
+   ------------------------------------------------------------------ */
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1 0 auto;
+}
+
+.container {
+  width: 100%;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+@media (max-width: 639px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Shared building blocks
+   ------------------------------------------------------------------ */
+.eyebrow {
+  font: 600 12px/16px var(--font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Pill buttons */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 24px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font: 600 14px/20px var(--font-body);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 180ms ease-out, background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.pill-btn-primary {
+  background-color: var(--bronze);
+}
+
+.pill-btn-primary:hover:not(:disabled) {
+  background-color: rgba(212, 163, 115, 0.85);
+  transform: translateY(-2px);
+}
+
+.pill-btn-secondary {
+  background-color: transparent;
+  border-color: var(--ink);
+}
+
+.pill-btn-secondary:hover:not(:disabled) {
+  background-color: var(--papaya);
+}
+
+.pill-btn:disabled {
+  cursor: not-allowed;
+}
+
+.pill-btn-secondary:disabled {
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+
+.pill-btn-primary:disabled {
+  opacity: 0.6;
+}
+
+/* Lost / Found badges (always show the word, never colour alone) */
+.report-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 16px;
+  border-radius: var(--radius-pill);
+  font: 600 14px/20px var(--font-body);
+  white-space: nowrap;
+}
+
+.badge-found {
+  background-color: var(--sage);
+  color: var(--moss);
+}
+
+.badge-lost {
+  background-color: var(--papaya);
+  border: 1px solid var(--bronze);
+  color: var(--terracotta);
+}
+
+/* Form controls */
+.field-control {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--field);
+  border-radius: var(--radius-input);
+  background-color: var(--surface);
+  color: var(--ink);
+  font: 400 16px/1.5 var(--font-body);
+  transition: border-color 120ms ease-out;
+}
+
+.field-control::placeholder {
+  color: rgba(107, 93, 69, 0.7);
+}
+
+.field-control:focus {
+  border-color: var(--bronze-deep);
+}
+
+.field-control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.field-control[aria-invalid="true"] {
+  border-color: var(--terracotta);
+}
+
+select.field-control {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B5D45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Dashed "stitched" outline for empty states and special boxes */
+.stitched {
+  border: 1.5px dashed var(--field);
+  border-radius: var(--radius-card);
+}
+
+/* Category illustration shown when a report has no (working) photo */
+.category-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.category-art svg {
+  width: 72px;
+  height: 72px;
+}
+
+@media (min-width: 640px) {
+  .category-art svg {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.tint-papaya {
+  background-color: var(--papaya);
+}
+
+.tint-beige {
+  background-color: var(--beige);
+}
+
+.tint-sage {
+  background-color: var(--sage);
 }
