@@ -32,27 +32,6 @@
   --radius-card: 24px;
   --radius-pill: 9999px;
   --shadow-card: 0 4px 16px rgba(59, 50, 33, 0.05);
-
-  /* ---- Legacy names, kept so pages that are not redesigned yet still
-     pick up the new palette. Delete this block once every page uses the
-     tokens above. ---- */
-  --bg-page: var(--cream);
-  --bg-subtle: var(--surface);
-  --bg-muted: var(--papaya);
-  --border-light: var(--line);
-  --border-input: var(--field);
-  --text-primary: var(--ink);
-  --text-secondary: var(--ink-soft);
-  --text-muted: var(--ink-soft);
-  --text-placeholder: var(--ink-soft);
-  --danger: var(--terracotta);
-  --danger-bg: rgba(138, 59, 31, 0.07);
-  --danger-border: rgba(138, 59, 31, 0.3);
-  --success: var(--moss);
-  --success-bg: rgba(204, 213, 174, 0.5);
-  --success-border: rgba(63, 75, 39, 0.3);
-  --radius-md: 14px;
-  --radius-lg: 24px;
 }
 
 /* ------------------------------------------------------------------
