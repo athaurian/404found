@@ -99,7 +99,7 @@ export async function listReports(req, res, next) {
       message: "Reports retrieved successfully",
       data: reports
         .slice(start, start + PER_PAGE)
-        .map(({ contact, ...report }) => report),
+        .map(({ contact, reporterName, ...report }) => report),
       pagination: {
         currentPage,
         totalPages,
@@ -123,7 +123,8 @@ export async function getReport(req, res, next) {
         "Report with the specified ID was not found."
       );
     }
-    res.json({ status: "success", data: report });
+    const { reporterName, ...publicReport } = report;
+    res.json({ status: "success", data: publicReport });
   } catch (err) {
     next(err);
   }
