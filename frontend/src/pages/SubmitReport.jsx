@@ -69,11 +69,14 @@ function getImageUrlError(value) {
   }
   try {
     const parsed = new URL(url);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      return "Photo link must start with http:// or https://.";
+    if (
+      parsed.protocol !== "https:" ||
+      parsed.hostname !== "res.cloudinary.com"
+    ) {
+      return "Photo link must be a Cloudinary URL (https://res.cloudinary.com/...).";
     }
   } catch {
-    return "Enter a full link that starts with http:// or https://.";
+    return "Enter a full Cloudinary link that starts with https://res.cloudinary.com/.";
   }
   return "";
 }
@@ -87,6 +90,8 @@ function validate(form) {
   if (!form.location) errors.location = "Please select where it was lost or found.";
   if (!form.date) {
     errors.date = `Please pick the date it was ${form.type === "FOUND" ? "found" : "lost"}.`;
+  } else if (form.date > getTodayDateString()) {
+    errors.date = "Please pick a date that is not in the future.";
   }
   if (!form.description.trim()) {
     errors.description = "Please add a short description.";
@@ -197,6 +202,9 @@ export default function SubmitReport() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+    if (name === "contactType" && errors.contactValue) {
+      setErrors((prev) => ({ ...prev, contactValue: "" }));
+    }
     if (status) setStatus(null);
   };
 
@@ -278,7 +286,7 @@ export default function SubmitReport() {
   });
 
   const PHOTO_HELPER =
-    "Leave blank to automatically show a matching category illustration.";
+    "Paste a Cloudinary image URL. Leave blank to show a matching category illustration.";
   const NAME_HELPER =
     "Used only for internal record—never shown on browse cards or opened reports.";
 
@@ -440,7 +448,7 @@ export default function SubmitReport() {
                 type="url"
                 inputMode="url"
                 maxLength={LIMITS.imageUrl}
-                placeholder="https://..."
+                placeholder="https://res.cloudinary.com/..."
                 autoComplete="off"
                 spellCheck={false}
               />

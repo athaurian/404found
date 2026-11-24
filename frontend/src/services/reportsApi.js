@@ -193,10 +193,10 @@ export async function getReports(params = {}) {
       totalPages > 0 ? Math.min(requestedPage, totalPages) : 1;
     const startIdx = (currentPage - 1) * PER_PAGE;
 
-    // The real list endpoint omits `contact`, so the mock does too.
+    // The real list endpoint omits `contact` and `reporterName`, so the mock does too.
     const pageItems = filtered
       .slice(startIdx, startIdx + PER_PAGE)
-      .map(({ contact, ...rest }) => rest);
+      .map(({ contact, reporterName, ...rest }) => rest);
 
     return {
       status: "success",
@@ -240,49 +240,11 @@ export async function getReportById(id) {
         status: 404,
       });
     }
-    return { status: "success", data: found };
+    const { reporterName, ...publicReport } = found;
+    return { status: "success", data: publicReport };
   }
 
   return request(`${API_BASE_URL}/reports/${encodeURIComponent(id)}`);
-}
-
-/**
- * POST /reports/upload
- * Uploads one image and returns the Cloudinary URL for the report.
- */
-export async function uploadReportImage(file) {
-  if (!file) {
-    throw new ApiError("Choose an image to upload.", { status: 400 });
-  }
-
-  if (USE_MOCK_API) {
-    await new Promise((r) => setTimeout(r, 400));
-    return { imageUrl: await readFileAsDataUrl(file) };
-  }
-
-  const body = new FormData();
-  body.append("image", file);
-
-  const response = await request(`${API_BASE_URL}/reports/upload`, {
-    method: "POST",
-    body,
-  });
-
-  const imageUrl = response.data?.imageUrl;
-  if (!imageUrl) {
-    throw new ApiError("The server did not return an image URL.");
-  }
-  return { imageUrl };
-}
-
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
-    reader.onerror = () =>
-      reject(new ApiError("Could not read the selected image."));
-    reader.readAsDataURL(file);
-  });
 }
 
 /**
