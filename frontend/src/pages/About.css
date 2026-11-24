@@ -1,0 +1,188 @@
+/* ------------------------------------------------------------------
+   About page (prefix: ab-)
+   Uses the shared tokens from index.css and the .container class.
+   ------------------------------------------------------------------ */
+
+.ab-main {
+  padding: 32px 0;
+}
+
+.ab-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (max-width: 639px) {
+  .ab-main {
+    padding: 24px 0;
+  }
+
+  .ab-inner {
+    gap: 24px;
+  }
+}
+
+/* 3 columns on tablet and desktop, 1 column on mobile */
+.ab-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .ab-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+.ab-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.ab-card-title {
+  margin: 0;
+  font: 600 20px/1.25 var(--font-heading);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* ------------------------- How it works cards ------------------------- */
+.ab-step {
+  gap: 8px;
+}
+
+@media (max-width: 767px) {
+  .ab-step {
+    padding: 16px;
+    gap: 4px;
+  }
+}
+
+.ab-step-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  box-sizing: border-box;
+}
+
+.ab-step-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+@media (max-width: 767px) {
+  .ab-step-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 4px;
+  }
+
+  .ab-step-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.ab-tone-papaya {
+  background-color: var(--papaya);
+  border: 1px solid var(--bronze);
+  color: var(--terracotta);
+}
+
+.ab-tone-sage {
+  background-color: var(--sage);
+  color: var(--moss);
+}
+
+.ab-tone-beige {
+  background-color: var(--beige);
+  color: var(--ink);
+}
+
+.ab-step-text {
+  margin: 0;
+  font: 400 16px/1.6 var(--font-body);
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 767px) {
+  .ab-step-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+/* ----------------------------- Contributors ----------------------------- */
+.ab-contributors {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ab-heading {
+  margin: 0;
+  font: 700 28px/1.2 var(--font-heading);
+  color: var(--ink);
+}
+
+.ab-person {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ab-role {
+  margin: 0;
+  font: 400 14px/1.5 var(--font-body);
+  color: var(--ink-soft);
+}
+
+.ab-card-footer {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.ab-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  border-radius: var(--radius-input);
+  font: 600 14px/20px var(--font-body);
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 120ms ease-out;
+}
+
+.ab-link:hover {
+  color: var(--bronze-deep);
+}
+
+/* Extra text for screen readers only (tells the three identical links apart) */
+.ab-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

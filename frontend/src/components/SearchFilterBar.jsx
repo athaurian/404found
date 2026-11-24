@@ -3,8 +3,10 @@ import {
   FILTER_REPORT_TYPES,
   LOCATIONS,
 } from "../constants/reportOptions";
+import { CalendarIcon, CloseIcon, SearchIcon } from "./Icons";
 import "./SearchFilterBar.css";
 
+// "2026-11-15" -> "15/11/2026"
 function formatDisplayDate(isoDate) {
   if (!isoDate) return "All dates";
   const [year, month, day] = isoDate.split("-");
@@ -21,151 +23,146 @@ export default function SearchFilterBar({
   hasActiveFilters,
 }) {
   return (
-    <section className="filter-bar" aria-label="Search and filter reports">
-      {/* Search by item name */}
-      <div className="filter-search">
-        <svg
-          className="filter-search-icon"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
+    <section className="filter-card" aria-label="Search and filter reports">
+      <div className="filter-grid">
+        {/* Search by item name */}
+        <div className="filter-field filter-search">
+          <label className="eyebrow" htmlFor="filter-q">
+            Search item
+          </label>
+          <div className="filter-search-box">
+            <SearchIcon size={20} className="filter-search-icon" />
+            <input
+              id="filter-q"
+              type="text"
+              className="field-control filter-search-input"
+              placeholder="Search by item name..."
+              value={searchInput}
+              onChange={(e) => onSearchInputChange(e.target.value)}
+            />
+            {searchInput && (
+              <button
+                type="button"
+                className="filter-clear"
+                aria-label="Clear search"
+                onClick={() => onSearchInputChange("")}
+              >
+                <CloseIcon size={16} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Type */}
+        <div className="filter-field">
+          <label className="eyebrow" htmlFor="filter-type">
+            Type
+          </label>
+          <select
+            id="filter-type"
+            className="field-control filter-control"
+            value={filters.type}
+            onChange={(e) => onFilterChange("type", e.target.value)}
+          >
+            <option value="">All</option>
+            {FILTER_REPORT_TYPES.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category */}
+        <div className="filter-field">
+          <label className="eyebrow" htmlFor="filter-category">
+            Category
+          </label>
+          <select
+            id="filter-category"
+            className="field-control filter-control"
+            value={filters.category}
+            onChange={(e) => onFilterChange("category", e.target.value)}
+          >
+            <option value="">All</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Location */}
+        <div className="filter-field">
+          <label className="eyebrow" htmlFor="filter-location">
+            Location
+          </label>
+          <select
+            id="filter-location"
+            className="field-control filter-control"
+            value={filters.location}
+            onChange={(e) => onFilterChange("location", e.target.value)}
+          >
+            <option value="">All</option>
+            {LOCATIONS.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Date (the real input is invisible on top, so every browser looks the same) */}
+        <div className="filter-field">
+          <label className="eyebrow" htmlFor="filter-date">
+            Date
+          </label>
+          <div className="filter-date">
+            <span className="filter-date-display" aria-hidden="true">
+              <span className="filter-date-text">
+                {formatDisplayDate(filters.date)}
+              </span>
+              {!filters.date && (
+                <CalendarIcon size={16} className="filter-date-icon" />
+              )}
+            </span>
+            <input
+              id="filter-date"
+              type="date"
+              className="filter-date-input"
+              value={filters.date}
+              onChange={(e) => onFilterChange("date", e.target.value)}
+              onClick={(e) => {
+                try {
+                  e.currentTarget.showPicker?.();
+                } catch {
+                  // The browser opens its own picker
+                }
+              }}
+            />
+            {filters.date && (
+              <button
+                type="button"
+                className="filter-clear filter-date-clear"
+                aria-label="Clear date filter"
+                onClick={() => onFilterChange("date", "")}
+              >
+                <CloseIcon size={16} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="pill-btn pill-btn-secondary filter-reset"
+          onClick={onReset}
+          disabled={!hasActiveFilters}
         >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input
-          type="text"
-          className="filter-search-input"
-          aria-label="Search by item name"
-          placeholder="Search by item name..."
-          value={searchInput}
-          onChange={(e) => onSearchInputChange(e.target.value)}
-        />
-        {searchInput && (
-          <button
-            type="button"
-            className="filter-search-clear"
-            aria-label="Clear search query"
-            onClick={() => onSearchInputChange("")}
-          >
-            &times;
-          </button>
-        )}
+          Reset
+        </button>
       </div>
-
-      {/* Type filter */}
-      <select
-        className="filter-select"
-        aria-label="Filter by report type"
-        value={filters.type}
-        onChange={(e) => onFilterChange("type", e.target.value)}
-      >
-        <option value="">All types</option>
-        {FILTER_REPORT_TYPES.map((item) => (
-          <option key={item.value} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </select>
-
-      {/* Category filter */}
-      <select
-        className="filter-select"
-        aria-label="Filter by category"
-        value={filters.category}
-        onChange={(e) => onFilterChange("category", e.target.value)}
-      >
-        <option value="">All categories</option>
-        {CATEGORIES.map((cat) => (
-          <option key={cat.value} value={cat.value}>
-            {cat.label}
-          </option>
-        ))}
-      </select>
-
-      {/* Location filter */}
-      <select
-        className="filter-select"
-        aria-label="Filter by location"
-        value={filters.location}
-        onChange={(e) => onFilterChange("location", e.target.value)}
-      >
-        <option value="">All locations</option>
-        {LOCATIONS.map((loc) => (
-          <option key={loc} value={loc}>
-            {loc}
-          </option>
-        ))}
-      </select>
-
-      {/* Date filter (native input kept transparent to avoid Safari/Firefox text overlap) */}
-      <div className="filter-date-wrap">
-        <span className="filter-date-display" aria-hidden="true">
-          <span className="filter-date-text">
-            {formatDisplayDate(filters.date)}
-          </span>
-          {!filters.date && (
-            <svg
-              className="filter-date-icon"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-          )}
-        </span>
-
-        <input
-          type="date"
-          className="filter-date-input"
-          aria-label="Filter by date lost or found"
-          value={filters.date}
-          onChange={(e) => onFilterChange("date", e.target.value)}
-          onClick={(e) => {
-            try {
-              e.currentTarget.showPicker?.();
-            } catch {
-              // Native picker handled by browser
-            }
-          }}
-        />
-
-        {filters.date && (
-          <button
-            type="button"
-            className="filter-date-clear"
-            aria-label="Clear date filter"
-            onClick={() => onFilterChange("date", "")}
-          >
-            &times;
-          </button>
-        )}
-      </div>
-
-      {/* Reset button */}
-      <button
-        type="button"
-        className="filter-reset-btn"
-        onClick={onReset}
-        disabled={!hasActiveFilters}
-      >
-        Reset
-      </button>
     </section>
   );
 }

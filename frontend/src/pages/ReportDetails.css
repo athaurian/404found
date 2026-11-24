@@ -1,168 +1,120 @@
-.detail-page {
-  max-width: 1020px;
-  margin: 0 auto;
-  padding: 36px 24px 72px;
-}
-
-.detail-breadcrumb {
-  display: inline-block;
-  margin-bottom: 24px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-decoration: none;
-}
-
-.detail-breadcrumb:hover {
-  color: var(--text-primary);
-}
-
-.detail-layout {
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
-  gap: 40px;
-  align-items: start;
-}
-
-.detail-media {
-  aspect-ratio: 1 / 1;
-  background-color: var(--bg-muted);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.detail-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.detail-placeholder {
+.rd-page {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 24px;
+  padding-bottom: 56px;
+}
+.rd-page > * { width: 100%; max-width: 640px; }
+
+.rd-back {
+  align-self: flex-start;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-placeholder);
-  font-size: 0.875rem;
+  min-height: 44px;
+  font: 600 13px/1 var(--font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
 }
+.rd-back:hover { color: var(--bronze-deep); }
 
-.detail-title {
-  margin: 0 0 20px;
-  font-size: 1.85rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-.detail-meta-list {
-  margin: 0;
+.rd-card {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.rd-media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-input);
+  background: var(--beige);
+}
+.rd-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rd-media .category-art { width: 100%; height: 100%; }
+
+.rd-badge-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.rd-date { font: 400 14px/1.5 var(--font-body); color: var(--ink-soft); }
+
+.rd-heading { display: flex; flex-direction: column; gap: 4px; }
+.rd-title {
+  margin: 0;
+  font: 700 28px/1.2 var(--font-heading);
+  color: var(--ink);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.rd-desc {
+  margin: 0;
+  font: 400 16px/1.6 var(--font-body);
+  color: var(--ink);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.rd-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  background: var(--beige);
+  border: 1.5px dashed var(--field);
+  border-radius: var(--radius-input);
+}
+.rd-contact-text { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.rd-contact-value {
+  margin: 0;
+  font: 600 14px/20px var(--font-body);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.rd-contact .pill-btn { flex-shrink: 0; }
+
+.rd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
-}
-
-.detail-meta-row {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  align-items: center;
-  font-size: 0.9rem;
-}
-
-.detail-meta-row dt {
-  color: var(--text-muted);
-}
-
-.detail-meta-row dd {
-  margin: 0;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.detail-divider {
-  border: none;
-  border-top: 1px solid var(--border-light);
-  margin: 24px 0;
-}
-
-.detail-section {
-  margin-bottom: 22px;
-}
-
-.detail-section h2 {
-  margin: 0 0 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.detail-section p {
-  margin: 0;
-  font-size: 0.925rem;
-  line-height: 1.6;
-  color: var(--text-primary);
-}
-
-.detail-contact-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 14px;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  background-color: var(--bg-page);
-  font-size: 0.9rem;
-}
-
-.detail-copy-btn {
-  padding: 5px 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  border: 1px solid var(--border-input);
-  border-radius: 6px;
-  background-color: var(--bg-subtle);
-  color: var(--text-secondary);
-  cursor: pointer;
-}
-
-.detail-copy-btn:hover {
-  background-color: var(--bg-muted);
-  color: var(--text-primary);
-}
-
-.detail-status,
-.detail-error-box {
+  padding: 40px 24px;
+  background: var(--surface);
   text-align: center;
-  padding: 48px 20px;
-  color: var(--text-muted);
+}
+.rd-empty-title { margin: 0; font: 700 28px/1.2 var(--font-heading); color: var(--ink); }
+.rd-empty-text { margin: 0; color: var(--ink-soft); }
+.rd-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.rd-actions .pill-btn { text-decoration: none; }
+
+.rd-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.rd-skeleton .rd-line { height: 16px; border-radius: 8px; background: var(--papaya); }
+.rd-skeleton .rd-line-short { width: 30%; }
+.rd-skeleton .rd-line-title { height: 28px; width: 70%; }
+@media (prefers-reduced-motion: no-preference) {
+  .rd-skeleton .rd-media, .rd-skeleton .rd-line { animation: rd-pulse 1.4s ease-in-out infinite; }
+  @keyframes rd-pulse { 50% { opacity: 0.55; } }
 }
 
-.detail-back-btn {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-input);
-  text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .detail-layout {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
-
-.detail-breadcrumb {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.detail-breadcrumb-icon {
-  flex-shrink: 0;
+@media (max-width: 639px) {
+  .rd-card { padding: 20px; }
+  .rd-title { font-size: 24px; }
+  .rd-contact { flex-direction: column; align-items: stretch; }
+  .rd-contact .pill-btn { width: 100%; }
 }

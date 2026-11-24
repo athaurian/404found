@@ -1,4 +1,29 @@
-const TEAM = [
+import PageBand from "../components/PageBand";
+import { ChatBubbleIcon, EditNoteIcon, SearchIcon } from "../components/Icons";
+import "./About.css";
+
+const STEPS = [
+  {
+    title: "Browse & Filter",
+    text: "Search by item name or filter by Lost/Found status, category, campus building, and date.",
+    icon: <SearchIcon />,
+    tone: "ab-tone-papaya",
+  },
+  {
+    title: "Open to Contact",
+    text: "Open any report card to read the full description and see the finder’s or owner’s preferred contact handle.",
+    icon: <ChatBubbleIcon />,
+    tone: "ab-tone-sage",
+  },
+  {
+    title: "Post in Seconds",
+    text: "No login or account needed. Submit a report directly with a photo link or automatic category illustration.",
+    icon: <EditNoteIcon />,
+    tone: "ab-tone-beige",
+  },
+];
+
+const CONTRIBUTORS = [
   {
     name: "Hanif Ilham Athaurrahman",
     role: "Backend Developer",
@@ -18,48 +43,57 @@ const TEAM = [
 
 export default function About() {
   return (
-    <main style={{ maxWidth: 800, margin: "0 auto", padding: "40px 24px" }}>
-      <h1 style={{ margin: "0 0 8px", fontSize: "1.75rem" }}>About 404 Found</h1>
-      <p style={{ color: "#6b7280", lineHeight: 1.6, marginBottom: 32 }}>
-        404 Found is a Lost &amp; Found web application for Fasilkom UI
-        students, built for RISTEK Open Class Web Development 2026 to connect
-        students who lost their belongings with those who found them.
-      </p>
+    <>
+      <PageBand
+        title="About 404 Found"
+        subtitle="Private, Easy-to-Use Lost & Found Board for the Civitas Academica of CSUI"
+        icon={<ChatBubbleIcon />}
+      />
 
-      <h2 style={{ fontSize: "1.1rem", marginBottom: 16 }}>Team</h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: 16,
-        }}
-      >
-        {TEAM.map((member) => (
-          <div
-            key={member.github}
-            style={{
-              border: "1px solid #e5e7eb",
-              borderRadius: 10,
-              padding: 18,
-            }}
-          >
-            <h3 style={{ margin: "0 0 4px", fontSize: "0.95rem" }}>
-              {member.name}
-            </h3>
-            <p style={{ margin: "0 0 12px", fontSize: "0.825rem", color: "#6b7280" }}>
-              {member.role}
-            </p>
-            <a
-              href={member.github}
-              target="_blank"
-              rel="noreferrer"
-              style={{ fontSize: "0.825rem", fontWeight: 500 }}
-            >
-              GitHub Profile
-            </a>
-          </div>
-        ))}
-      </div>
-    </main>
+      <main className="ab-main">
+        <div className="container ab-inner">
+          <section className="ab-grid" aria-label="How 404 Found works">
+            {STEPS.map((step) => (
+              <article className="ab-card ab-step" key={step.title}>
+                <span className={`ab-step-icon ${step.tone}`} aria-hidden="true">
+                  {step.icon}
+                </span>
+                <h2 className="ab-card-title">{step.title}</h2>
+                <p className="ab-step-text">{step.text}</p>
+              </article>
+            ))}
+          </section>
+
+          <section className="ab-contributors" aria-label="Contributors">
+            <h2 className="ab-heading">Contributors</h2>
+            <div className="ab-grid">
+              {CONTRIBUTORS.map((person) => (
+                <article className="ab-card" key={person.name}>
+                  <div className="ab-person">
+                    <h3 className="ab-card-title">{person.name}</h3>
+                    <p className="ab-role">{person.role}</p>
+                  </div>
+                  <div className="ab-card-footer">
+                    <a
+                      className="ab-link"
+                      href={person.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>GitHub Profile</span>
+                      <span className="ab-sr">
+                        {" "}
+                        of {person.name} (opens in a new tab)
+                      </span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
   );
 }

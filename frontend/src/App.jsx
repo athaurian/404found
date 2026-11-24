@@ -1,21 +1,44 @@
-import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  HashRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import ViewReport from "./pages/ViewReport";
+import About from "./pages/About";
 import ReportDetails from "./pages/ReportDetails";
 import SubmitReport from "./pages/SubmitReport";
-import About from "./pages/About";
+import ViewReport from "./pages/ViewReport";
+
+// Start every new page at the top
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 export default function App() {
   return (
     <HashRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<ViewReport />} />
-        <Route path="/reports/:id" element={<ReportDetails />} />
-        <Route path="/submit" element={<SubmitReport />} />
-        <Route path="/about" element={<About />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <ScrollToTop />
+      <div className="app-shell">
+        <Navbar />
+        <div className="app-content">
+          <Routes>
+            <Route path="/" element={<ViewReport />} />
+            <Route path="/reports/:id" element={<ReportDetails />} />
+            <Route path="/submit" element={<SubmitReport />} />
+            <Route path="/about" element={<About />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </HashRouter>
   );
 }

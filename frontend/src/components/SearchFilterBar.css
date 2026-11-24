@@ -1,12 +1,38 @@
-.filter-bar {
-  display: grid;
-  grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(120px, 1fr)) minmax(132px, 1fr) auto;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 24px;
+.filter-card {
+  padding: 16px;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
-.filter-search {
+/* Phones: search on top, filters two per row, Reset full width */
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: end;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.filter-search,
+.filter-reset {
+  grid-column: 1 / -1;
+}
+
+.filter-reset {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Search box with icon and clear button */
+.filter-search-box {
   position: relative;
   display: flex;
   align-items: center;
@@ -14,101 +40,69 @@
 
 .filter-search-icon {
   position: absolute;
-  left: 12px;
-  color: var(--text-placeholder);
+  left: 16px;
+  color: var(--ink-soft);
   pointer-events: none;
 }
 
 .filter-search-input {
-  width: 100%;
-  height: 40px;
-  padding: 0 32px 0 36px;
-  font-size: 0.875rem;
-  font-family: inherit;
-  color: var(--text-primary);
-  background-color: var(--bg-page);
-  border: 1px solid var(--border-input);
-  border-radius: var(--radius-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  padding-left: 48px;
+  padding-right: 44px;
 }
 
-.filter-search-input::placeholder {
-  color: var(--text-placeholder);
-}
-
-.filter-search-input:focus,
-.filter-select:focus {
-  outline: none;
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
-}
-
-.filter-search-clear {
+.filter-clear {
   position: absolute;
-  right: 8px;
-  width: 22px;
-  height: 22px;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 1rem;
-  line-height: 1;
+  right: 6px;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
   cursor: pointer;
+  transition: background-color 120ms ease-out, color 120ms ease-out;
 }
 
-.filter-search-clear:hover {
-  background-color: var(--bg-muted);
-  color: var(--text-primary);
+.filter-clear:hover {
+  background-color: var(--papaya);
+  color: var(--ink);
 }
 
-.filter-select {
-  width: 100%;
-  height: 40px;
-  padding: 0 10px;
-  font-size: 0.875rem;
-  font-family: inherit;
-  color: var(--text-primary);
-  background-color: var(--bg-page);
-  border: 1px solid var(--border-input);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-/* Custom-displayed date filter to avoid browser-specific overlapping date text */
-.filter-date-wrap {
+/* Date filter */
+.filter-date {
   position: relative;
   display: flex;
   align-items: center;
-  height: 40px;
-  background-color: var(--bg-page);
-  border: 1px solid var(--border-input);
-  border-radius: var(--radius-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 44px;
+  border: 1px solid var(--field);
+  border-radius: var(--radius-input);
+  background-color: var(--surface);
+  transition: border-color 120ms ease-out;
 }
 
-.filter-date-wrap:focus-within {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+.filter-date:focus-within {
+  border-color: var(--bronze-deep);
+  outline: 3px solid var(--bronze-deep);
+  outline-offset: 2px;
 }
 
 .filter-date-display {
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  pointer-events: none;
-  white-space: nowrap;
+  width: 100%;
+  padding: 8px 16px;
   overflow: hidden;
+  font: 400 16px/1.5 var(--font-body);
+  color: var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .filter-date-text {
@@ -117,8 +111,8 @@
 }
 
 .filter-date-icon {
-  color: var(--text-muted);
   flex-shrink: 0;
+  color: var(--ink-soft);
 }
 
 .filter-date-input {
@@ -126,10 +120,10 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
   margin: 0;
   padding: 0;
-  border: none;
+  border: 0;
+  opacity: 0;
   cursor: pointer;
 }
 
@@ -143,70 +137,50 @@
   cursor: pointer;
 }
 
+.filter-date-input:focus-visible {
+  outline: none;
+}
+
 .filter-date-clear {
-  position: absolute;
   right: 6px;
-  z-index: 2;
-  width: 22px;
-  height: 22px;
-  border: none;
-  border-radius: 50%;
-  background: var(--bg-page);
-  color: var(--text-muted);
-  font-size: 1rem;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 }
 
-.filter-date-clear:hover {
-  background-color: var(--bg-muted);
-  color: var(--text-primary);
-}
-
-.filter-reset-btn {
-  height: 40px;
-  padding: 0 16px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background-color: var(--bg-muted);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
-}
-
-.filter-reset-btn:hover:not(:disabled) {
-  background-color: #e5e7eb;
-  color: var(--text-primary);
-}
-
-.filter-reset-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-@media (max-width: 1024px) {
-  .filter-bar {
-    grid-template-columns: repeat(3, 1fr);
+/* Tablets: still two per row, Reset sits on the right */
+@media (min-width: 640px) {
+  .filter-card {
+    padding: 24px;
   }
 
-  .filter-search {
-    grid-column: 1 / -1;
+  .filter-grid {
+    gap: 16px;
+  }
+
+  .filter-control,
+  .filter-date-display {
+    font-size: 14px;
+  }
+
+  .filter-reset {
+    width: auto;
+    justify-self: end;
+    margin-top: 0;
   }
 }
 
-@media (max-width: 640px) {
-  .filter-bar {
-    grid-template-columns: 1fr 1fr;
+/* Desktop: everything on one row */
+@media (min-width: 1024px) {
+  .filter-grid {
+    grid-template-columns:
+      minmax(220px, 2fr) repeat(3, minmax(120px, 1fr))
+      minmax(150px, 1fr) auto;
   }
 
   .filter-search,
-  .filter-reset-btn {
-    grid-column: 1 / -1;
+  .filter-reset {
+    grid-column: auto;
+  }
+
+  .filter-reset {
+    justify-self: stretch;
   }
 }

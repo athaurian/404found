@@ -1,123 +1,124 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { CloseIcon, LogoMark, MenuIcon } from "./Icons";
 import "./Navbar.css";
 
-const NAV_LINKS = [
+const LINKS = [
   { to: "/", label: "View Report", end: true },
   { to: "/submit", label: "Submit Report" },
   { to: "/about", label: "About" },
 ];
 
+// Wavy underline under the current page's link
+function Squiggle() {
+  return (
+    <svg
+      className="navbar-squiggle"
+      viewBox="0 0 96 8"
+      preserveAspectRatio="none"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M2 5C10 1.5 18 7 26 4C34 1 42 7 50 4C58 1 66 7 74 4C82 1 88 6 94 3.5"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
-  // Close the phone menu after you click a link
+  // Close the mobile menu whenever the page changes
   useEffect(() => {
-    setMenuOpen(false);
+    setOpen(false);
   }, [pathname]);
+
+  // ...or when Escape is pressed
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <header className="navbar">
       <div className="navbar-inner">
         <Link to="/" className="navbar-brand">
-          <svg
-            className="navbar-brand-icon"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m13.5 8.5-5 5m0-5 5 5" />
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-          404 Found
+          <LogoMark className="navbar-brand-icon" size={24} />
+          <span>404 Found</span>
         </Link>
 
-        <div className="navbar-right">
-          <nav
-            id="main-nav"
-            className={`navbar-nav${menuOpen ? " is-open" : ""}`}
-            aria-label="Main navigation"
-          >
-            {NAV_LINKS.map(({ to, label, end }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `navbar-link${isActive ? " active" : ""}`
-                }
-              >
-                {label}
-              </NavLink>
-            ))}
-          </nav>
-
-          <button
-            type="button"
-            className="navbar-profile-btn"
-            aria-label="Sign In (coming soon)"
-            title="SSO UI Sign-in (Stretch Feature)"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+        {/* Desktop links */}
+        <nav className="navbar-nav" aria-label="Primary navigation">
+          {LINKS.map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                `navbar-link${isActive ? " active" : ""}`
+              }
             >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            className="navbar-toggle"
-            aria-controls="main-nav"
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              {menuOpen ? (
+              {({ isActive }) => (
                 <>
-                  <path d="M18 6 6 18" />
-                  <path d="m6 6 12 12" />
-                </>
-              ) : (
-                <>
-                  <line x1="4" x2="20" y1="6" y2="6" />
-                  <line x1="4" x2="20" y1="12" y2="12" />
-                  <line x1="4" x2="20" y1="18" y2="18" />
+                  <span>{label}</span>
+                  {isActive && <Squiggle />}
                 </>
               )}
-            </svg>
-          </button>
-        </div>
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          className="navbar-toggle"
+          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? <CloseIcon size={22} /> : <MenuIcon size={22} />}
+        </button>
       </div>
+
+      {/* Mobile drawer */}
+      {open && (
+        <nav
+          id="mobile-nav"
+          className="navbar-drawer"
+          aria-label="Mobile navigation"
+        >
+          {LINKS.map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                `navbar-drawer-link${isActive ? " active" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <span>{label}</span>
+                  {isActive && (
+                    <span className="navbar-drawer-dot" aria-hidden="true" />
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }
