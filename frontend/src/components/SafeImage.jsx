@@ -8,9 +8,13 @@ import CategoryArt from "./CategoryArt";
  */
 export default function SafeImage({
   src,
+  srcSet,
+  sizes,
   alt = "",
   category,
   className = "",
+  loading = "lazy",
+  decoding = "async",
   ...rest
 }) {
   const [failed, setFailed] = useState(false);
@@ -28,9 +32,12 @@ export default function SafeImage({
     <img
       {...rest}
       src={src}
+      srcSet={srcSet}
+      sizes={sizes}
       alt={alt}
       className={className}
-      loading="lazy"
+      loading={loading}
+      decoding={decoding}
       onError={() => setFailed(true)}
     />
   );
