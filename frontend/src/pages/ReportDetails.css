@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
   padding-top: 24px;
   padding-bottom: 56px;
 }
@@ -270,4 +270,12 @@
   .rd-title { font-size: 22px; }
   .rd-contact { flex-direction: column; align-items: stretch; }
   .rd-contact .pill-btn { width: 100%; }
+}
+
+/* Match the browse page rhythm. */
+@media (min-width: 640px) {
+  .rd-page {
+    padding-top: 32px;
+    gap: 32px;
+  }
 }
