@@ -1,5 +1,5 @@
 import { getCloudinaryCloudName } from "../config/cloudinary.js";
-import { parseReportDate } from "../config/date.js";
+import { getTodayDateString, parseReportDate } from "../config/date.js";
 import {
   CATEGORIES,
   CONTACT_TYPES,
@@ -24,6 +24,51 @@ const FIELD_LABELS = {
   imageUrl: "Image URL",
 };
 
+const MIN_LENGTHS = {
+  title: 3,
+  description: 20,
+  reporterName: 3,
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const INSTAGRAM_PATTERN = /^@?[A-Za-z0-9._]{1,30}$/;
+const HANDLE_PATTERN = /^\S{3,32}$/;
+const NAME_PATTERN = /^\p{L}[\p{L}\p{M} .'-]*$/u;
+const PHONE_PATTERN = /^(?:\+62|62|0)?8\d{7,12}$/;
+
+/** Returns an error message for the contact value, or an empty string. */
+function getContactError(contactType, value) {
+  switch (contactType) {
+    case "WHATSAPP": {
+      const digits = value.replace(/[\s().-]/g, "");
+      const digitCount = digits.replace(/\D/g, "").length;
+      return PHONE_PATTERN.test(digits) &&
+        digitCount >= 9 &&
+        digitCount <= 15
+        ? ""
+        : "Enter an Indonesian WhatsApp number, for example 0812-3456-7890.";
+    }
+    case "LINE":
+      return HANDLE_PATTERN.test(value)
+        ? ""
+        : "Enter a LINE ID with 3-32 characters and no spaces.";
+    case "INSTAGRAM":
+      return INSTAGRAM_PATTERN.test(value)
+        ? ""
+        : "Enter an Instagram username or @handle with up to 30 characters.";
+    case "DISCORD":
+      return HANDLE_PATTERN.test(value)
+        ? ""
+        : "Enter a Discord username with 3-32 characters and no spaces.";
+    case "EMAIL":
+      return EMAIL_PATTERN.test(value)
+        ? ""
+        : "Please enter a valid email address.";
+    default:
+      return "";
+  }
+}
+
 function readString(body, field) {
   return typeof body[field] === "string" ? body[field].trim() : "";
 }
@@ -46,9 +91,19 @@ export function validateReport(req, res, next) {
 
   if (!title) {
     errors.push({ field: "title", message: "Item name is required" });
+  } else if (title.length < MIN_LENGTHS.title) {
+    errors.push({
+      field: "title",
+      message: `Please enter at least ${MIN_LENGTHS.title} characters for the item name.`,
+    });
   }
   if (!description) {
     errors.push({ field: "description", message: "Description is required" });
+  } else if (description.length < MIN_LENGTHS.description) {
+    errors.push({
+      field: "description",
+      message: `Please write at least ${MIN_LENGTHS.description} characters so others can identify the item.`,
+    });
   }
   if (!type) {
     errors.push({ field: "type", message: "Type is required" });
@@ -78,9 +133,23 @@ export function validateReport(req, res, next) {
       field: "date",
       message: "Date must use YYYY-MM-DD or dd/mm/yyyy",
     });
+  } else if (date.slice(0, 10) > getTodayDateString()) {
+    errors.push({
+      field: "date",
+      message: "Please pick a date that is not in the future.",
+    });
   }
   if (!reporterName) {
     errors.push({ field: "reporterName", message: "Reporter name is required" });
+  } else if (
+    reporterName.length < MIN_LENGTHS.reporterName ||
+    !NAME_PATTERN.test(reporterName)
+  ) {
+    errors.push({
+      field: "reporterName",
+      message:
+        "Please use at least 3 characters with letters, spaces, periods, hyphens, or apostrophes.",
+    });
   }
   if (!contactType) {
     errors.push({ field: "contactType", message: "Contact type is required" });
@@ -92,6 +161,11 @@ export function validateReport(req, res, next) {
   }
   if (!contactValue) {
     errors.push({ field: "contactValue", message: "Contact value is required" });
+  } else if (CONTACT_TYPES.includes(contactType)) {
+    const contactError = getContactError(contactType, contactValue);
+    if (contactError) {
+      errors.push({ field: "contactValue", message: contactError });
+    }
   }
 
   const imageUrl =

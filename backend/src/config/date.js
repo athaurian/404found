@@ -28,3 +28,13 @@ export function parseReportDate(value) {
 
   return isValid ? date.toISOString() : null;
 }
+
+/** Today in WIB, as YYYY-MM-DD. */
+export function getTodayDateString() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Jakarta",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
