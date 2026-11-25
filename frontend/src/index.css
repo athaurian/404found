@@ -32,7 +32,6 @@
   /* Passive surfaces sit below controls but above the page wash */
   --border-subtle: #c2a67e;
   /* Borders carry intent, never foreground or fill tokens */
-  --border-strong: var(--fg-strong);
   --border-hover: var(--fg-accent);
   --border-dashed: var(--control-border);
   --border-danger: var(--fg-danger);
@@ -256,8 +255,7 @@ textarea {
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: transform 180ms ease-out, background-color 120ms ease-out,
-    border-color 120ms ease-out;
+  transition: background-color 120ms ease-out, border-color 120ms ease-out;
 }
 
 .pill-btn-primary {
@@ -266,12 +264,11 @@ textarea {
 
 .pill-btn-primary:hover:not(:disabled) {
   background-color: var(--state-primary-hover);
-  transform: translateY(-2px);
 }
 
 .pill-btn-secondary {
   background-color: transparent;
-  border-color: var(--border-strong);
+  border-color: var(--control-border);
 }
 
 .pill-btn-secondary:hover:not(:disabled) {
@@ -283,7 +280,6 @@ textarea {
 }
 
 .pill-btn-secondary:disabled {
-  border-color: var(--control-border);
   color: var(--fg-muted);
 }
 
