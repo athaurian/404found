@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import {
   HashRouter,
-  Navigate,
   Route,
   Routes,
   useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import About from "./pages/About";
+import NotFound from "./pages/NotFound";
 import ReportDetails from "./pages/ReportDetails";
 import SubmitReport from "./pages/SubmitReport";
 import ViewReport from "./pages/ViewReport";
@@ -33,7 +33,7 @@ export default function App() {
             <Route path="/reports/:id" element={<ReportDetails />} />
             <Route path="/submit" element={<SubmitReport />} />
             <Route path="/about" element={<About />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>
