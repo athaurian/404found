@@ -6,15 +6,8 @@ import {
 } from "../constants/reportOptions";
 import { CalendarIcon, CloseIcon, SearchIcon } from "./Icons";
 import SelectWrap from "./SelectWrap";
+import { formatNumericDate } from "../utils/formatDate";
 import "./SearchFilterBar.css";
-
-// "2026-11-15" -> "15/11/2026"
-function formatDisplayDate(isoDate) {
-  if (!isoDate) return "All dates";
-  const [year, month, day] = isoDate.split("-");
-  if (!year || !month || !day) return isoDate;
-  return `${day}/${month}/${year}`;
-}
 
 export default function SearchFilterBar({
   searchInput,
@@ -129,7 +122,7 @@ export default function SearchFilterBar({
           <div className="filter-date">
             <span className="filter-date-display" aria-hidden="true">
               <span className="filter-date-text">
-                {formatDisplayDate(filters.date)}
+                {filters.date ? formatNumericDate(filters.date) : "All dates"}
               </span>
               {!filters.date && (
                 <CalendarIcon size={16} className="filter-date-icon" />

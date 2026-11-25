@@ -187,6 +187,7 @@ textarea {
   .pill-btn-secondary:focus-visible,
   .sr-photo-dropzone:focus-visible,
   .filter-date:has(.filter-date-input:focus-visible),
+  .sr-date:has(.sr-date-input:focus-visible),
   .sr-type input:focus-visible + .sr-type-pill {
     outline: 1px solid CanvasText;
     box-shadow: none;

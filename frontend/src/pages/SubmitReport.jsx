@@ -11,6 +11,7 @@ import {
   PHOTO_CONSTRAINTS,
 } from "../constants/reportOptions";
 import { createReport, uploadReportImage } from "../services/reportsApi";
+import { formatNumericDate } from "../utils/formatDate";
 import "./SubmitReport.css";
 
 const INITIAL_FORM = {
@@ -486,12 +487,30 @@ export default function SubmitReport() {
               </Field>
 
               <Field id="date" label={dateLabel} error={errors.date}>
-                <input
-                  {...controlProps("date")}
-                  type="date"
-                  max={getTodayDateString()}
-                  aria-required="true"
-                />
+                <div className="sr-date">
+                  <span
+                    className={`sr-date-display${
+                      form.date ? "" : " is-empty"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {form.date ? formatNumericDate(form.date) : "DD/MM/YYYY"}
+                  </span>
+                  <input
+                    {...controlProps("date")}
+                    type="date"
+                    max={getTodayDateString()}
+                    aria-required="true"
+                    className="field-control sr-date-input"
+                    onClick={(e) => {
+                      try {
+                        e.currentTarget.showPicker?.();
+                      } catch {
+                        // The browser opens its own picker
+                      }
+                    }}
+                  />
+                </div>
               </Field>
             </div>
 
