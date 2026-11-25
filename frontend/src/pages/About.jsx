@@ -50,7 +50,7 @@ export default function About() {
     <>
       <PageBand
         title="About 404 Found"
-        subtitle="Private, Easy-to-Use Lost & Found Board for the Civitas Academica of CSUI"
+        subtitle="A private, easy-to-use lost and found board for the Civitas Academica of CSUI."
         icon={<ChatBubbleIcon />}
       />
 
