@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:opsz,wght@9..144,600..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Merriweather:opsz,wght@18..144,400..700&display=swap");
 
 *,
 *::before,
@@ -10,28 +10,93 @@
    Design tokens ("404 Found Retro Campus Board")
    ------------------------------------------------------------------ */
 :root {
-  --cream: #e5ddcc; /* page background */
-  --surface: #f1eadb; /* cards, header, inputs */
-  --papaya: #ddc8a8; /* title band, "Lost" badge, soft panels */
-  --beige: #e9edc9; /* soft panels, illustration backdrops */
-  --sage: #ccd5ae; /* "Found" badge, footer */
-  --bronze: #d4a373; /* primary buttons, squiggles, sticker */
-  --bronze-deep: #9a6234; /* focus ring, strong accents */
-  --ink: #3b3221; /* headings, body text */
-  --ink-soft: #6b5d45; /* secondary text */
-  --moss: #3f4b27; /* text on sage */
-  --terracotta: #8a3b1f; /* "Lost" text, errors */
-  --line: #d4c6aa; /* borders, dividers */
-  --field: #a38660; /* input borders */
+  /* Backgrounds */
+  --bg-page: #e5ddcc;
+  --bg-surface: #f1eadb;
+  --bg-accent: #ddc8a8;
+  --bg-positive: #ccd5ae;
+  --bg-soft: color-mix(in srgb, var(--bg-positive) 40%, var(--bg-surface));
 
-  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  /* Foreground */
+  --fg-strong: #3b3221;
+  --fg-muted: #6b5d45;
+  --fg-positive: #3f4b27;
+  --fg-danger: #8a3b1f;
+  --fg-accent: #9a6234;
+  --fg-accent-strong: #8a5429;
+
+  /* Controls, borders and focus */
+  --control-fill: #d4a373;
+  --decor-accent: var(--control-fill);
+  --control-border: #947248;
+  /* Passive surfaces sit below controls but above the page wash */
+  --border-subtle: #c2a67e;
+  /* Borders carry intent, never foreground or fill tokens */
+  --border-strong: var(--fg-strong);
+  --border-hover: var(--fg-accent);
+  --border-dashed: var(--control-border);
+  --border-danger: var(--fg-danger);
+  --border-positive: var(--fg-positive);
+  --focus-ring: var(--fg-accent-strong);
+
+  /* Derived state surfaces */
+  --state-primary-hover: color-mix(
+    in srgb,
+    var(--control-fill) 85%,
+    var(--bg-page)
+  );
+  --state-link-hover: var(--fg-accent-strong);
+  --state-nav-hover: color-mix(
+    in srgb,
+    var(--bg-accent) 40%,
+    var(--bg-surface)
+  );
+  --state-nav-active: color-mix(
+    in srgb,
+    var(--bg-accent) 60%,
+    var(--bg-surface)
+  );
+  --state-callout: color-mix(
+    in srgb,
+    var(--bg-accent) 50%,
+    var(--bg-surface)
+  );
+  --state-success-surface: color-mix(
+    in srgb,
+    var(--bg-positive) 50%,
+    var(--bg-page)
+  );
+  --state-success-border: color-mix(
+    in srgb,
+    var(--border-positive) 30%,
+    var(--state-success-surface)
+  );
+  --state-danger-surface: color-mix(
+    in srgb,
+    var(--fg-danger) 7%,
+    var(--bg-page)
+  );
+  --state-danger-border: color-mix(
+    in srgb,
+    var(--border-danger) 30%,
+    var(--state-danger-surface)
+  );
+  --state-placeholder: var(--fg-muted);
+  /* Cool neutral stage for category art. Deliberately outside both the warm
+     Lost tan and the sage Found green so the badge owns the only status colour. */
+  --placeholder-surface: #d6d5d0;
+
+  --font-heading: "Merriweather", Georgia, "Times New Roman", serif;
+  --font-body: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
 
   --radius-input: 14px;
   --radius-card: 24px;
   --radius-pill: 9999px;
-  --shadow-card: 0 4px 16px rgba(59, 50, 33, 0.05);
+  --shadow-card: 0 4px 16px
+    color-mix(in srgb, var(--fg-strong) 5%, transparent);
+  --shadow-sticker: 0 4px 16px
+    color-mix(in srgb, var(--fg-strong) 6%, transparent);
 }
 
 /* ------------------------------------------------------------------
@@ -43,8 +108,8 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--cream);
-  color: var(--ink);
+  background-color: var(--bg-page);
+  color: var(--fg-strong);
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
@@ -56,7 +121,7 @@ h2,
 h3,
 h4 {
   font-family: var(--font-heading);
-  color: var(--ink);
+  color: var(--fg-strong);
 }
 
 a {
@@ -71,14 +136,61 @@ textarea {
 }
 
 ::selection {
-  background: var(--papaya);
-  color: var(--ink);
+  background: var(--bg-accent);
+  color: var(--fg-strong);
 }
 
-/* One focus ring for every interactive element */
+/* Hidden visually, still read by assistive technology */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Keep pointer focus quiet, restore a visible ring for keyboard users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 :focus-visible {
-  outline: 3px solid var(--bronze-deep);
-  outline-offset: 2px;
+  outline: 1px solid var(--focus-ring);
+}
+
+/* Bordered controls paint the same ring as an outer shadow so it seats
+   against the 1px border without a subpixel seam at rounded corners */
+.field-control:focus-visible,
+.filter-reset:focus-visible,
+.navbar-toggle:focus-visible,
+.ab-link:focus-visible,
+.page-num:focus-visible,
+.sr-photo-remove:focus-visible,
+.pill-btn-secondary:focus-visible,
+.sr-photo-dropzone:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--focus-ring);
+}
+
+/* Box shadows disappear in forced-colors mode, so restore an outline there */
+@media (forced-colors: active) {
+  .field-control:focus-visible,
+  .filter-reset:focus-visible,
+  .navbar-toggle:focus-visible,
+  .ab-link:focus-visible,
+  .page-num:focus-visible,
+  .sr-photo-remove:focus-visible,
+  .pill-btn-secondary:focus-visible,
+  .sr-photo-dropzone:focus-visible,
+  .filter-date:has(.filter-date-input:focus-visible),
+  .sr-type input:focus-visible + .sr-type-pill {
+    outline: 1px solid CanvasText;
+    box-shadow: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -91,7 +203,7 @@ textarea {
 }
 
 /* ------------------------------------------------------------------
-   App shell (header / page / footer)
+   App shell (header / page)
    ------------------------------------------------------------------ */
 #root {
   min-height: 100vh;
@@ -125,9 +237,7 @@ textarea {
    ------------------------------------------------------------------ */
 .eyebrow {
   font: 600 12px/16px var(--font-body);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--fg-muted);
 }
 
 /* Pill buttons */
@@ -141,7 +251,7 @@ textarea {
   border-radius: var(--radius-pill);
   border: 1px solid transparent;
   font: 600 14px/20px var(--font-body);
-  color: var(--ink);
+  color: var(--fg-strong);
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -150,21 +260,21 @@ textarea {
 }
 
 .pill-btn-primary {
-  background-color: var(--bronze);
+  background-color: var(--control-fill);
 }
 
 .pill-btn-primary:hover:not(:disabled) {
-  background-color: rgba(212, 163, 115, 0.85);
+  background-color: var(--state-primary-hover);
   transform: translateY(-2px);
 }
 
 .pill-btn-secondary {
   background-color: transparent;
-  border-color: var(--ink);
+  border-color: var(--border-strong);
 }
 
 .pill-btn-secondary:hover:not(:disabled) {
-  background-color: var(--papaya);
+  background-color: var(--bg-accent);
 }
 
 .pill-btn:disabled {
@@ -172,8 +282,8 @@ textarea {
 }
 
 .pill-btn-secondary:disabled {
-  border-color: var(--line);
-  color: var(--ink-soft);
+  border-color: var(--control-border);
+  color: var(--fg-muted);
 }
 
 .pill-btn-primary:disabled {
@@ -191,14 +301,15 @@ textarea {
 }
 
 .badge-found {
-  background-color: var(--sage);
-  color: var(--moss);
+  background-color: var(--bg-positive);
+  border: 1px solid var(--border-positive);
+  color: var(--fg-positive);
 }
 
 .badge-lost {
-  background-color: var(--papaya);
-  border: 1px solid var(--bronze);
-  color: var(--terracotta);
+  background-color: var(--bg-accent);
+  border: 1px solid var(--border-danger);
+  color: var(--fg-danger);
 }
 
 /* Form controls */
@@ -207,20 +318,16 @@ textarea {
   width: 100%;
   min-height: 44px;
   padding: 8px 16px;
-  border: 1px solid var(--field);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-input);
-  background-color: var(--surface);
-  color: var(--ink);
+  background-color: var(--bg-surface);
+  color: var(--fg-strong);
   font: 400 16px/1.5 var(--font-body);
   transition: border-color 120ms ease-out;
 }
 
 .field-control::placeholder {
-  color: rgba(107, 93, 69, 0.7);
-}
-
-.field-control:focus {
-  border-color: var(--bronze-deep);
+  color: var(--state-placeholder);
 }
 
 .field-control:disabled {
@@ -229,7 +336,7 @@ textarea {
 }
 
 .field-control[aria-invalid="true"] {
-  border-color: var(--terracotta);
+  border-color: var(--border-danger);
 }
 
 select.field-control {
@@ -237,15 +344,26 @@ select.field-control {
   appearance: none;
   padding-right: 40px;
   cursor: pointer;
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  background-size: 16px 16px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B5D45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Wrapper gives the select a token-coloured chevron without a data URI */
+.select-wrap {
+  position: relative;
+  display: block;
+}
+
+.select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  color: var(--fg-muted);
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 /* Dashed "stitched" outline for empty states and special boxes */
 .stitched {
-  border: 1.5px dashed var(--field);
+  border: 1px dashed var(--border-dashed);
   border-radius: var(--radius-card);
 }
 
@@ -256,6 +374,7 @@ select.field-control {
   justify-content: center;
   width: 100%;
   height: 100%;
+  background-color: var(--placeholder-surface);
 }
 
 .category-art svg {
@@ -263,21 +382,29 @@ select.field-control {
   height: 72px;
 }
 
+.category-art .art-fill-strong {
+  fill: var(--fg-strong);
+}
+
+.category-art .art-stroke-strong {
+  stroke: var(--fg-strong);
+}
+
+.category-art .art-fill-control {
+  fill: var(--control-fill);
+}
+
+.category-art .art-fill-accent {
+  fill: var(--bg-accent);
+}
+
+.category-art .art-fill-surface {
+  fill: var(--bg-surface);
+}
+
 @media (min-width: 640px) {
   .category-art svg {
     width: 96px;
     height: 96px;
   }
-}
-
-.tint-papaya {
-  background-color: var(--papaya);
-}
-
-.tint-beige {
-  background-color: var(--beige);
-}
-
-.tint-sage {
-  background-color: var(--sage);
 }
