@@ -25,7 +25,7 @@ export const LOCATIONS = [
   "Classroom (A2.51)",
   "Gedung A",
   "Gedung Baru",
-  "Kantin Masoem",
+  "Kantin",
   "Pos Satpam",
   "Sekre BEM",
   "Student Lounge (Floor 1)",
@@ -68,3 +68,10 @@ export const SORT_OPTIONS = [
   { value: "newest", label: "Newest First" },
   { value: "oldest", label: "Oldest First" },
 ];
+
+// Shared by the photo picker and the upload request.
+export const PHOTO_CONSTRAINTS = {
+  maxSizeBytes: 5 * 1024 * 1024,
+  allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
+  acceptAttr: "image/jpeg,image/png,image/webp",
+};
