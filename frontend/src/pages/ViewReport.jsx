@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import {
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  Tag,
+} from "lucide-react";
 import PageBand from "../components/PageBand";
 import SafeImage from "../components/SafeImage";
 import SearchFilterBar from "../components/SearchFilterBar";
+import SelectWrap from "../components/SelectWrap";
 import { SearchIcon } from "../components/Icons";
 import { CATEGORY_LABELS, SORT_OPTIONS } from "../constants/reportOptions";
 import { getReports } from "../services/reportsApi";
@@ -21,6 +29,31 @@ const EMPTY_PAGINATION = {
   hasNextPage: false,
   hasPrevPage: false,
 };
+
+// Compact page list, with gaps rendered as an ellipsis.
+function getPageItems(current, total, compact) {
+  if (total <= 0) return [];
+
+  const wanted =
+    !compact && total <= 7
+      ? Array.from({ length: total }, (_, index) => index + 1)
+      : compact
+        ? [1, current, total]
+        : [1, current - 2, current - 1, current, current + 1, current + 2, total];
+
+  const pages = [...new Set(wanted)]
+    .filter((page) => page >= 1 && page <= total)
+    .sort((a, b) => a - b);
+
+  const items = [];
+  let previous = 0;
+  pages.forEach((page) => {
+    if (previous && page - previous > 1) items.push(`ellipsis-${page}`);
+    items.push(page);
+    previous = page;
+  });
+  return items;
+}
 
 export default function ViewReport() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,6 +78,17 @@ export default function ViewReport() {
   const [errorStatus, setErrorStatus] = useState(0);
   // Bumped by the "Try again" button to re-run the fetch
   const [reloadKey, setReloadKey] = useState(0);
+  // Phones get a shorter page list so pagination stays on one row
+  const [compactPages, setCompactPages] = useState(
+    () => window.matchMedia("(max-width: 639px)").matches
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 639px)");
+    const onChange = (event) => setCompactPages(event.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
 
   // Copy the URL into the input only when it changed from outside
   // (Reset button, browser back/forward), never for our own updates.
@@ -184,9 +228,10 @@ export default function ViewReport() {
       dateParam
   );
 
-  const pageNumbers = Array.from(
-    { length: pagination.totalPages },
-    (_, index) => index + 1
+  const pageItems = getPageItems(
+    pagination.currentPage,
+    pagination.totalPages,
+    compactPages
   );
 
   return (
@@ -226,18 +271,20 @@ export default function ViewReport() {
             <label className="eyebrow" htmlFor="view-sort">
               Sort
             </label>
-            <select
-              id="view-sort"
-              className="field-control view-sort-select"
-              value={sortParam}
-              onChange={(e) => handleSortChange(e.target.value)}
-            >
-              {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            <SelectWrap>
+              <select
+                id="view-sort"
+                className="field-control view-sort-select"
+                value={sortParam}
+                onChange={(e) => handleSortChange(e.target.value)}
+              >
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </SelectWrap>
           </div>
         </div>
 
@@ -335,18 +382,51 @@ export default function ViewReport() {
 
                     <div className="report-card-body">
                       <h2 className="report-card-title">{report.title}</h2>
-                      <p className="report-card-meta">
-                        {categoryLabel} &bull; {report.location}
-                      </p>
-                    </div>
 
-                    <div className="report-card-footer">
-                      <p className="report-card-date">
-                        {formatShortDate(report.date)}
-                      </p>
-                      <span className="report-card-arrow" aria-hidden="true">
-                        →
-                      </span>
+                      <ul className="report-card-meta">
+                        <li className="report-card-meta-row">
+                          <Tag
+                            size={16}
+                            className="report-card-meta-icon"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Category:</span>
+                          <span className="report-card-meta-value">
+                            {categoryLabel}
+                          </span>
+                        </li>
+                        <li className="report-card-meta-row">
+                          <MapPin
+                            size={16}
+                            className="report-card-meta-icon"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Location:</span>
+                          <span className="report-card-meta-value">
+                            {report.location}
+                          </span>
+                        </li>
+                        <li className="report-card-meta-row">
+                          <CalendarDays
+                            size={16}
+                            className="report-card-meta-icon"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Date:</span>
+                          <time
+                            className="report-card-meta-value"
+                            dateTime={report.date}
+                          >
+                            {formatShortDate(report.date)}
+                          </time>
+                        </li>
+                      </ul>
+
+                      {report.description && (
+                        <p className="report-card-description">
+                          {report.description}
+                        </p>
+                      )}
                     </div>
                   </Link>
                 );
@@ -359,38 +439,46 @@ export default function ViewReport() {
                 <button
                   type="button"
                   className="pill-btn pill-btn-secondary"
+                  aria-label="Previous page"
                   disabled={!pagination.hasPrevPage}
                   onClick={() => handlePageChange(pagination.currentPage - 1)}
                 >
-                  Previous
+                  <ChevronLeft size={18} aria-hidden="true" />
                 </button>
 
                 <div className="pagination-pages">
-                  {pageNumbers.map((num) => (
-                    <button
-                      key={num}
-                      type="button"
-                      className={`page-num${
-                        num === pagination.currentPage ? " active" : ""
-                      }`}
-                      aria-current={
-                        num === pagination.currentPage ? "page" : undefined
-                      }
-                      aria-label={`Page ${num}`}
-                      onClick={() => handlePageChange(num)}
-                    >
-                      {num}
-                    </button>
-                  ))}
+                  {pageItems.map((item) =>
+                    typeof item === "string" ? (
+                      <span className="page-ellipsis" key={item} aria-hidden="true">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        className={`page-num${
+                          item === pagination.currentPage ? " active" : ""
+                        }`}
+                        aria-current={
+                          item === pagination.currentPage ? "page" : undefined
+                        }
+                        aria-label={`Page ${item}`}
+                        onClick={() => handlePageChange(item)}
+                      >
+                        {item}
+                      </button>
+                    )
+                  )}
                 </div>
 
                 <button
                   type="button"
                   className="pill-btn pill-btn-secondary"
+                  aria-label="Next page"
                   disabled={!pagination.hasNextPage}
                   onClick={() => handlePageChange(pagination.currentPage + 1)}
                 >
-                  Next
+                  <ChevronRight size={18} aria-hidden="true" />
                 </button>
               </nav>
             )}

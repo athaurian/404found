@@ -1,7 +1,7 @@
 .filter-card {
   padding: 16px;
-  background-color: var(--surface);
-  border: 1px solid var(--line);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
 }
@@ -21,14 +21,36 @@
   min-width: 0;
 }
 
-.filter-search,
-.filter-reset {
+.filter-search {
   grid-column: 1 / -1;
 }
 
 .filter-reset {
-  width: 100%;
-  margin-top: 8px;
+  grid-column: 1 / -1;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--fg-strong);
+  cursor: pointer;
+  transition: background-color 120ms ease-out, border-color 120ms ease-out,
+    color 120ms ease-out;
+}
+
+.filter-reset:hover:not(:disabled) {
+  background-color: var(--bg-accent);
+}
+
+.filter-reset:disabled {
+  opacity: 0.6;
+  color: var(--fg-muted);
+  cursor: not-allowed;
 }
 
 /* Search box with icon and clear button */
@@ -41,7 +63,7 @@
 .filter-search-icon {
   position: absolute;
   left: 16px;
-  color: var(--ink-soft);
+  color: var(--fg-muted);
   pointer-events: none;
 }
 
@@ -63,14 +85,14 @@
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: var(--ink-soft);
+  color: var(--fg-muted);
   cursor: pointer;
   transition: background-color 120ms ease-out, color 120ms ease-out;
 }
 
 .filter-clear:hover {
-  background-color: var(--papaya);
-  color: var(--ink);
+  background-color: var(--bg-accent);
+  color: var(--fg-strong);
 }
 
 /* Date filter */
@@ -79,16 +101,16 @@
   display: flex;
   align-items: center;
   min-height: 44px;
-  border: 1px solid var(--field);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-input);
-  background-color: var(--surface);
+  background-color: var(--bg-surface);
   transition: border-color 120ms ease-out;
 }
 
-.filter-date:focus-within {
-  border-color: var(--bronze-deep);
-  outline: 3px solid var(--bronze-deep);
-  outline-offset: 2px;
+/* The date input is transparent, so ring its visible frame instead */
+.filter-date:has(.filter-date-input:focus-visible) {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--focus-ring);
 }
 
 .filter-date-display {
@@ -100,7 +122,7 @@
   padding: 8px 16px;
   overflow: hidden;
   font: 400 16px/1.5 var(--font-body);
-  color: var(--ink);
+  color: var(--fg-strong);
   white-space: nowrap;
   pointer-events: none;
 }
@@ -112,7 +134,7 @@
 
 .filter-date-icon {
   flex-shrink: 0;
-  color: var(--ink-soft);
+  color: var(--fg-muted);
 }
 
 .filter-date-input {
@@ -137,12 +159,15 @@
   cursor: pointer;
 }
 
-.filter-date-input:focus-visible {
-  outline: none;
-}
-
 .filter-date-clear {
   right: 6px;
+}
+
+/* Balance the trailing reset row on mobile */
+@media (max-width: 639px) {
+  .filter-reset {
+    margin-top: 8px;
+  }
 }
 
 /* Tablets: still two per row, Reset sits on the right */
@@ -158,12 +183,6 @@
   .filter-control,
   .filter-date-display {
     font-size: 14px;
-  }
-
-  .filter-reset {
-    width: auto;
-    justify-self: end;
-    margin-top: 0;
   }
 }
 
@@ -181,6 +200,6 @@
   }
 
   .filter-reset {
-    justify-self: stretch;
+    justify-self: end;
   }
 }

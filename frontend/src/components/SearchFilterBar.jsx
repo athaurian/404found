@@ -1,9 +1,11 @@
+import { RotateCcw } from "lucide-react";
 import {
   CATEGORIES,
   FILTER_REPORT_TYPES,
   LOCATIONS,
 } from "../constants/reportOptions";
 import { CalendarIcon, CloseIcon, SearchIcon } from "./Icons";
+import SelectWrap from "./SelectWrap";
 import "./SearchFilterBar.css";
 
 // "2026-11-15" -> "15/11/2026"
@@ -58,19 +60,21 @@ export default function SearchFilterBar({
           <label className="eyebrow" htmlFor="filter-type">
             Type
           </label>
-          <select
-            id="filter-type"
-            className="field-control filter-control"
-            value={filters.type}
-            onChange={(e) => onFilterChange("type", e.target.value)}
-          >
-            <option value="">All</option>
-            {FILTER_REPORT_TYPES.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
+          <SelectWrap>
+            <select
+              id="filter-type"
+              className="field-control filter-control"
+              value={filters.type}
+              onChange={(e) => onFilterChange("type", e.target.value)}
+            >
+              <option value="">All</option>
+              {FILTER_REPORT_TYPES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </SelectWrap>
         </div>
 
         {/* Category */}
@@ -78,19 +82,21 @@ export default function SearchFilterBar({
           <label className="eyebrow" htmlFor="filter-category">
             Category
           </label>
-          <select
-            id="filter-category"
-            className="field-control filter-control"
-            value={filters.category}
-            onChange={(e) => onFilterChange("category", e.target.value)}
-          >
-            <option value="">All</option>
-            {CATEGORIES.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
+          <SelectWrap>
+            <select
+              id="filter-category"
+              className="field-control filter-control"
+              value={filters.category}
+              onChange={(e) => onFilterChange("category", e.target.value)}
+            >
+              <option value="">All</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+          </SelectWrap>
         </div>
 
         {/* Location */}
@@ -98,19 +104,21 @@ export default function SearchFilterBar({
           <label className="eyebrow" htmlFor="filter-location">
             Location
           </label>
-          <select
-            id="filter-location"
-            className="field-control filter-control"
-            value={filters.location}
-            onChange={(e) => onFilterChange("location", e.target.value)}
-          >
-            <option value="">All</option>
-            {LOCATIONS.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc}
-              </option>
-            ))}
-          </select>
+          <SelectWrap>
+            <select
+              id="filter-location"
+              className="field-control filter-control"
+              value={filters.location}
+              onChange={(e) => onFilterChange("location", e.target.value)}
+            >
+              <option value="">All</option>
+              {LOCATIONS.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+          </SelectWrap>
         </div>
 
         {/* Date (the real input is invisible on top, so every browser looks the same) */}
@@ -156,11 +164,13 @@ export default function SearchFilterBar({
 
         <button
           type="button"
-          className="pill-btn pill-btn-secondary filter-reset"
+          className="filter-reset"
           onClick={onReset}
           disabled={!hasActiveFilters}
+          aria-label="Reset filters"
+          title="Reset filters"
         >
-          Reset
+          <RotateCcw size={18} aria-hidden="true" />
         </button>
       </div>
     </section>
