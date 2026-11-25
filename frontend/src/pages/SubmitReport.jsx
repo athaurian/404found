@@ -189,7 +189,7 @@ export default function SubmitReport() {
     if (!el) return;
     el.scrollIntoView({
       behavior: prefersReducedMotion() ? "auto" : "smooth",
-      // The success banner sits under the form, so keep it in view without
+      // The status banner sits under the form, so keep it in view without
       // jumping past it; invalid fields still benefit from centering.
       block: focusRequest.target === "status" ? "nearest" : "center",
     });
@@ -224,6 +224,7 @@ export default function SubmitReport() {
     if (error) {
       setErrors((prev) => ({ ...prev, image: error }));
       if (fileInputRef.current) fileInputRef.current.value = "";
+      if (status) setStatus(null);
       return;
     }
 
@@ -372,20 +373,6 @@ export default function SubmitReport() {
       />
 
       <main className="sr-main">
-        {status?.type === "error" && (
-          <div
-            className="sr-banner sr-banner-error"
-            role="alert"
-            tabIndex={-1}
-            ref={statusRef}
-          >
-            <div>
-              <h2 className="sr-banner-title">Couldn’t post your report</h2>
-              <p className="sr-banner-text">{status.message}</p>
-            </div>
-          </div>
-        )}
-
         <form className="sr-form" onSubmit={handleSubmit} noValidate>
           <fieldset className="sr-fields" disabled={isSubmitting}>
             <fieldset className="sr-types">
@@ -660,6 +647,20 @@ export default function SubmitReport() {
             </div>
           </fieldset>
         </form>
+
+        {status?.type === "error" && (
+          <div
+            className="sr-banner sr-banner-error"
+            role="alert"
+            tabIndex={-1}
+            ref={statusRef}
+          >
+            <div>
+              <h2 className="sr-banner-title">Couldn’t post your report</h2>
+              <p className="sr-banner-text">{status.message}</p>
+            </div>
+          </div>
+        )}
 
         {status?.type === "success" && (
           <div
