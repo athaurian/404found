@@ -52,4 +52,4 @@ The `contact` object in the API response maps to two columns in the database.
 
 The remaining response fields use the same names as their database columns.
 
-(Schema and migrations: TBD in Checkpoint 3.)
+The schema is in [`backend/prisma/schema.prisma`](../backend/prisma/schema.prisma), and migrations are in [`backend/prisma/migrations`](../backend/prisma/migrations).

@@ -8,6 +8,7 @@
 | Report Details    | Full information for one report                                               |
 | Submit Report     | Form for a new Lost or Found report                                           |
 | About             | Site and team information                                                     |
+| Not Found         | Fallback page for unknown routes with a link back to the report list          |
 | Sign-in (stretch) | Universitas Indonesia SSO account sign-in                                     |
 
 ## Shared Layout
@@ -42,30 +43,29 @@ The page also shows:
 
 The page shows:
 
-- A photo, when the report has one
+- A photo, when the report has one, with a fullscreen viewer
 - The item name
-- The date posted and the date last edited
 - Type and category
 - Location and the date the item was lost or found
-- Description and contact
-- Edit and Delete controls for the original poster (TBD in Checkpoint 3)
+- Description and contact, with a copy control
+- A Share report control
 
 ## Submit Report
 
 The form collects the fields listed in the [API contract](api-contract.md). Fields marked with an asterisk are required.
 
-| Field                | Control                                        |
-| :------------------- | :--------------------------------------------- |
-| Item name\*          | Text input                                     |
-| Type\*               | Lost or Found                                  |
-| Category\*           | Dropdown                                       |
-| Location\*           | Dropdown                                       |
-| Date lost or found\* | Date picker (`dd/mm/yyyy`)                     |
-| Description\*        | Text area for colour, brand, and other details |
-| Photo                | Cloudinary image URL (optional)                |
-| Contact\*            | Method dropdown and value input                |
+| Field                | Control                                                  |
+| :------------------- | :------------------------------------------------------- |
+| Item name\*          | Text input                                               |
+| Type\*               | Lost or Found                                            |
+| Category\*           | Dropdown                                                 |
+| Location\*           | Dropdown                                                 |
+| Date lost or found\* | Date picker (`dd/mm/yyyy`)                               |
+| Description\*        | Text area for colour, brand, and other details           |
+| Photo                | File picker with preview (JPG, PNG, or WebP, up to 5 MB) |
+| Contact\*            | Method dropdown and value input                          |
 
-The form shows a validation message when a required field is empty. It ends with Submit and Cancel buttons.
+The form validates required fields, rejects dates in the future, and checks the photo type and size. It ends with Submit and Cancel buttons.
 
 ## About
 

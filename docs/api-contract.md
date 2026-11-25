@@ -27,7 +27,7 @@ The backend exposes a REST API. Requests and responses use JSON.
 | `POST` | `/reports`        | Submit a report                  | `201`          |
 | `POST` | `/reports/upload` | Upload one report image          | `201`          |
 
-(PATCH and DELETE: TBD in Checkpoint 3.)
+The MVP does not expose `PATCH` or `DELETE`.
 
 ## List Reports
 

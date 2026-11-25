@@ -37,7 +37,7 @@ The wireframes are in the [404 Found Figma file](https://www.figma.com/design/zJ
 | :--------------------------------- | :--------------- | :---------- |
 | 1. Project preparation             | 16 November 2026 | Complete    |
 | 2. Main UI and working API         | 20 November 2026 | Complete    |
-| 3. Full integration and deployment | 22 November 2026 | Not started |
+| 3. Full integration and deployment | 22 November 2026 | Complete    |
 
 (Checkpoint 2 and 3 deliverables follow the assignment brief.)
 
