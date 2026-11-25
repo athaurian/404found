@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ImageIcon } from "lucide-react";
+import { ArrowRight, ImageIcon, X } from "lucide-react";
 import PageBand from "../components/PageBand";
 import SelectWrap from "../components/SelectWrap";
 import { CheckCircleIcon, EditNoteIcon } from "../components/Icons";
@@ -538,7 +538,9 @@ export default function SubmitReport() {
               <div
                 className={`sr-photo-dropzone${
                   isDragging ? " is-dragging" : ""
-                }${errors.image ? " has-error" : ""}`}
+                }${errors.image ? " has-error" : ""}${
+                  imagePreview ? " has-preview" : ""
+                }`}
                 onClick={() => !isSubmitting && fileInputRef.current?.click()}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -588,14 +590,18 @@ export default function SubmitReport() {
                           handleRemovePhoto();
                         }}
                         disabled={isSubmitting}
+                        aria-label="Remove photo"
+                        title="Remove photo"
                       >
-                        Remove
+                        <X size={18} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div className="sr-photo-placeholder">
-                    <ImageIcon size={28} aria-hidden="true" />
+                    <span className="sr-photo-icon">
+                      <ImageIcon size={24} aria-hidden="true" />
+                    </span>
                     <p className="sr-photo-title">
                       Click to choose a photo or drag and drop it here
                     </p>
