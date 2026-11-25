@@ -186,7 +186,7 @@ The listing omits `contact` and `reporterName`. `GET /reports/:id` returns the r
 
 ### Image Upload
 
-`POST /reports/upload` accepts one image as `multipart/form-data` and returns its Cloudinary URL. Send that URL as `imageUrl` when creating the report. The Submit Report form accepts a Cloudinary URL directly, and this endpoint remains available for clients that need to store a new image.
+`POST /reports/upload` accepts one image as `multipart/form-data` and returns its Cloudinary URL. Send that URL as `imageUrl` when creating the report. The Submit Report form uploads the selected file through this endpoint first, then submits the returned URL with the report. Clients that already host an image can still send its Cloudinary URL directly in `imageUrl`.
 
 | Field   | Type | Required | Description                           |
 | :------ | :--- | :------- | :------------------------------------ |
