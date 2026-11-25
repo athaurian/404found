@@ -107,14 +107,7 @@ export default function Navbar() {
                 `navbar-drawer-link${isActive ? " active" : ""}`
               }
             >
-              {({ isActive }) => (
-                <>
-                  <span>{label}</span>
-                  {isActive && (
-                    <span className="navbar-drawer-dot" aria-hidden="true" />
-                  )}
-                </>
-              )}
+              <span>{label}</span>
             </NavLink>
           ))}
         </nav>
