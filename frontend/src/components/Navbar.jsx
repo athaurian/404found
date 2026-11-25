@@ -103,18 +103,20 @@ export default function Navbar() {
           aria-label="Mobile navigation"
           inert={!open ? "" : undefined}
         >
-          {LINKS.map(({ to, label, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                `navbar-drawer-link${isActive ? " active" : ""}`
-              }
-            >
-              <span>{label}</span>
-            </NavLink>
-          ))}
+          <div className="navbar-drawer-inner">
+            {LINKS.map(({ to, label, end }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                className={({ isActive }) =>
+                  `navbar-drawer-link${isActive ? " active" : ""}`
+                }
+              >
+                <span>{label}</span>
+              </NavLink>
+            ))}
+          </div>
         </nav>
       </div>
     </header>
