@@ -17,7 +17,7 @@ export const LOCATIONS = [
   "Classroom (A2.51)",
   "Gedung A",
   "Gedung Baru",
-  "Kantin Masoem",
+  "Kantin",
   "Pos Satpam",
   "Sekre BEM",
   "Student Lounge (Floor 1)",
