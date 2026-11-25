@@ -44,8 +44,8 @@
   gap: 8px;
   height: 100%;
   padding: 24px;
-  background-color: var(--surface);
-  border: 1px solid var(--line);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
 }
@@ -53,19 +53,19 @@
 .ab-card-title {
   margin: 0;
   font: 600 20px/1.25 var(--font-heading);
-  color: var(--ink);
+  color: var(--fg-strong);
   text-wrap: balance;
 }
 
 /* ------------------------- How it works cards ------------------------- */
 .ab-step {
-  gap: 8px;
+  gap: 12px;
 }
 
 @media (max-width: 767px) {
   .ab-step {
     padding: 16px;
-    gap: 4px;
+    gap: 8px;
   }
 }
 
@@ -75,6 +75,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  margin-bottom: 4px;
   border-radius: var(--radius-pill);
   box-sizing: border-box;
 }
@@ -88,7 +89,6 @@
   .ab-step-icon {
     width: 40px;
     height: 40px;
-    margin-bottom: 4px;
   }
 
   .ab-step-icon svg {
@@ -98,25 +98,24 @@
 }
 
 .ab-tone-papaya {
-  background-color: var(--papaya);
-  border: 1px solid var(--bronze);
-  color: var(--terracotta);
+  background-color: var(--bg-accent);
+  color: var(--fg-danger);
 }
 
 .ab-tone-sage {
-  background-color: var(--sage);
-  color: var(--moss);
+  background-color: var(--bg-positive);
+  color: var(--fg-positive);
 }
 
 .ab-tone-beige {
-  background-color: var(--beige);
-  color: var(--ink);
+  background-color: var(--bg-soft);
+  color: var(--fg-strong);
 }
 
 .ab-step-text {
   margin: 0;
   font: 400 16px/1.6 var(--font-body);
-  color: var(--ink-soft);
+  color: var(--fg-muted);
   text-wrap: pretty;
 }
 
@@ -131,13 +130,31 @@
 .ab-contributors {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+}
+
+.ab-contributors .ab-grid {
+  gap: 12px;
 }
 
 .ab-heading {
   margin: 0;
-  font: 700 28px/1.2 var(--font-heading);
-  color: var(--ink);
+  font: 700 22px/1.2 var(--font-heading);
+  color: var(--fg-strong);
+}
+
+.ab-person-card {
+  gap: 4px;
+  padding: 16px;
+  border-radius: var(--radius-input);
+}
+
+.ab-person-card .ab-card-title {
+  font-size: 16px;
+}
+
+.ab-person-card .ab-role {
+  font-size: 13px;
 }
 
 .ab-person {
@@ -149,40 +166,38 @@
 .ab-role {
   margin: 0;
   font: 400 14px/1.5 var(--font-body);
-  color: var(--ink-soft);
+  color: var(--fg-muted);
 }
 
 .ab-card-footer {
+  display: flex;
+  justify-content: flex-end;
   margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
 }
 
+/* Icon-only GitHub link keeps the compact card easy to scan */
 .ab-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  border-radius: var(--radius-input);
-  font: 600 14px/20px var(--font-body);
-  color: var(--ink);
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-pill);
+  color: var(--fg-strong);
   text-decoration: none;
-  transition: color 120ms ease-out;
+  transition: color 120ms ease-out, border-color 120ms ease-out,
+    background-color 120ms ease-out;
 }
 
 .ab-link:hover {
-  color: var(--bronze-deep);
+  border-color: var(--border-hover);
+  background-color: var(--bg-accent);
+  color: var(--state-link-hover);
 }
 
-/* Extra text for screen readers only (tells the three identical links apart) */
-.ab-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+.ab-link svg {
+  display: block;
 }

@@ -1,3 +1,4 @@
+import { Github } from "lucide-react";
 import PageBand from "../components/PageBand";
 import { ChatBubbleIcon, EditNoteIcon, SearchIcon } from "../components/Icons";
 import "./About.css";
@@ -17,7 +18,7 @@ const STEPS = [
   },
   {
     title: "Post in Seconds",
-    text: "No login or account needed. Submit a report directly with a photo link or automatic category illustration.",
+    text: "No login or account needed. Attach a photo from your device or let a category illustration stand in.",
     icon: <EditNoteIcon />,
     tone: "ab-tone-beige",
   },
@@ -68,7 +69,7 @@ export default function About() {
             <h2 className="ab-heading">Contributors</h2>
             <div className="ab-grid">
               {CONTRIBUTORS.map((person) => (
-                <article className="ab-card" key={person.name}>
+                <article className="ab-card ab-person-card" key={person.name}>
                   <div className="ab-person">
                     <h3 className="ab-card-title">{person.name}</h3>
                     <p className="ab-role">{person.role}</p>
@@ -79,13 +80,9 @@ export default function About() {
                       href={person.github}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`GitHub profile of ${person.name} (opens in a new tab)`}
                     >
-                      <span>GitHub Profile</span>
-                      <span className="ab-sr">
-                        {" "}
-                        of {person.name} (opens in a new tab)
-                      </span>
-                      <span aria-hidden="true">→</span>
+                      <Github size={20} aria-hidden="true" />
                     </a>
                   </div>
                 </article>
