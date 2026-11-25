@@ -412,9 +412,8 @@ export default function SubmitReport() {
 
         <form className="sr-form" onSubmit={handleSubmit} noValidate>
           <fieldset className="sr-fields" disabled={isSubmitting}>
-            {/* Report type */}
             <fieldset className="sr-types">
-              <legend className="eyebrow sr-legend">Report Type</legend>
+              <legend className="sr-visually-hidden">Report Type</legend>
               <div className="sr-types-grid">
                 {TYPE_PILLS.map((pill) => (
                   <label className="sr-type" key={pill.value}>

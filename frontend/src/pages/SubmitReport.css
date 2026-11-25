@@ -1,8 +1,7 @@
 /* ------------------------------------------------------------------
    Submit Report page (prefix: sr-)
    Uses the shared tokens and classes from index.css:
-   .eyebrow .pill-btn .pill-btn-primary .pill-btn-secondary
-   .field-control .stitched
+   .pill-btn .pill-btn-primary .pill-btn-secondary .field-control .stitched
    ------------------------------------------------------------------ */
 
 .sr-main {
@@ -268,11 +267,6 @@
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-.sr-legend {
-  padding: 0;
-  margin-bottom: 8px;
 }
 
 .sr-types-grid {
