@@ -5,9 +5,11 @@ import {
   CalendarDays,
   Mail,
   MapPin,
+  Maximize2,
   MessageCircle,
   Share2,
   Tag,
+  X,
 } from "lucide-react";
 import SafeImage from "../components/SafeImage";
 import { CheckCircleIcon, CopyIcon } from "../components/Icons";
@@ -16,6 +18,7 @@ import {
   CONTACT_TYPE_LABELS,
 } from "../constants/reportOptions";
 import { getReportById } from "../services/reportsApi";
+import { buildCloudinaryUrl } from "../utils/cloudinary";
 import { formatShortDate } from "../utils/formatDate";
 import "./ReportDetails.css";
 
@@ -68,6 +71,8 @@ export default function ReportDetails() {
   const copyTimer = useRef(null);
   const [shareState, setShareState] = useState("idle"); // idle | done | failed
   const shareTimer = useRef(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const lightboxRef = useRef(null);
 
   useEffect(() => {
     let ignore = false;
@@ -75,6 +80,7 @@ export default function ReportDetails() {
     setError(null);
     setCopyState("idle");
     setShareState("idle");
+    setLightboxOpen(false);
 
     getReportById(id)
       .then((res) => {
@@ -100,6 +106,14 @@ export default function ReportDetails() {
     },
     []
   );
+
+  // showModal handles focus trapping, Escape and focus restoration.
+  useEffect(() => {
+    const dialog = lightboxRef.current;
+    if (!dialog) return;
+    if (lightboxOpen && !dialog.open) dialog.showModal();
+    else if (!lightboxOpen && dialog.open) dialog.close();
+  }, [lightboxOpen]);
 
   const handleCopy = async () => {
     const ok = await copyText(report?.contact?.value || "");
@@ -203,6 +217,17 @@ export default function ReportDetails() {
             category={report.category}
             className="rd-img"
           />
+          {report.imageUrl && (
+            <button
+              type="button"
+              className="rd-expand"
+              onClick={() => setLightboxOpen(true)}
+              aria-label={`View full image of ${report.title}`}
+              title="View full image"
+            >
+              <Maximize2 size={18} aria-hidden="true" />
+            </button>
+          )}
           <span className="rd-badge-overlay">
             <span
               className={`report-badge ${isFound ? "badge-found" : "badge-lost"}`}
@@ -274,6 +299,40 @@ export default function ReportDetails() {
           )}
         </div>
       </article>
+
+      {report.imageUrl && (
+        <dialog
+          ref={lightboxRef}
+          className="rd-lightbox"
+          aria-label={`Full image of ${report.title}`}
+          onClose={() => setLightboxOpen(false)}
+          onClick={(e) => {
+            if (e.target === lightboxRef.current) setLightboxOpen(false);
+          }}
+        >
+          <div className="rd-lightbox-inner">
+            <button
+              type="button"
+              className="rd-lightbox-close"
+              onClick={() => setLightboxOpen(false)}
+              aria-label="Close image viewer"
+              title="Close"
+            >
+              <X size={22} aria-hidden="true" />
+            </button>
+            <SafeImage
+              src={buildCloudinaryUrl(
+                report.imageUrl,
+                "c_limit,w_1600,f_webp,q_85"
+              )}
+              alt={report.title}
+              category={report.category}
+              className="rd-lightbox-img"
+              loading="eager"
+            />
+          </div>
+        </dialog>
+      )}
     </main>
   );
 }
