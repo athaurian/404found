@@ -36,7 +36,7 @@
 .report-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 16px;
 }
 
 /* Phones get one column so icon/value metadata never gets cramped */
@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 12px;
+  padding: 16px;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
@@ -68,7 +68,7 @@
 .report-card-media {
   position: relative;
   aspect-ratio: 16 / 10;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   overflow: hidden;
   border-radius: var(--radius-input);
   background-color: var(--placeholder-surface);
@@ -304,18 +304,6 @@
     gap: 32px;
     padding-top: 32px;
     padding-bottom: 36px;
-  }
-
-  .report-grid {
-    gap: 24px;
-  }
-
-  .report-card {
-    padding: 16px;
-  }
-
-  .report-card-media {
-    margin-bottom: 16px;
   }
 
   .pagination {
