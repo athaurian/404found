@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight, ImageIcon } from "lucide-react";
 import PageBand from "../components/PageBand";
+import SelectWrap from "../components/SelectWrap";
 import { CheckCircleIcon, EditNoteIcon } from "../components/Icons";
 import {
   CATEGORIES,
   CONTACT_TYPES,
   LOCATIONS,
+  PHOTO_CONSTRAINTS,
 } from "../constants/reportOptions";
-import { createReport } from "../services/reportsApi";
+import { createReport, uploadReportImage } from "../services/reportsApi";
 import "./SubmitReport.css";
 
 const INITIAL_FORM = {
@@ -17,7 +20,6 @@ const INITIAL_FORM = {
   location: "",
   date: "",
   description: "",
-  imageUrl: "",
   contactType: "WHATSAPP",
   contactValue: "",
   reporterName: "",
@@ -31,7 +33,7 @@ const FIELD_ORDER = [
   "location",
   "date",
   "description",
-  "imageUrl",
+  "image",
   "contactType",
   "contactValue",
   "reporterName",
@@ -45,10 +47,14 @@ const TYPE_PILLS = [
 const LIMITS = {
   title: 120,
   description: 1000,
-  imageUrl: 2048,
   contactValue: 120,
   reporterName: 80,
 };
+
+const PHOTO_HELPER =
+  "(Leave empty to show a matching category illustration.)";
+const NAME_HELPER =
+  "Used only for internal record—never shown on browse cards or opened reports.";
 
 const TOO_MANY_MESSAGE =
   "Too many submissions. Please wait a minute and try again.";
@@ -61,22 +67,13 @@ function getTodayDateString() {
   return `${year}-${month}-${day}`;
 }
 
-function getImageUrlError(value) {
-  const url = value.trim();
-  if (!url) return ""; // optional field
-  if (url.length > LIMITS.imageUrl) {
-    return `Photo link must be ${LIMITS.imageUrl} characters or fewer.`;
+/** Validates a picked file against the shared photo constraints. */
+function getPhotoError(file) {
+  if (!PHOTO_CONSTRAINTS.allowedMimeTypes.includes(file.type)) {
+    return "Only JPG, PNG, or WebP images are allowed.";
   }
-  try {
-    const parsed = new URL(url);
-    if (
-      parsed.protocol !== "https:" ||
-      parsed.hostname !== "res.cloudinary.com"
-    ) {
-      return "Photo link must be a Cloudinary URL (https://res.cloudinary.com/...).";
-    }
-  } catch {
-    return "Enter a full Cloudinary link that starts with https://res.cloudinary.com/.";
+  if (file.size > PHOTO_CONSTRAINTS.maxSizeBytes) {
+    return "Image must be 5 MB or smaller.";
   }
   return "";
 }
@@ -96,9 +93,6 @@ function validate(form) {
   if (!form.description.trim()) {
     errors.description = "Please add a short description.";
   }
-
-  const imageUrlError = getImageUrlError(form.imageUrl);
-  if (imageUrlError) errors.imageUrl = imageUrlError;
 
   const contact = form.contactValue.trim();
   if (!contact) {
@@ -163,10 +157,18 @@ export default function SubmitReport() {
   const [status, setStatus] = useState(null);
   // Asks the page to scroll to + focus something after the next render.
   const [focusRequest, setFocusRequest] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const statusRef = useRef(null);
   const submitInFlightRef = useRef(false);
   const focusCounterRef = useRef(0);
+  const fileInputRef = useRef(null);
+  // Remembers the URL for the current file so a failed submit can retry
+  // without uploading the same image twice.
+  const uploadedImageRef = useRef(null);
 
   const activeContact =
     CONTACT_TYPES.find((c) => c.value === form.contactType) || CONTACT_TYPES[0];
@@ -196,6 +198,61 @@ export default function SubmitReport() {
     setFocusRequest({ target, id: focusCounterRef.current });
   };
 
+  // Release the object URL when the preview is replaced or the page unmounts.
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
+
+  const resetPhoto = () => {
+    if (imagePreview) URL.revokeObjectURL(imagePreview);
+    setImageFile(null);
+    setImagePreview("");
+    uploadedImageRef.current = null;
+    setIsDragging(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handlePhotoSelect = (file) => {
+    if (!file) return;
+
+    const error = getPhotoError(file);
+    if (error) {
+      setErrors((prev) => ({ ...prev, image: error }));
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    if (imagePreview) URL.revokeObjectURL(imagePreview);
+    uploadedImageRef.current = null;
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    setErrors((prev) => ({ ...prev, image: "" }));
+    if (status) setStatus(null);
+  };
+
+  const handleRemovePhoto = () => {
+    resetPhoto();
+    setErrors((prev) => ({ ...prev, image: "" }));
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    handlePhotoSelect(e.dataTransfer.files?.[0]);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -212,6 +269,7 @@ export default function SubmitReport() {
     setForm(INITIAL_FORM);
     setErrors({});
     setStatus(null);
+    resetPhoto();
   };
 
   const handleSubmit = async (e) => {
@@ -231,10 +289,25 @@ export default function SubmitReport() {
     setIsSubmitting(true);
 
     try {
-      await createReport({ ...form, imageUrl: form.imageUrl.trim() });
+      let imageUrl = null;
+      if (imageFile) {
+        const key = `${imageFile.name}:${imageFile.size}:${imageFile.lastModified}`;
+        if (uploadedImageRef.current?.key === key) {
+          imageUrl = uploadedImageRef.current.imageUrl;
+        } else {
+          setIsUploading(true);
+          const uploaded = await uploadReportImage(imageFile);
+          imageUrl = uploaded.imageUrl;
+          uploadedImageRef.current = { key, imageUrl };
+          setIsUploading(false);
+        }
+      }
+
+      await createReport({ ...form, imageUrl });
       setForm(INITIAL_FORM);
       setErrors({});
       setStatus({ type: "success" });
+      resetPhoto();
       requestFocus("status");
     } catch (err) {
       // Put each API field error under its own field.
@@ -243,8 +316,9 @@ export default function SubmitReport() {
       const apiErrors = Array.isArray(err.fieldErrors) ? err.fieldErrors : [];
       apiErrors.forEach(({ field, message }) => {
         if (!message) return;
-        if (FIELD_ORDER.includes(field)) {
-          mapped[field] = message;
+        const fieldName = field === "imageUrl" ? "image" : field;
+        if (FIELD_ORDER.includes(fieldName)) {
+          mapped[fieldName] = message;
         } else {
           unmapped.push(message);
         }
@@ -270,6 +344,7 @@ export default function SubmitReport() {
       setStatus({ type: "error", message });
       requestFocus(firstMapped && err.status !== 429 ? firstMapped : "status");
     } finally {
+      setIsUploading(false);
       setIsSubmitting(false);
       submitInFlightRef.current = false;
     }
@@ -284,11 +359,6 @@ export default function SubmitReport() {
     "aria-invalid": errors[name] ? "true" : undefined,
     "aria-describedby": describedBy(name, helper, errors[name]),
   });
-
-  const PHOTO_HELPER =
-    "Paste a Cloudinary image URL. Leave blank to show a matching category illustration.";
-  const NAME_HELPER =
-    "Used only for internal record—never shown on browse cards or opened reports.";
 
   return (
     <>
@@ -320,7 +390,7 @@ export default function SubmitReport() {
             </div>
             <Link to="/" className="pill-btn pill-btn-primary sr-banner-action">
               <span>Browse Reports</span>
-              <span aria-hidden="true">→</span>
+              <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
         )}
@@ -383,14 +453,16 @@ export default function SubmitReport() {
               </Field>
 
               <Field id="category" label="Category" error={errors.category}>
-                <select {...controlProps("category")} aria-required="true">
-                  <option value="">Select category</option>
-                  {CATEGORIES.map((cat) => (
-                    <option key={cat.value} value={cat.value}>
-                      {cat.label}
-                    </option>
-                  ))}
-                </select>
+                <SelectWrap>
+                  <select {...controlProps("category")} aria-required="true">
+                    <option value="">Select category</option>
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                </SelectWrap>
               </Field>
             </div>
 
@@ -401,14 +473,16 @@ export default function SubmitReport() {
                 label="Campus location"
                 error={errors.location}
               >
-                <select {...controlProps("location")} aria-required="true">
-                  <option value="">Select location</option>
-                  {LOCATIONS.map((loc) => (
-                    <option key={loc} value={loc}>
-                      {loc}
-                    </option>
-                  ))}
-                </select>
+                <SelectWrap>
+                  <select {...controlProps("location")} aria-required="true">
+                    <option value="">Select location</option>
+                    {LOCATIONS.map((loc) => (
+                      <option key={loc} value={loc}>
+                        {loc}
+                      </option>
+                    ))}
+                  </select>
+                </SelectWrap>
               </Field>
 
               <Field id="date" label={dateLabel} error={errors.date}>
@@ -436,34 +510,95 @@ export default function SubmitReport() {
               />
             </Field>
 
-            {/* Photo link */}
+            {/* Photo: direct file selection, uploaded on submit */}
             <Field
-              id="imageUrl"
-              label="Photo link (optional)"
+              id="image"
+              label="Photo (optional)"
               helper={PHOTO_HELPER}
-              error={errors.imageUrl}
+              error={errors.image}
             >
-              <input
-                {...controlProps("imageUrl", PHOTO_HELPER)}
-                type="url"
-                inputMode="url"
-                maxLength={LIMITS.imageUrl}
-                placeholder="https://res.cloudinary.com/..."
-                autoComplete="off"
-                spellCheck={false}
-              />
+              <div
+                className={`sr-photo-dropzone${
+                  isDragging ? " is-dragging" : ""
+                }${errors.image ? " has-error" : ""}`}
+                onClick={() => !isSubmitting && fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                role="button"
+                tabIndex={isSubmitting ? -1 : 0}
+                aria-label="Choose an item photo"
+                aria-describedby={describedBy(
+                  "image",
+                  PHOTO_HELPER,
+                  errors.image,
+                )}
+                onKeyDown={(e) => {
+                  if (!isSubmitting && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+              >
+                <input
+                  id="image"
+                  ref={fileInputRef}
+                  type="file"
+                  accept={PHOTO_CONSTRAINTS.acceptAttr}
+                  className="sr-visually-hidden"
+                  tabIndex={-1}
+                  disabled={isSubmitting}
+                  onChange={(e) => handlePhotoSelect(e.target.files?.[0])}
+                />
+
+                {imagePreview ? (
+                  <div className="sr-photo-preview">
+                    <img
+                      src={imagePreview}
+                      alt="Selected item preview"
+                      className="sr-photo-preview-img"
+                    />
+                    <div className="sr-photo-preview-info">
+                      <span className="sr-photo-file-name">
+                        {imageFile?.name}
+                      </span>
+                      <button
+                        type="button"
+                        className="sr-photo-remove"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemovePhoto();
+                        }}
+                        disabled={isSubmitting}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="sr-photo-placeholder">
+                    <ImageIcon size={28} aria-hidden="true" />
+                    <p className="sr-photo-title">
+                      Click to choose a photo or drag and drop it here
+                    </p>
+                    <p className="sr-photo-hint">JPG, PNG, or WebP up to 5 MB</p>
+                  </div>
+                )}
+              </div>
             </Field>
 
             {/* Contact method + value */}
             <div className="sr-grid-2">
               <Field id="contactType" label="Contact method">
-                <select {...controlProps("contactType")}>
-                  {CONTACT_TYPES.map((method) => (
-                    <option key={method.value} value={method.value}>
-                      {method.label}
-                    </option>
-                  ))}
-                </select>
+                <SelectWrap>
+                  <select {...controlProps("contactType")}>
+                    {CONTACT_TYPES.map((method) => (
+                      <option key={method.value} value={method.value}>
+                        {method.label}
+                      </option>
+                    ))}
+                  </select>
+                </SelectWrap>
               </Field>
 
               <Field
@@ -511,12 +646,14 @@ export default function SubmitReport() {
                 Clear Form
               </button>
               <button type="submit" className="pill-btn pill-btn-primary">
-                {isSubmitting ? (
+                {isUploading ? (
+                  "Uploading photo..."
+                ) : isSubmitting ? (
                   "Submitting..."
                 ) : (
                   <>
                     <span>Submit Report</span>
-                    <span aria-hidden="true">→</span>
+                    <ArrowRight size={18} aria-hidden="true" />
                   </>
                 )}
               </button>

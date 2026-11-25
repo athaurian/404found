@@ -304,3 +304,39 @@ export async function createReport(payload) {
     }),
   });
 }
+
+/** Uploads a photo and returns the URL to store on the report. */
+export async function uploadReportImage(file) {
+  if (!file) {
+    throw new ApiError("Choose an image to upload.", { status: 400 });
+  }
+
+  if (USE_MOCK_API) {
+    await new Promise((r) => setTimeout(r, 400));
+    return { imageUrl: await readFileAsDataUrl(file) };
+  }
+
+  const body = new FormData();
+  body.append("image", file);
+
+  const response = await request(`${API_BASE_URL}/reports/upload`, {
+    method: "POST",
+    body,
+  });
+
+  const imageUrl = response.data?.imageUrl;
+  if (!imageUrl) {
+    throw new ApiError("The server did not return an image URL.");
+  }
+  return { imageUrl };
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () =>
+      reject(new ApiError("Couldn't read that image. Please try another."));
+    reader.readAsDataURL(file);
+  });
+}

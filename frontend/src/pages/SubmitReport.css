@@ -37,8 +37,8 @@
 
 /* ---------------------------- Form card ---------------------------- */
 .sr-form {
-  background-color: var(--surface);
-  border: 1px solid var(--line);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   padding: 32px;
@@ -90,19 +90,19 @@
 
 .sr-label {
   font: 600 14px/20px var(--font-body);
-  color: var(--ink);
+  color: var(--fg-strong);
 }
 
 .sr-helper {
   margin: 0;
   font: 400 14px/1.5 var(--font-body);
-  color: var(--ink-soft);
+  color: var(--fg-muted);
 }
 
 .sr-error {
   margin: 0;
   font: 400 14px/1.5 var(--font-body);
-  color: var(--terracotta);
+  color: var(--fg-danger);
 }
 
 .sr-form textarea.field-control {
@@ -115,6 +115,106 @@
   -webkit-appearance: none;
   appearance: none;
   min-width: 0;
+}
+
+/* Photo picker */
+.sr-photo-dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 132px;
+  padding: 16px;
+  border: 1px dashed var(--border-dashed);
+  border-radius: var(--radius-input);
+  background-color: var(--bg-surface);
+  color: var(--fg-muted);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 120ms ease-out, background-color 120ms ease-out;
+}
+
+.sr-photo-dropzone:hover,
+.sr-photo-dropzone.is-dragging {
+  border-color: var(--border-hover);
+  background-color: var(--bg-soft);
+}
+
+.sr-photo-dropzone.has-error {
+  border-color: var(--border-danger);
+}
+
+.sr-photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.sr-photo-placeholder svg {
+  color: var(--fg-accent);
+}
+
+.sr-photo-title,
+.sr-photo-hint {
+  margin: 0;
+}
+
+.sr-photo-title {
+  font: 600 14px/20px var(--font-body);
+  color: var(--fg-strong);
+}
+
+.sr-photo-hint {
+  font: 400 12px/16px var(--font-body);
+  color: var(--fg-muted);
+}
+
+.sr-photo-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.sr-photo-preview-img {
+  max-height: 180px;
+  max-width: 100%;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-input);
+  object-fit: cover;
+}
+
+.sr-photo-preview-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  font: 400 13px/18px var(--font-body);
+}
+
+.sr-photo-file-name {
+  max-width: 240px;
+  overflow: hidden;
+  color: var(--fg-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sr-photo-remove {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--border-danger);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--fg-danger);
+  font: 600 13px/18px var(--font-body);
+  cursor: pointer;
+}
+
+.sr-photo-remove:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* --------------------------- Report type --------------------------- */
@@ -154,10 +254,10 @@
   justify-content: center;
   min-height: 44px;
   padding: 8px 16px;
-  border: 1px solid var(--field);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-input);
-  background-color: var(--surface);
-  color: var(--ink);
+  background-color: var(--bg-surface);
+  color: var(--fg-strong);
   font: 600 14px/20px var(--font-body);
   text-align: center;
   transition: background-color 120ms ease-out, border-color 120ms ease-out,
@@ -165,20 +265,21 @@
 }
 
 .sr-type input:checked + .sr-type-lost {
-  background-color: var(--papaya);
-  border-color: var(--bronze);
-  color: var(--terracotta);
+  background-color: var(--bg-accent);
+  border-color: var(--border-danger);
+  color: var(--fg-danger);
 }
 
 .sr-type input:checked + .sr-type-found {
-  background-color: var(--sage);
-  border-color: var(--moss);
-  color: var(--moss);
+  background-color: var(--bg-positive);
+  border-color: var(--border-positive);
+  color: var(--fg-positive);
 }
 
+/* The radio itself is visually hidden, so ring the visible pill */
 .sr-type input:focus-visible + .sr-type-pill {
-  outline: 3px solid var(--bronze-deep);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 1px var(--focus-ring);
 }
 
 .sr-types .sr-error {
@@ -187,7 +288,7 @@
 
 /* ------------------- Private name (dashed callout) ------------------- */
 .sr-callout {
-  background-color: rgba(221, 200, 168, 0.5); /* papaya at 50% */
+  background-color: var(--state-callout);
   padding: 16px;
 }
 
@@ -230,15 +331,15 @@
 }
 
 .sr-banner-success {
-  background-color: rgba(204, 213, 174, 0.5); /* sage at 50% */
-  border: 1px solid rgba(63, 75, 39, 0.3);
-  color: var(--moss);
+  background-color: var(--state-success-surface);
+  border: 1px solid var(--state-success-border);
+  color: var(--fg-positive);
 }
 
 .sr-banner-error {
-  background-color: rgba(138, 59, 31, 0.07);
-  border: 1px solid rgba(138, 59, 31, 0.3);
-  color: var(--terracotta);
+  background-color: var(--state-danger-surface);
+  border: 1px solid var(--state-danger-border);
+  color: var(--fg-danger);
 }
 
 .sr-banner-body {
@@ -250,7 +351,7 @@
 .sr-banner-icon {
   display: inline-flex;
   flex-shrink: 0;
-  color: var(--moss);
+  color: var(--fg-positive);
 }
 
 .sr-banner-icon svg {
