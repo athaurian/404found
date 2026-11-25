@@ -144,9 +144,7 @@
 }
 
 .ab-person-card {
-  gap: 4px;
   padding: 16px;
-  border-radius: var(--radius-input);
 }
 
 .ab-person-card .ab-card-title {
@@ -159,8 +157,26 @@
 
 .ab-person {
   display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ab-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background-color: var(--bg-accent);
+  object-fit: cover;
+}
+
+.ab-person-text {
+  display: flex;
+  flex: 1 1 0;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .ab-role {
@@ -169,21 +185,14 @@
   color: var(--fg-muted);
 }
 
-.ab-card-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-subtle);
-}
-
 /* Icon-only GitHub link keeps the compact card easy to scan */
 .ab-link {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border: 1px solid var(--control-border);
   border-radius: var(--radius-pill);
   color: var(--fg-strong);
@@ -200,4 +209,16 @@
 
 .ab-link svg {
   display: block;
+}
+
+/* Tablet columns are narrower, so tighten the compact card */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ab-person-card {
+    padding: 12px;
+  }
+
+  .ab-avatar {
+    width: 32px;
+    height: 32px;
+  }
 }

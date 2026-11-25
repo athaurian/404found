@@ -29,16 +29,19 @@ const CONTRIBUTORS = [
     name: "Hanif Ilham Athaurrahman",
     role: "Backend Developer",
     github: "https://github.com/athaurian",
+    avatar: "https://github.com/athaurian.png?size=160",
   },
   {
     name: "Salva Faddil Rinaldi",
     role: "Frontend Developer",
     github: "https://github.com/salvafaddil",
+    avatar: "https://github.com/salvafaddil.png?size=160",
   },
   {
     name: "Ilham Ligar Samudra",
     role: "Frontend Developer",
     github: "https://github.com/Ilham12359",
+    avatar: "https://github.com/Ilham12359.png?size=160",
   },
 ];
 
@@ -71,10 +74,19 @@ export default function About() {
               {CONTRIBUTORS.map((person) => (
                 <article className="ab-card ab-person-card" key={person.name}>
                   <div className="ab-person">
-                    <h3 className="ab-card-title">{person.name}</h3>
-                    <p className="ab-role">{person.role}</p>
-                  </div>
-                  <div className="ab-card-footer">
+                    <img
+                      className="ab-avatar"
+                      src={person.avatar}
+                      alt=""
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div className="ab-person-text">
+                      <h3 className="ab-card-title">{person.name}</h3>
+                      <p className="ab-role">{person.role}</p>
+                    </div>
                     <a
                       className="ab-link"
                       href={person.github}
