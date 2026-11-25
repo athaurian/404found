@@ -189,7 +189,9 @@ export default function SubmitReport() {
     if (!el) return;
     el.scrollIntoView({
       behavior: prefersReducedMotion() ? "auto" : "smooth",
-      block: "center",
+      // The success banner sits under the form, so keep it in view without
+      // jumping past it; invalid fields still benefit from centering.
+      block: focusRequest.target === "status" ? "nearest" : "center",
     });
     el.focus({ preventScroll: true });
   }, [focusRequest]);
@@ -370,32 +372,6 @@ export default function SubmitReport() {
       />
 
       <main className="sr-main">
-        {status?.type === "success" && (
-          <div
-            className="sr-banner sr-banner-success"
-            role="status"
-            tabIndex={-1}
-            ref={statusRef}
-          >
-            <div className="sr-banner-body">
-              <span className="sr-banner-icon" aria-hidden="true">
-                <CheckCircleIcon />
-              </span>
-              <div>
-                <h2 className="sr-banner-title">Report posted to the board</h2>
-                <p className="sr-banner-text">
-                  Your report is now visible in View Report. Your name stays
-                  private.
-                </p>
-              </div>
-            </div>
-            <Link to="/" className="pill-btn pill-btn-primary sr-banner-action">
-              <span>Browse Reports</span>
-              <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          </div>
-        )}
-
         {status?.type === "error" && (
           <div
             className="sr-banner sr-banner-error"
@@ -684,6 +660,32 @@ export default function SubmitReport() {
             </div>
           </fieldset>
         </form>
+
+        {status?.type === "success" && (
+          <div
+            className="sr-banner sr-banner-success"
+            role="status"
+            tabIndex={-1}
+            ref={statusRef}
+          >
+            <div className="sr-banner-body">
+              <span className="sr-banner-icon" aria-hidden="true">
+                <CheckCircleIcon />
+              </span>
+              <div>
+                <h2 className="sr-banner-title">Report posted to the board</h2>
+                <p className="sr-banner-text">
+                  Your report is now visible in View Report. Your name stays
+                  private.
+                </p>
+              </div>
+            </div>
+            <Link to="/" className="pill-btn pill-btn-primary sr-banner-action">
+              <span>Browse Reports</span>
+              <ArrowRight size={18} aria-hidden="true" />
+            </Link>
+          </div>
+        )}
       </main>
     </>
   );
