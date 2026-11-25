@@ -65,7 +65,7 @@ The form collects the fields listed in the [API contract](api-contract.md). Fiel
 | Photo                | File picker with preview (JPG, PNG, or WebP, up to 5 MB) |
 | Contact\*            | Method dropdown and value input                          |
 
-The form validates required fields, rejects dates in the future, and checks the photo type and size. It ends with Submit and Cancel buttons.
+The form rejects whitespace-only values, requires at least 3 characters for the item name and reporter name, at least 20 characters for the description, and validates the contact format for the selected method. It also rejects dates in the future and checks the photo type and size. It ends with Submit and Clear Form buttons.
 
 ## About
 

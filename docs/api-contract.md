@@ -174,15 +174,31 @@ The listing omits `contact` and `reporterName`. `GET /reports/:id` returns the r
 | `contactValue` | String | Yes      | Phone number, account username, or email address                    |
 | `imageUrl`     | String | No       | Cloudinary image URL (`https://res.cloudinary.com/...`)             |
 
-### Field Limits
+### Field Lengths
 
-| Field          | Maximum length |
-| :------------- | :------------- |
-| `title`        | 120            |
-| `description`  | 1000           |
-| `reporterName` | 80             |
-| `contactValue` | 120            |
-| `imageUrl`     | 2048           |
+| Field          | Minimum | Maximum |
+| :------------- | :------ | :------ |
+| `title`        | 3       | 120     |
+| `description`  | 20      | 1000    |
+| `reporterName` | 3       | 80      |
+| `contactValue` | 1       | 120     |
+| `imageUrl`     | 0       | 2048    |
+
+Minimum lengths are counted after trimming surrounding whitespace, so a field cannot contain only whitespace. `reporterName` must start with a letter and accepts Unicode letters, spaces, periods, hyphens, and apostrophes. The backend rejects a `date` later than today in WIB (Asia/Jakarta).
+
+### Contact Validation
+
+The `contactValue` format depends on `contactType`.
+
+| `contactType` | Accepted value                                                                                                                              |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `WHATSAPP`    | `08...`, `8...`, `628...`, or `+628...` with 9 to 15 digits. Spaces, dots, dashes, and parentheses are ignored when validating the number. |
+| `LINE`        | 3 to 32 characters with no whitespace                                                                                                       |
+| `INSTAGRAM`   | Optional leading `@`, then 1 to 30 letters, numbers, dots, or underscores                                                                   |
+| `DISCORD`     | 3 to 32 characters with no whitespace                                                                                                       |
+| `EMAIL`       | A user name, `@`, a domain, and a dot in the domain                                                                                         |
+
+The stored value keeps the reporter's formatting, trimmed of surrounding whitespace.
 
 ### Image Upload
 
