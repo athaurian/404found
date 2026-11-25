@@ -12,6 +12,11 @@ import {
 } from "../constants/reportOptions";
 import { createReport, uploadReportImage } from "../services/reportsApi";
 import { formatNumericDate } from "../utils/formatDate";
+import {
+  REPORT_LIMITS,
+  getTodayDateString,
+  validateReport,
+} from "../utils/validateReport";
 import "./SubmitReport.css";
 
 const INITIAL_FORM = {
@@ -45,13 +50,6 @@ const TYPE_PILLS = [
   { value: "FOUND", label: "Found an Item", className: "sr-type-found" },
 ];
 
-const LIMITS = {
-  title: 120,
-  description: 1000,
-  contactValue: 120,
-  reporterName: 80,
-};
-
 const PHOTO_HELPER =
   "(Leave empty to show a matching category illustration.)";
 const NAME_HELPER =
@@ -59,14 +57,6 @@ const NAME_HELPER =
 
 const TOO_MANY_MESSAGE =
   "Too many submissions. Please wait a minute and try again.";
-
-function getTodayDateString() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
 
 /** Validates a picked file against the shared photo constraints. */
 function getPhotoError(file) {
@@ -77,39 +67,6 @@ function getPhotoError(file) {
     return "Image must be 5 MB or smaller.";
   }
   return "";
-}
-
-function validate(form) {
-  const errors = {};
-
-  if (!form.type) errors.type = "Please choose Lost or Found.";
-  if (!form.title.trim()) errors.title = "Please enter the item name.";
-  if (!form.category) errors.category = "Please choose a category.";
-  if (!form.location) errors.location = "Please select where it was lost or found.";
-  if (!form.date) {
-    errors.date = `Please pick the date it was ${form.type === "FOUND" ? "found" : "lost"}.`;
-  } else if (form.date > getTodayDateString()) {
-    errors.date = "Please pick a date that is not in the future.";
-  }
-  if (!form.description.trim()) {
-    errors.description = "Please add a short description.";
-  }
-
-  const contact = form.contactValue.trim();
-  if (!contact) {
-    errors.contactValue = "Please enter how students can reach you.";
-  } else if (
-    form.contactType === "EMAIL" &&
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)
-  ) {
-    errors.contactValue = "Please enter a valid email address.";
-  }
-
-  if (!form.reporterName.trim()) {
-    errors.reporterName = "Please enter your name for the private record.";
-  }
-
-  return errors;
 }
 
 function prefersReducedMotion() {
@@ -281,7 +238,7 @@ export default function SubmitReport() {
     if (submitInFlightRef.current) return;
     setStatus(null);
 
-    const nextErrors = validate(form);
+    const nextErrors = validateReport(form);
     setErrors(nextErrors);
     const firstInvalid = FIELD_ORDER.find((field) => nextErrors[field]);
     if (firstInvalid) {
@@ -408,7 +365,7 @@ export default function SubmitReport() {
                 <input
                   {...controlProps("title")}
                   type="text"
-                  maxLength={LIMITS.title}
+                  maxLength={REPORT_LIMITS.title.max}
                   placeholder="e.g., Black Corkcicle Tumbler"
                   autoComplete="off"
                   aria-required="true"
@@ -485,7 +442,7 @@ export default function SubmitReport() {
               <textarea
                 {...controlProps("description")}
                 rows={3}
-                maxLength={LIMITS.description}
+                maxLength={REPORT_LIMITS.description.max}
                 placeholder="Describe color, stickers, or exact spot on campus..."
                 aria-required="true"
               />
@@ -596,7 +553,7 @@ export default function SubmitReport() {
                 <input
                   {...controlProps("contactValue")}
                   type="text"
-                  maxLength={LIMITS.contactValue}
+                  maxLength={REPORT_LIMITS.contactValue.max}
                   placeholder={activeContact.placeholder}
                   autoComplete="off"
                   aria-required="true"
@@ -615,7 +572,7 @@ export default function SubmitReport() {
                 <input
                   {...controlProps("reporterName", NAME_HELPER)}
                   type="text"
-                  maxLength={LIMITS.reporterName}
+                  maxLength={REPORT_LIMITS.reporterName.max}
                   placeholder="Your full name"
                   autoComplete="name"
                   aria-required="true"
