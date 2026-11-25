@@ -92,6 +92,13 @@
   --radius-input: 14px;
   --radius-card: 24px;
   --radius-pill: 9999px;
+
+  /* Motion: short durations and a gentle settle. The reduced-motion rule
+     below collapses every animation that uses these tokens. */
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-ease: ease-out;
+
   --shadow-card: 0 4px 16px
     color-mix(in srgb, var(--fg-strong) 5%, transparent);
   --shadow-sticker: 0 4px 16px

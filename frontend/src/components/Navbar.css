@@ -91,14 +91,43 @@
   background-color: var(--bg-accent);
 }
 
-/* Mobile drawer */
+/* Mobile drawer. The shell's grid track carries the height change so the
+   content below settles smoothly instead of jumping. */
+.navbar-drawer-shell {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--motion-base) var(--motion-ease);
+}
+.navbar-drawer-shell.is-open {
+  grid-template-rows: 1fr;
+}
+
 .navbar-drawer {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-height: 0;
+  overflow: hidden;
   padding: 16px;
   border-top: 1px solid var(--border-subtle);
   background-color: var(--bg-surface);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease),
+    padding-block var(--motion-base) var(--motion-ease),
+    border-top-width var(--motion-base) var(--motion-ease);
+}
+/* Padding and border are part of the grid item's minimum size, so they must
+   collapse too or the closed shell leaves an empty strip under the navbar. */
+.navbar-drawer-shell:not(.is-open) .navbar-drawer {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-width: 0;
+}
+.navbar-drawer-shell.is-open .navbar-drawer {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .navbar-drawer-link {
@@ -135,7 +164,7 @@
   }
 
   .navbar-toggle,
-  .navbar-drawer {
+  .navbar-drawer-shell {
     display: none;
   }
 }

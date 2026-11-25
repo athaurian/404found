@@ -205,7 +205,10 @@ export default function ViewReport() {
       next.set("page", String(targetPage));
       return next;
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   const handleReset = () => {
@@ -233,6 +236,19 @@ export default function ViewReport() {
     pagination.totalPages,
     compactPages
   );
+
+  // A fresh key makes every query change mount a new grid, so the card
+  // entrance animation runs even when the fetch is too fast to show a skeleton.
+  const gridKey = [
+    qParam,
+    typeParam,
+    categoryParam,
+    locationParam,
+    dateParam,
+    sortParam,
+    pageParam,
+    reloadKey,
+  ].join("|");
 
   return (
     <>
@@ -347,7 +363,7 @@ export default function ViewReport() {
         {/* Report grid */}
         {!error && !loading && reports.length > 0 && (
           <>
-            <div className="report-grid">
+            <div className="report-grid" key={gridKey}>
               {reports.map((report) => {
                 const isFound = report.type === "FOUND";
                 const categoryLabel =

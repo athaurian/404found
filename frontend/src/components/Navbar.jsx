@@ -91,12 +91,17 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile drawer */}
-      {open && (
+      {/* Mobile drawer. The shell stays mounted so its height can animate;
+          inert keeps the closed links out of focus and the a11y tree. */}
+      <div
+        className={`navbar-drawer-shell${open ? " is-open" : ""}`}
+        aria-hidden={!open}
+      >
         <nav
           id="mobile-nav"
           className="navbar-drawer"
           aria-label="Mobile navigation"
+          inert={!open ? "" : undefined}
         >
           {LINKS.map(({ to, label, end }) => (
             <NavLink
@@ -111,7 +116,7 @@ export default function Navbar() {
             </NavLink>
           ))}
         </nav>
-      )}
+      </div>
     </header>
   );
 }

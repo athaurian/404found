@@ -137,6 +137,26 @@
 }
 .rd-lightbox-close:hover { background: var(--state-nav-hover); border-color: var(--border-hover); }
 
+@media (prefers-reduced-motion: no-preference) {
+  .rd-lightbox[open] {
+    animation: rd-lightbox-in var(--motion-base) var(--motion-ease);
+  }
+  .rd-lightbox[open]::backdrop {
+    animation: rd-backdrop-in var(--motion-base) var(--motion-ease);
+  }
+  @keyframes rd-lightbox-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+  @keyframes rd-backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
 .rd-body {
   display: flex;
   flex-direction: column;
