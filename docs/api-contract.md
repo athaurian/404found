@@ -220,10 +220,10 @@ Error responses:
 ```json
 {
   "title": "Charger Laptop Type-C 65W",
-  "description": "Found plugged into the wall socket near the sofa in Sekre BEM.",
+  "description": "Found plugged into the wall socket near the sofa in Sekre.",
   "type": "FOUND",
   "category": "ELECTRONICS",
-  "location": "Sekre BEM",
+  "location": "Sekre",
   "date": "2026-11-16",
   "reporterName": "Siti Rahmawati",
   "contactType": "WHATSAPP",
@@ -242,10 +242,10 @@ Error responses:
   "data": {
     "id": "9c4b7e2a-1d63-4f08-9a5e-000000000037",
     "title": "Charger Laptop Type-C 65W",
-    "description": "Found plugged into the wall socket near the sofa in Sekre BEM.",
+    "description": "Found plugged into the wall socket near the sofa in Sekre.",
     "type": "FOUND",
     "category": "ELECTRONICS",
-    "location": "Sekre BEM",
+    "location": "Sekre",
     "date": "2026-11-16T00:00:00.000Z",
     "imageUrl": null,
     "reporterName": "Siti Rahmawati",
